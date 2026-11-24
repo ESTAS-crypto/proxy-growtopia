@@ -1,0 +1,14 @@
+# Target labels
+ mbedtls_src-populate
+# Source files and their labels
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate-complete.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-build.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-configure.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-download.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-install.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-mkdir.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-patch.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-test.rule
+C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-update.rule

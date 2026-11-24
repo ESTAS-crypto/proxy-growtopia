@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/CMakeFiles/enet_src-populate"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/CMakeFiles/enet_src-populate.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/CMakeFiles/enet_src-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-subbuild/enet_src-populate-prefix/src/enet_src-populate-stamp/enet_src-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"enet_src-populate"
+		],
+		"name" : "enet_src-populate"
+	}
+}

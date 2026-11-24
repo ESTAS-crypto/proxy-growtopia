@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/CMakeFiles/mbedtls_src-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-subbuild/mbedtls_src-populate-prefix/src/mbedtls_src-populate-stamp/mbedtls_src-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"mbedtls_src-populate"
+		],
+		"name" : "mbedtls_src-populate"
+	}
+}

@@ -1,0 +1,1450 @@
+=== EvanProxy Packet Session (16:04:51.533) ===
+[16:04:51.543] [ENet] Proxy UDP aktif di 0.0.0.0:17091 (usingNewPacket=true, slots=4)
+[16:05:20.404] [ENet] Handshake masuk dari 127.0.0.1:63156 (slot 0)
+[16:05:20.406] [ENet] Klien Growtopia terhubung dari 127.0.0.1:63156
+[16:05:20.407] [ENet] Menghubungkan ke server Growtopia 213.179.209.175:17044...
+[16:05:20.687] [ENet] Terhubung ke server Growtopia 213.179.209.175:17044
+[16:05:20.968] #1 S->C ch=0 len=5 REL ServerHello(1)
+[16:05:20.983] #2 C->S ch=0 len=521 REL GenericText(2)
+  protocol|228
+ltoken|LKMwWagTz9A7OWM4w/7Nu7qYPbw0V4/z+xohBlqLzx4XmtGxewzs/l4XPi9sDf7L1Jf+f+6qq5CyBa6gYoYvsHs9QdzoaAxt5/3KaTvq6okV1GDcuxyVFN1HEdNvZ+vyxAIAzZa6eJ3MzyRhVtqizr2RLW7/kftepQ5qi2wEj/1g3ufK8vMVtNW7qB+ZqM22whZOaFrvjtlqHrVaBoU+4p6HgW+5dAYqn2U6U15BeuNSSDaNPlkPUCfzrc/bNuyHNf8iz6do2EwLEP1Pv03nlc3nz3Lc8n2rPgkt4Pn+v2VU1Q4OJa0jX31J7ilxvr+YEtR2tDzy2NaRgtBlsykUMRI/Tyor7DQywM7UCI4kPQIPFD0WMDTNw6ua3dE8el97Mwu16GcdOoGmTJXoROuS/ik3rjRlr+62tl3erd/irK841udRjDiyx4/vYTDH61E7osukOv4OayWRbuB5HhSqZA==
+platformID|0,1,1
+adc|1
+
+[16:05:21.268] #3 S->C ch=0 len=173 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=112
+  Variant: [0](s)="OnSendToServer", [1](i)=17090, [2](i)=16144056, [3](i)=47177319, [4](s)="213.179.209.176|0|0284E5E662B27A610075F300737CABCA", [5](i)=1, [6](s)="clo0x"
+[16:05:21.269] [Redirect] Sub-server -> 213.179.209.176:17090 (rewritten ke 127.0.0.1:17091)
+[16:05:21.290] #4 C->S ch=0 len=61 REL GamePacket(4) -> Disconnect(26) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:21.291] [ENet] Handshake masuk dari 127.0.0.1:63158 (slot 1)
+[16:05:21.307] [ENet] Klien Growtopia terhubung dari 127.0.0.1:63158
+[16:05:21.307] [ENet] Memutus sesi klien lama untuk koneksi sub-server baru.
+[16:05:21.308] [ENet] Menghubungkan ke server Growtopia 213.179.209.176:17090...
+[16:05:21.591] [ENet] Terhubung ke server Growtopia 213.179.209.176:17090
+[16:05:21.884] #5 S->C ch=0 len=5 REL ServerHello(1)
+[16:05:21.884] #6 S->C ch=0 len=5 REL ClientLogRequest(7)
+  
+[16:05:21.884] #7 S->C ch=0 len=551 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=490
+  Variant: [0](s)="OnSetNpcXMLIndexes", [1](s)="Axebeak|AxebeaksBoss|BladeofRevolt|Chest|CrystalTurret|DiamondDestructoBoss|DragonsBreath|DreadGazerBoss|FlippingSpikesHorizontal|FlippingSpikesHorizontalDown|FlippingSpikesVertical|FlippingSpikesVerticalRight|HealingAura|HiddenObject|IceGolemBoss|Jelatinous|JelatinousChunkBoss|MagicCrystalBallBoss|MimicChest|PlayerShield|PoisonStatusEffect|Portal|Servant Of K'Tesh|Shield|ShieldCrystal|Shriekgazer|Swordsman|TerraShark|Viper|WindGuardian|WindGuardianShield"
+[16:05:21.992] #8 C->S ch=0 len=584 REL GenericText(2)
+  tankIDName|clo0x
+tankIDPass|
+requestedName|
+f|1
+protocol|228
+game_version|5.62
+fz|23843320
+cbits|0
+player_age|20
+GDPR|1
+FCMToken|
+category|_-5100
+totalPlaytime|0
+klv|23e462582fde696cb7ad37a91386c8b4fc606779109997264cfe1b9cade5db69
+hash2|-1854907625
+meta|zNkyBnDh7fU1RiVr3lzzHgCJnfIlCwDqYwk91k+DEr0=
+fhash|-716928004
+rid|025EE2831948551C042236252C00B812
+platformID|0,1,1
+deviceVersion|0
+country|us
+hash|-717691458
+mac|a8:96:09:56:2a:34
+wk|D043DD3D5CF093D3B77A526EA074AEA7
+zf|-1248856313lmode|1
+user|47177319
+token|16144056
+UUIDToken|0284E5E662B27A610075F300737CABCA
+doorID|0
+aat|2
+[16:05:22.289] #9 S->C ch=0 len=116 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=55
+  Variant: [0](s)="OnOverrideGDPRFromServer", [1](i)=59, [2](i)=1, [3](i)=0, [4](i)=1
+[16:05:22.289] #10 S->C ch=0 len=115 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=54
+  Variant: [0](s)="OnSetRoleSkinsAndTitles", [1](s)="000000", [2](s)="000000"
+[16:05:22.289] #11 S->C ch=0 len=5873 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=5812
+  Variant: [0](s)="OnSuperMainStartAcceptLogonHrdxs47254722215a", [1](u)=1849942333, [2](s)="ubistatic-a.akamaihd.net", [3](s)="0098/019112026/cache/", [4](s)="cc.cz.madkite.freedom org.aqua.gg idv.aqua.bulldog com.cih.gamecih2 com.cih.gamecih com.cih.game_cih cn.maocai.gamekiller com.gmd.speedtime org.dax.attack com.x0.strai.frep com.x0.strai.free org.cheatengine.cegui org.sbtools.gamehack com.skgames.traffikrider org.sbtoods.gamehaca com.skype.ralder org.cheatengine.cegui.xx.multi1458919170111 com.prohiro.macro me.autotouch.autotouch com.cygery.repetitouch.free com.cygery.repetitouch.pro com.proziro.zacro com.slash.gamebuster", [5](s)="proto=228|choosemusic=audio/mp3/about_theme.mp3|active_holiday=14|wing_week_day=0|ubi_week_day=0|server_tick=16537631|game_theme=|clash_active=0|drop_lavacheck_faster=1|isPayingUser=1|usingStoreNavigation=1|enableInventoryTab=1|bigBackpack=1|seed_diary_hash=1566404435|m_clientBits=|eventButtons={"EventButtonData":[{"active":true,"buttonAction":"dailychallengemenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"itemIdIcon":23,"name":"DailyChallenge","order":10,"rcssClass":"daily_challenge","text":"","visibilityFlag":"EnableDailyChallenge"},{"active":true,"buttonAction":"openPiggyBank","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"PiggyBankButton","order":20,"rcssClass":"piggybank","text":"","visibilityFlag":"EnablePiggyBank"},{"active":false,"buttonAction":"showdungeonsui","buttonTemplate":"DungeonEventButton","counter":0,"counterMax":20,"name":"ScrollsPurchaseButton","order":30,"rcssClass":"scrollbank","text":"","visibilityFlag":"EnableDungeonIU"},{"active":false,"buttonAction":"shownightmarket","buttonTemplate":"EventButtonWithTimer","counter":0,"counterMax":0,"name":"NightMarket","order":30,"rcssClass":"night_market","text":""},{"active":false,"buttonAction":"show_mailbox_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"MailboxButton","order":30,"rcssClass":"mailbox","text":"","visibilityFlag":"EnableMailboxAndAuction"},{"active":false,"buttonAction":"show_auction_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AuctionButton","order":30,"rcssClass":"auction","text":"","visibilityFlag":"EnableMailboxAndAuction"},{"active":false,"buttonTemplate":"ActiveAuctionEventButton","counter":0,"counterMax":20,"name":"ActiveAuctionButton","order":30,"rcssClass":"activeauction","text":""},{"active":false,"buttonAction":"eventmenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"itemIdIcon":6244,"name":"ClashEventButton","order":21,"rcssClass":"clash-event","text":"","visibilityFlag":"EnableClash"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"WinterBingoButton","order":49,"rcssClass":"wf-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","name":"UbiBingoButton","order":50,"rcssClass":"ubi-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","name":"PawBingoButton","order":50,"rcssClass":"paw-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"winterrallymenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"WinterRallyButton","order":50,"rcssClass":"winter-rally","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"leaderboardBtnClicked","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AnniversaryLeaderboardButton","order":50,"rcssClass":"anniversary-leaderboard","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"euphoriaBtnClicked","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AnniversaryEuphoriaButton","order":50,"rcssClass":"anniversary-euphoria","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"openLnySparksPopup","buttonTemplate":"BaseEventButton","counter":0,"counterMax":5,"name":"LnyButton","order":50,"rcssClass":"cny","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"ShowValentinesQuestDialog","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":100,"name":"ValentinesButton","order":50,"rcssClass":"valentines_day","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"showegseeventui","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":20,"name":"EasterButton","order":50,"rcssClass":"easter_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"openStPatrickPiggyBank","buttonTemplate":"BaseEventButton","name":"StPatrickPBButton","order":50,"rcssClass":"st_patrick_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"dailyrewardmenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":1,"name":"CincoPinataButton","order":50,"rcssClass":"cinco_pinata_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_fruit_mixer_dialog","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"SPP_TropicalFruitsButton","order":50,"rcssClass":"spp_tropical_fruits","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"claimprogressbar","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":0,"name":"SummerfestButton","order":50,"rcssClass":"summerfest","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"claimprogressbar","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":15,"name":"HalloweenButton","order":50,"rcssClass":"halloween","text":"","visibilityFlag":"EventButtonAvailable"}]}", [6](u)=4099314976
+[16:05:22.289] #12 S->C ch=0 len=157 REL Track(6)
+  eventType|0
+eventName|102_PLAYER.AUTHENTICATION
+Authenticated|1
+Authentication_error|0
+Device_Id|^^
+Grow_Id|47177319
+Name|^^clo0x
+Worldlock_balance|128
+
+[16:05:22.289] #13 S->C ch=0 len=121 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=60
+  Variant: [0](s)="OnConsoleMessage", [1](s)="Break 20 Cave Background: 10/20"
+[16:05:22.363] #14 C->S ch=0 len=61 REL GamePacket(4) -> AppCheckResponse(24) obj=0 jump=0 anim=0 net=-1 target=0 flags=NONE float=0 val=1125432991 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:30.193] #15 C->S ch=0 len=23 REL GenericText(2)
+  action|enter_game
+
+[16:05:30.484] #16 S->C ch=0 len=2718 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=2657
+  Variant: [0](s)="OnFtueButtonDataSet", [1](s)="�������  �Store Tutorial�%`oBuy a Clothes Pack from the Store``��[{"Angle":90,"Conditions":[{"Name":"IsPopupOpenedCheck","Parameters":"entityName|StoreMenu|exists|1"}],"ForceRML":true,"Id":"0","TargetParameter":"STORE","Text":"Open the Growtopia Store to purchase a `2Clothes Pack``.","eIndicatorTargetCode":1},{"Angle":0,"Conditions":[{"Name":"IsEntityExistCheck","Parameters":"parentName|StoreMenu|exists|1|entityName|clothes"}],"Id":"0","TargetParameter":"locks_menu","Text":"","additionalOffset":"0, -0.5","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"},{"Angle":0,"Conditions":[{"Name":"IsPopupOpenedCheck","Parameters":"entityName|PopUpMenu|exists|1|popupName|clothes"},{"Name":"IsEntityExistCheck","Parameters":"parentName|PopUpMenu|exists|1|entityName|cancel"}],"Id":"0","TargetParameter":"clothes","Text":"","additionalOffset":"0, -0.15","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"},{"Angle":180,"Id":"0","TargetParameter":"OnStoreBuyConfirm","Text":"","additionalOffset":"0, 0.25","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"}]�  �Seed Diary�`oOpen Seed Diary``��[{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|seed-diary-popup|contextname|MainUI"},{"Name":"IsPopupOpenedCheck","Parameters":"entityName|GenericDialog|exists|1|popupName|WrenchMenu"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"player_avatar","Text":"Click profile icon to open wrench menu.","eIndicatorTargetCode":1,"targetPopup":"player_avatar"},{"Angle":0,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|seed-diary-popup|contextname|MainUI"}],"Id":"0","TargetParameter":"seed_diary_customization","Text":"","additionalOffset":"0, -0.2","eIndicatorTargetCode":1,"targetPopup":"WrenchMenu"},{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|item_from_hid_16|contextname|MainUI"},{"Name":"IsRMLElementExistCheck","Parameters":"entityName|selected_dis_2|contextname|MainUI"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"item_10","Text":"Select Rock to see what other items you can create with it.","eIndicatorTargetCode":1,"targetPopup":"forceShow"},{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|selected_dis_2|contextname|MainUI"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"item_from_hid_16","Text":"","eIndicatorTargetCode":1,"targetPopup":"forceShow"},{"Angle":0,"Id":"0","TargetParameter":"popup-close-button","eIndicatorTargetCode":1,"targetPopup":"forceShow"}]���Welcome to Growtopia��Set Home�%Pick a tutorial to continue learning!"
+[16:05:30.484] #17 S->C ch=0 len=124 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=63
+  Variant: [0](s)="OnSendFavItemsList", [1](s)="65,242,1796,301,1746,7188,", [2](i)=20
+[16:05:30.484] #18 S->C ch=0 len=387 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=326
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="PiggyBankButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"openPiggyBank","buttonState":1,"buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"endTime":0,"itemIdIcon":0,"name":"PiggyBankButton","notification":0,"order":20,"rcssClass":"piggybank","text":"130K/1.5M","visibilityFlag":3}"
+[16:05:30.484] #19 S->C ch=0 len=402 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=341
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="ScrollsPurchaseButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"showdungeonsui","buttonState":0,"buttonTemplate":"DungeonEventButton","counter":20,"counterMax":20,"endTime":0,"itemIdIcon":0,"name":"ScrollsPurchaseButton","notification":0,"order":30,"rcssClass":"scrollbank","text":"20/20","visibilityFlag":8}"
+[16:05:30.484] #20 S->C ch=0 len=375 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=314
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="MailboxButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"show_mailbox_ui","buttonState":0,"buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"endTime":0,"itemIdIcon":0,"name":"MailboxButton","notification":0,"order":30,"rcssClass":"mailbox","text":"","visibilityFlag":10}"
+[16:05:30.484] #21 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:30.484] #22 S->C ch=0 len=974 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=913
+  Variant: [0](s)="OnEmoticonDataChanged", [1](i)=201560520, [2](s)="(wl)|ā|0&(yes)|Ă|0&(no)|ă|1&(love)|Ą|0&(oops)|ą|0&(shy)|Ć|1&(wink)|ć|1&(tongue)|Ĉ|1&(agree)|ĉ|0&(sleep)|Ċ|0&(punch)|ċ|0&(music)|Č|1&(build)|č|0&(megaphone)|Ď|0&(sigh)|ď|1&(mad)|Đ|1&(wow)|đ|1&(dance)|Ē|0&(see-no-evil)|ē|0&(bheart)|Ĕ|0&(heart)|ĕ|0&(grow)|Ė|0&(gems)|ė|0&(kiss)|Ę|0&(gtoken)|ę|0&(lol)|Ě|1&(smile)|Ā|1&(cool)|Ĝ|0&(cry)|ĝ|0&(vend)|Ğ|0&(bunny)|ě|0&(cactus)|ğ|0&(pine)|Ĥ|0&(peace)|ģ|0&(terror)|ġ|0&(troll)|Ġ|0&(evil)|Ģ|0&(fireworks)|Ħ|0&(football)|ĥ|0&(alien)|ħ|0&(party)|Ĩ|0&(pizza)|ĩ|0&(clap)|Ī|0&(song)|ī|0&(ghost)|Ĭ|0&(nuke)|ĭ|0&(halo)|Į|0&(turkey)|į|0&(gift)|İ|0&(cake)|ı|0&(heartarrow)|Ĳ|0&(lucky)|ĳ|0&(shamrock)|Ĵ|0&(grin)|ĵ|0&(ill)|Ķ|0&(eyes)|ķ|0&(weary)|ĸ|0&(moyai)|ļ|0&(plead)|Ľ|0&(fire)|ľ|0&(flirty)|Ŀ|0&(lightbulb)|ŀ|0&(moneymouth)|Ł|0&(nerd)|ł|0&(skull)|Ń|0&(trophy)|ń|0&(wilted)|Ņ|0&"
+[16:05:30.484] #23 S->C ch=0 len=141 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=80
+  Variant: [0](s)="OnConsoleMessage", [1](s)="Welcome back, `w`wclo0x````. No friends are online."
+[16:05:30.484] #24 S->C ch=0 len=179 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=118
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`6 `wThanksgiving`` is here! Give thanks to all and make sure to bash some `2Turkeys``!``"
+[16:05:30.484] #25 S->C ch=0 len=219 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=158
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`3Today is Builder Day!`` Your first Building quest will give 1 `2Growtoken`` and all Building quests will give 25% bonus points!"
+[16:05:30.484] #26 S->C ch=0 len=146 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=85
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`5Personal Settings active:`` `#Punch Joystick enabled``"
+[16:05:30.484] #27 S->C ch=0 len=100 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=39
+  Variant: [0](s)="OnPaw2018SkinColor1Changed", [1](i)=0
+[16:05:30.484] #28 S->C ch=0 len=100 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=39
+  Variant: [0](s)="OnPaw2018SkinColor2Changed", [1](i)=0
+[16:05:30.484] #29 S->C ch=0 len=444 REL GamePacket(4) -> SendInventoryState(9) obj=0 jump=0 anim=0 net=0 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=383
+  ExtraHex: 01 6A 00 00 00 5E 00 12 00 01 00 20 00 01 00 62 00 1C 01 FC 1B 14 00 B0 13 7D 00 CE 05 01 00 D2 0E 02 00 A8 13 57 00 7E 01 06 00 FC 3C 01 00 90 0D 03 00 C2 03 20 00 40 00 01 00 B4 13 0F 00 78 08 01 00 30 00 01 00 F0 01 01 01 56 09 01 01 C0 18 01 00 54 3B 01 01 A4 13 06 00 36 07 02 00 28 00 01 00 AC 13 07 00 0E 03 0B 00 74 24 01 00 D0 06 03 00 D6 34 08 00 AC 0A 08 00 A4 12 02 00 92 0C 01 00 F2 07 03 00 C4 08 02 00 4E 20 06 00 03 00 20 00 0F 00 11 00 9C 08 02 00 9E 08 01 00 9C 0D 08 00 A4 0D 08 00 98 0D 07 00 BA 3C 01 00 78 0E 01 00 9A 21 05 00 90 21 02 00 1A 39 02 00 BA 18 05 00 3A 2B 02 00 A0 2F 04 00 9E 0E 03 00 36 2B 01 00 A0 0D 06 00 9E 0D 07 00 2C 0B 02 00 3C 2B 05 00 48 03 01 00 74 0E 01 00 40 03 19 00 BA 01 0A 00 3A 35 04 00 28 0B 04 00 76 0E 04 00 92 ...(+127B)
+[16:05:30.484] #30 S->C ch=0 len=112 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=51
+  Variant(unparsed)=05 00 02 08 00 00 00 4F 6E 53 65 74 42 75 78 01 0A C8 1B 00 00 00 00 00 00 02 09 01 00 00 00 03 09 01 00 00 00 04 04 00 6C 66 46 00 00 00 00 00 00 00 00
+[16:05:30.484] #31 S->C ch=0 len=90 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=29
+  Variant: [0](s)="OnSetPearl", [1](i)=0, [2](i)=1
+[16:05:30.484] #32 S->C ch=0 len=87 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=26
+  Variant: [0](s)="OnSetVouchers", [1](i)=0
+[16:05:30.484] #33 S->C ch=0 len=103 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=42
+  Variant: [0](s)="SetHasGrowID", [1](u)=1, [2](s)="clo0x", [3](s)=""
+[16:05:30.484] #34 S->C ch=0 len=94 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=33
+  Variant: [0](s)="SetHasAccountSecured", [1](u)=0
+[16:05:30.484] #35 S->C ch=0 len=104 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=43
+  Variant: [0](s)="OnTodaysDate", [1](i)=11, [2](i)=24, [3](u)=412121, [4](u)=35
+[16:05:30.484] #36 S->C ch=0 len=100 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=39
+  Variant: [0](s)="SetShowChatOnlyFromFriends", [1](u)=0
+[16:05:30.484] #37 S->C ch=0 len=91 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=30
+  Variant: [0](s)="OnRequestHoustonPricing"
+[16:05:30.484] #38 S->C ch=0 len=89 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=0 target=0 flags=EXTENDED float=0 val=250 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=28
+  Variant: [0](s)="OnClearItemTransforms"
+[16:05:30.484] #39 S->C ch=0 len=297 REL Track(6)
+  eventType|0
+eventName|100_MOBILE.START
+Awesomeness|2
+Event|14
+Friends_nb|1
+Gems_balance|7112
+Global_Playtime|412121
+GrowId|47177319
+Level|35
+Session_nb|366
+connectiontype|*GetCurrentNetworkType
+deviceid|^^
+installDate|1607662800
+othercurrency|^^{"242":28,"1486":1,"1796":1,"6802":0,"7188":0}
+
+[16:05:30.484] #40 S->C ch=0 len=104 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=43
+  Variant: [0](s)="SetTapjoyTags", [1](s)="A2F45354|P1J18672"
+[16:05:30.484] #41 S->C ch=0 len=99 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=38
+  Variant: [0](s)="OnAuctionPageTimeoutLogon", [1](i)=30
+[16:05:30.494] #42 S->C ch=0 len=61 REL GamePacket(4) -> PingRequest(22) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1988 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:30.494] #43 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:30.494] #44 S->C ch=0 len=83 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=22
+  Variant: [0](s)="OnForceTradeEnd"
+[16:05:30.494] #45 S->C ch=0 len=132 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=71
+  Variant: [0](s)="OnSendToServer", [1](i)=17173, [2](i)=-1, [3](i)=47177319, [4](s)="213.179.209.178|0|-1", [5](i)=2
+[16:05:30.495] [Redirect] Sub-server -> 213.179.209.178:17173 (rewritten ke 127.0.0.1:17091)
+[16:05:30.503] #46 C->S ch=0 len=61 REL GamePacket(4) -> PingReply(21) obj=0 jump=0 anim=0 net=0 target=1433321613 flags=NONE float=0 val=23570 vec=(64,64) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:30.520] #47 C->S ch=0 len=61 REL GamePacket(4) -> Disconnect(26) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:30.521] [ENet] Handshake masuk dari 127.0.0.1:56774 (slot 0)
+[16:05:30.536] [ENet] Klien Growtopia terhubung dari 127.0.0.1:56774
+[16:05:30.536] [ENet] Memutus sesi klien lama untuk koneksi sub-server baru.
+[16:05:30.537] [ENet] Menghubungkan ke server Growtopia 213.179.209.178:17173...
+[16:05:30.817] [ENet] Terhubung ke server Growtopia 213.179.209.178:17173
+[16:05:31.105] #48 S->C ch=0 len=5 REL ServerHello(1)
+[16:05:31.105] #49 S->C ch=0 len=5 REL ClientLogRequest(7)
+  
+[16:05:31.105] #50 S->C ch=0 len=551 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=490
+  Variant: [0](s)="OnSetNpcXMLIndexes", [1](s)="Axebeak|AxebeaksBoss|BladeofRevolt|Chest|CrystalTurret|DiamondDestructoBoss|DragonsBreath|DreadGazerBoss|FlippingSpikesHorizontal|FlippingSpikesHorizontalDown|FlippingSpikesVertical|FlippingSpikesVerticalRight|HealingAura|HiddenObject|IceGolemBoss|Jelatinous|JelatinousChunkBoss|MagicCrystalBallBoss|MimicChest|PlayerShield|PoisonStatusEffect|Portal|Servant Of K'Tesh|Shield|ShieldCrystal|Shriekgazer|Swordsman|TerraShark|Viper|WindGuardian|WindGuardianShield"
+[16:05:31.216] #51 C->S ch=0 len=579 REL GenericText(2)
+  tankIDName|
+tankIDPass|
+requestedName|
+f|1
+protocol|228
+game_version|5.62
+fz|23843320
+cbits|0
+player_age|20
+GDPR|1
+FCMToken|
+category|_-5100
+totalPlaytime|0
+klv|23e462582fde696cb7ad37a91386c8b4fc606779109997264cfe1b9cade5db69
+hash2|-1854907625
+meta|zNkyBnDh7fU1RiVr3lzzHgCJnfIlCwDqYwk91k+DEr0=
+fhash|-716928004
+rid|025EE2831948551C042236252C00B812
+platformID|0,1,1
+deviceVersion|0
+country|us
+hash|-717691458
+mac|a8:96:09:56:2a:34
+wk|D043DD3D5CF093D3B77A526EA074AEA7
+zf|-1248856313lmode|2
+user|47177319
+token|16144056
+UUIDToken|0284E5E662B27A610075F300737CABCA
+doorID|0
+aat|2
+[16:05:31.505] #52 S->C ch=0 len=116 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=55
+  Variant: [0](s)="OnOverrideGDPRFromServer", [1](i)=59, [2](i)=1, [3](i)=0, [4](i)=1
+[16:05:31.506] #53 S->C ch=0 len=115 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=54
+  Variant: [0](s)="OnSetRoleSkinsAndTitles", [1](s)="000000", [2](s)="000000"
+[16:05:31.506] #54 S->C ch=0 len=5873 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=5812
+  Variant: [0](s)="OnSuperMainStartAcceptLogonHrdxs47254722215a", [1](u)=1849942333, [2](s)="ubistatic-a.akamaihd.net", [3](s)="0098/019112026/cache/", [4](s)="cc.cz.madkite.freedom org.aqua.gg idv.aqua.bulldog com.cih.gamecih2 com.cih.gamecih com.cih.game_cih cn.maocai.gamekiller com.gmd.speedtime org.dax.attack com.x0.strai.frep com.x0.strai.free org.cheatengine.cegui org.sbtools.gamehack com.skgames.traffikrider org.sbtoods.gamehaca com.skype.ralder org.cheatengine.cegui.xx.multi1458919170111 com.prohiro.macro me.autotouch.autotouch com.cygery.repetitouch.free com.cygery.repetitouch.pro com.proziro.zacro com.slash.gamebuster", [5](s)="proto=228|choosemusic=audio/mp3/about_theme.mp3|active_holiday=14|wing_week_day=0|ubi_week_day=0|server_tick=16546547|game_theme=|clash_active=0|drop_lavacheck_faster=1|isPayingUser=1|usingStoreNavigation=1|enableInventoryTab=1|bigBackpack=1|seed_diary_hash=1566404435|m_clientBits=|eventButtons={"EventButtonData":[{"active":true,"buttonAction":"dailychallengemenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"itemIdIcon":23,"name":"DailyChallenge","order":10,"rcssClass":"daily_challenge","text":"","visibilityFlag":"EnableDailyChallenge"},{"active":true,"buttonAction":"openPiggyBank","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"PiggyBankButton","order":20,"rcssClass":"piggybank","text":"","visibilityFlag":"EnablePiggyBank"},{"active":false,"buttonAction":"showdungeonsui","buttonTemplate":"DungeonEventButton","counter":0,"counterMax":20,"name":"ScrollsPurchaseButton","order":30,"rcssClass":"scrollbank","text":"","visibilityFlag":"EnableDungeonIU"},{"active":false,"buttonAction":"shownightmarket","buttonTemplate":"EventButtonWithTimer","counter":0,"counterMax":0,"name":"NightMarket","order":30,"rcssClass":"night_market","text":""},{"active":false,"buttonAction":"show_mailbox_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"MailboxButton","order":30,"rcssClass":"mailbox","text":"","visibilityFlag":"EnableMailboxAndAuction"},{"active":false,"buttonAction":"show_auction_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AuctionButton","order":30,"rcssClass":"auction","text":"","visibilityFlag":"EnableMailboxAndAuction"},{"active":false,"buttonTemplate":"ActiveAuctionEventButton","counter":0,"counterMax":20,"name":"ActiveAuctionButton","order":30,"rcssClass":"activeauction","text":""},{"active":false,"buttonAction":"eventmenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"itemIdIcon":6244,"name":"ClashEventButton","order":21,"rcssClass":"clash-event","text":"","visibilityFlag":"EnableClash"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"WinterBingoButton","order":49,"rcssClass":"wf-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","name":"UbiBingoButton","order":50,"rcssClass":"ubi-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_bingo_ui","buttonTemplate":"BaseEventButton","name":"PawBingoButton","order":50,"rcssClass":"paw-bingo","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"winterrallymenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"WinterRallyButton","order":50,"rcssClass":"winter-rally","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"leaderboardBtnClicked","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AnniversaryLeaderboardButton","order":50,"rcssClass":"anniversary-leaderboard","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"euphoriaBtnClicked","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"AnniversaryEuphoriaButton","order":50,"rcssClass":"anniversary-euphoria","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"openLnySparksPopup","buttonTemplate":"BaseEventButton","counter":0,"counterMax":5,"name":"LnyButton","order":50,"rcssClass":"cny","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"ShowValentinesQuestDialog","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":100,"name":"ValentinesButton","order":50,"rcssClass":"valentines_day","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"showegseeventui","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":20,"name":"EasterButton","order":50,"rcssClass":"easter_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"openStPatrickPiggyBank","buttonTemplate":"BaseEventButton","name":"StPatrickPBButton","order":50,"rcssClass":"st_patrick_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"dailyrewardmenu","buttonTemplate":"BaseEventButton","counter":0,"counterMax":1,"name":"CincoPinataButton","order":50,"rcssClass":"cinco_pinata_event","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"show_fruit_mixer_dialog","buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"name":"SPP_TropicalFruitsButton","order":50,"rcssClass":"spp_tropical_fruits","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"claimprogressbar","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":0,"name":"SummerfestButton","order":50,"rcssClass":"summerfest","text":"","visibilityFlag":"EventButtonAvailable"},{"active":false,"buttonAction":"claimprogressbar","buttonTemplate":"EventButtonWithCounter","counter":0,"counterMax":15,"name":"HalloweenButton","order":50,"rcssClass":"halloween","text":"","visibilityFlag":"EventButtonAvailable"}]}", [6](u)=4099314976
+[16:05:31.506] #55 S->C ch=0 len=152 REL Track(6)
+  eventType|0
+eventName|102_PLAYER.AUTHENTICATION
+Authenticated|1
+Authentication_error|0
+Device_Id|^^
+Grow_Id|47177319
+Name|^^
+Worldlock_balance|128
+
+[16:05:31.506] #56 S->C ch=0 len=121 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=60
+  Variant: [0](s)="OnConsoleMessage", [1](s)="Break 20 Cave Background: 10/20"
+[16:05:31.541] #57 C->S ch=0 len=56 REL GenericText(2)
+  action|enter_game
+invitedWorld|
+crossplaySetting|0
+
+[16:05:31.541] #58 C->S ch=0 len=61 REL GamePacket(4) -> AppCheckResponse(24) obj=0 jump=0 anim=0 net=-1 target=0 flags=NONE float=0 val=1125432991 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:31.826] #59 S->C ch=0 len=2718 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=2657
+  Variant: [0](s)="OnFtueButtonDataSet", [1](s)="�������  �Store Tutorial�%`oBuy a Clothes Pack from the Store``��[{"Angle":90,"Conditions":[{"Name":"IsPopupOpenedCheck","Parameters":"entityName|StoreMenu|exists|1"}],"ForceRML":true,"Id":"0","TargetParameter":"STORE","Text":"Open the Growtopia Store to purchase a `2Clothes Pack``.","eIndicatorTargetCode":1},{"Angle":0,"Conditions":[{"Name":"IsEntityExistCheck","Parameters":"parentName|StoreMenu|exists|1|entityName|clothes"}],"Id":"0","TargetParameter":"locks_menu","Text":"","additionalOffset":"0, -0.5","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"},{"Angle":0,"Conditions":[{"Name":"IsPopupOpenedCheck","Parameters":"entityName|PopUpMenu|exists|1|popupName|clothes"},{"Name":"IsEntityExistCheck","Parameters":"parentName|PopUpMenu|exists|1|entityName|cancel"}],"Id":"0","TargetParameter":"clothes","Text":"","additionalOffset":"0, -0.15","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"},{"Angle":180,"Id":"0","TargetParameter":"OnStoreBuyConfirm","Text":"","additionalOffset":"0, 0.25","eIndicatorTargetCode":1,"targetPopup":"StoreMenu"}]�  �Seed Diary�`oOpen Seed Diary``��[{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|seed-diary-popup|contextname|MainUI"},{"Name":"IsPopupOpenedCheck","Parameters":"entityName|GenericDialog|exists|1|popupName|WrenchMenu"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"player_avatar","Text":"Click profile icon to open wrench menu.","eIndicatorTargetCode":1,"targetPopup":"player_avatar"},{"Angle":0,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|seed-diary-popup|contextname|MainUI"}],"Id":"0","TargetParameter":"seed_diary_customization","Text":"","additionalOffset":"0, -0.2","eIndicatorTargetCode":1,"targetPopup":"WrenchMenu"},{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|item_from_hid_16|contextname|MainUI"},{"Name":"IsRMLElementExistCheck","Parameters":"entityName|selected_dis_2|contextname|MainUI"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"item_10","Text":"Select Rock to see what other items you can create with it.","eIndicatorTargetCode":1,"targetPopup":"forceShow"},{"Angle":270,"Conditions":[{"Name":"IsRMLElementExistCheck","Parameters":"entityName|selected_dis_2|contextname|MainUI"}],"GameActionEvent":"OnGameTick","Id":"0","TargetParameter":"item_from_hid_16","Text":"","eIndicatorTargetCode":1,"targetPopup":"forceShow"},{"Angle":0,"Id":"0","TargetParameter":"popup-close-button","eIndicatorTargetCode":1,"targetPopup":"forceShow"}]���Welcome to Growtopia��Set Home�%Pick a tutorial to continue learning!"
+[16:05:31.826] #60 S->C ch=0 len=124 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=63
+  Variant: [0](s)="OnSendFavItemsList", [1](s)="7188,1746,301,1796,242,65,", [2](i)=20
+[16:05:31.826] #61 S->C ch=0 len=387 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=326
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="PiggyBankButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"openPiggyBank","buttonState":1,"buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"endTime":0,"itemIdIcon":0,"name":"PiggyBankButton","notification":0,"order":20,"rcssClass":"piggybank","text":"130K/1.5M","visibilityFlag":3}"
+[16:05:31.826] #62 S->C ch=0 len=402 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=341
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="ScrollsPurchaseButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"showdungeonsui","buttonState":0,"buttonTemplate":"DungeonEventButton","counter":20,"counterMax":20,"endTime":0,"itemIdIcon":0,"name":"ScrollsPurchaseButton","notification":0,"order":30,"rcssClass":"scrollbank","text":"20/20","visibilityFlag":8}"
+[16:05:31.826] #63 S->C ch=0 len=375 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=314
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="MailboxButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"show_mailbox_ui","buttonState":0,"buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"endTime":0,"itemIdIcon":0,"name":"MailboxButton","notification":0,"order":30,"rcssClass":"mailbox","text":"","visibilityFlag":10}"
+[16:05:31.826] #64 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:31.826] #65 S->C ch=0 len=974 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=913
+  Variant: [0](s)="OnEmoticonDataChanged", [1](i)=201560520, [2](s)="(wl)|ā|0&(yes)|Ă|0&(no)|ă|1&(love)|Ą|0&(oops)|ą|0&(shy)|Ć|1&(wink)|ć|1&(tongue)|Ĉ|1&(agree)|ĉ|0&(sleep)|Ċ|0&(punch)|ċ|0&(music)|Č|1&(build)|č|0&(megaphone)|Ď|0&(sigh)|ď|1&(mad)|Đ|1&(wow)|đ|1&(dance)|Ē|0&(see-no-evil)|ē|0&(bheart)|Ĕ|0&(heart)|ĕ|0&(grow)|Ė|0&(gems)|ė|0&(kiss)|Ę|0&(gtoken)|ę|0&(lol)|Ě|1&(smile)|Ā|1&(cool)|Ĝ|0&(cry)|ĝ|0&(vend)|Ğ|0&(bunny)|ě|0&(cactus)|ğ|0&(pine)|Ĥ|0&(peace)|ģ|0&(terror)|ġ|0&(troll)|Ġ|0&(evil)|Ģ|0&(fireworks)|Ħ|0&(football)|ĥ|0&(alien)|ħ|0&(party)|Ĩ|0&(pizza)|ĩ|0&(clap)|Ī|0&(song)|ī|0&(ghost)|Ĭ|0&(nuke)|ĭ|0&(halo)|Į|0&(turkey)|į|0&(gift)|İ|0&(cake)|ı|0&(heartarrow)|Ĳ|0&(lucky)|ĳ|0&(shamrock)|Ĵ|0&(grin)|ĵ|0&(ill)|Ķ|0&(eyes)|ķ|0&(weary)|ĸ|0&(moyai)|ļ|0&(plead)|Ľ|0&(fire)|ľ|0&(flirty)|Ŀ|0&(lightbulb)|ŀ|0&(moneymouth)|Ł|0&(nerd)|ł|0&(skull)|Ń|0&(trophy)|ń|0&(wilted)|Ņ|0&"
+[16:05:31.826] #66 S->C ch=0 len=112 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=51
+  Variant(unparsed)=05 00 02 08 00 00 00 4F 6E 53 65 74 42 75 78 01 0A C8 1B 00 00 00 00 00 00 02 09 01 00 00 00 03 09 01 00 00 00 04 04 00 74 66 46 00 00 00 00 00 00 00 00
+[16:05:31.826] #67 S->C ch=0 len=90 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=29
+  Variant: [0](s)="OnSetPearl", [1](i)=0, [2](i)=1
+[16:05:31.826] #68 S->C ch=0 len=87 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=26
+  Variant: [0](s)="OnSetVouchers", [1](i)=0
+[16:05:31.826] #69 S->C ch=0 len=103 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=42
+  Variant: [0](s)="SetHasGrowID", [1](u)=1, [2](s)="clo0x", [3](s)=""
+[16:05:31.826] #70 S->C ch=0 len=94 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=33
+  Variant: [0](s)="SetHasAccountSecured", [1](u)=0
+[16:05:31.826] #71 S->C ch=0 len=104 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=43
+  Variant: [0](s)="OnTodaysDate", [1](i)=11, [2](i)=24, [3](u)=412121, [4](u)=35
+[16:05:31.826] #72 S->C ch=0 len=100 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=39
+  Variant: [0](s)="SetShowChatOnlyFromFriends", [1](u)=0
+[16:05:31.826] #73 S->C ch=0 len=91 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=30
+  Variant: [0](s)="OnRequestHoustonPricing"
+[16:05:31.826] #74 S->C ch=0 len=89 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=0 target=0 flags=EXTENDED float=0 val=250 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=28
+  Variant: [0](s)="OnClearItemTransforms"
+[16:05:31.826] #75 S->C ch=0 len=297 REL Track(6)
+  eventType|0
+eventName|100_MOBILE.START
+Awesomeness|2
+Event|14
+Friends_nb|1
+Gems_balance|7112
+Global_Playtime|412121
+GrowId|47177319
+Level|35
+Session_nb|366
+connectiontype|*GetCurrentNetworkType
+deviceid|^^
+installDate|1607662800
+othercurrency|^^{"242":28,"1486":1,"1796":1,"6802":0,"7188":0}
+
+[16:05:31.826] #76 S->C ch=0 len=104 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=43
+  Variant: [0](s)="SetTapjoyTags", [1](s)="A2F45354|P1J18672"
+[16:05:31.826] #77 S->C ch=0 len=99 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=38
+  Variant: [0](s)="OnAuctionPageTimeoutLogon", [1](i)=30
+[16:05:31.833] #78 S->C ch=0 len=61 REL GamePacket(4) -> PingRequest(22) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1079 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:31.833] #79 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:31.846] #80 C->S ch=0 len=61 REL GamePacket(4) -> PingReply(21) obj=0 jump=0 anim=0 net=0 target=1433312366 flags=NONE float=0 val=24908 vec=(64,64) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:31.909] #81 S->C ch=0 len=89 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=0 target=0 flags=EXTENDED float=0 val=250 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=28
+  Variant: [0](s)="OnClearItemTransforms"
+[16:05:31.939] #82 S->C ch=0 len=49727 REL GamePacket(4) -> SendMapData(4) obj=0 jump=0 anim=0 net=0 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(16546983,0) extra=49666
+  ExtraHex: 1B 00 40 00 00 00 06 00 45 56 49 4C 41 58 64 00 00 00 3C 00 00 00 70 17 00 00 38 00 00 00 3C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ...(+49410B)
+[16:05:31.939] #83 S->C ch=0 len=974 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=913
+  Variant: [0](s)="OnEmoticonDataChanged", [1](i)=201560520, [2](s)="(wl)|ā|0&(yes)|Ă|0&(no)|ă|1&(love)|Ą|0&(oops)|ą|0&(shy)|Ć|1&(wink)|ć|1&(tongue)|Ĉ|1&(agree)|ĉ|0&(sleep)|Ċ|0&(punch)|ċ|0&(music)|Č|1&(build)|č|0&(megaphone)|Ď|0&(sigh)|ď|1&(mad)|Đ|1&(wow)|đ|1&(dance)|Ē|0&(see-no-evil)|ē|0&(bheart)|Ĕ|0&(heart)|ĕ|0&(grow)|Ė|0&(gems)|ė|0&(kiss)|Ę|0&(gtoken)|ę|0&(lol)|Ě|1&(smile)|Ā|1&(cool)|Ĝ|0&(cry)|ĝ|0&(vend)|Ğ|0&(bunny)|ě|0&(cactus)|ğ|0&(pine)|Ĥ|0&(peace)|ģ|0&(terror)|ġ|0&(troll)|Ġ|0&(evil)|Ģ|0&(fireworks)|Ħ|0&(football)|ĥ|0&(alien)|ħ|0&(party)|Ĩ|0&(pizza)|ĩ|0&(clap)|Ī|0&(song)|ī|0&(ghost)|Ĭ|0&(nuke)|ĭ|0&(halo)|Į|0&(turkey)|į|0&(gift)|İ|0&(cake)|ı|0&(heartarrow)|Ĳ|0&(lucky)|ĳ|0&(shamrock)|Ĵ|0&(grin)|ĵ|0&(ill)|Ķ|0&(eyes)|ķ|0&(weary)|ĸ|0&(moyai)|ļ|0&(plead)|Ľ|0&(fire)|ľ|0&(flirty)|Ŀ|0&(lightbulb)|ŀ|0&(moneymouth)|Ł|0&(nerd)|ł|0&(skull)|Ń|0&(trophy)|ń|0&(wilted)|Ņ|0&"
+[16:05:31.939] #84 S->C ch=0 len=85 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=24
+  Variant: [0](s)="HidePearlCurrency"
+[16:05:31.939] #85 S->C ch=0 len=61 REL GamePacket(4) -> Special(35) obj=0 jump=0 anim=0 net=-1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:31.939] #86 S->C ch=0 len=467 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=-1 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=406
+  Variant: [0](s)="OnSpawn", [1](s)="spawn|avatar
+netID|1
+userID|47177319
+eid|47177319|yOiSIw9zBaKsNhXU9LUp7g==|67GCU/3UBAJYzRMIG9qufA==
+ip|a1WSS8PhJ4RXPLKZqW+f/hB07lEXHTHXlL3Ke4z2pcI=
+colrect|0|0|20|30
+posXY|1568|1344
+name|`2clo0x``
+titleIcon|{"PlayerWorldID":1,"WrenchCustomization":{"WrenchForegroundCanRotate":false,"WrenchForegroundID":-1,"WrenchIconID":-1}}
+country|us
+invis|0
+mstate|0
+smstate|0
+onlineID|
+type|local
+"
+[16:05:31.939] #87 S->C ch=0 len=87 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=26
+  Variant: [0](s)="OnFlagMay2019", [1](u)=256
+[16:05:31.939] #88 S->C ch=0 len=61 REL GamePacket(4) -> SetCharacterState(20) obj=0 jump=129 anim=128 net=1 target=0 flags=NONE float=125 val=2 vec=(1200,200) vec2=(310,1300) rot=0 tile=(0,0) extra=0
+[16:05:31.939] #89 S->C ch=0 len=97 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=36
+  Variant: [0](s)="OnSetFriendOfWorldOwner", [1](u)=0
+[16:05:31.939] #90 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnDisabledParticleList", [1](s)=""
+[16:05:31.940] #91 S->C ch=0 len=86 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=25
+  Variant: [0](s)="OnSetPos", [1](v2)=(1568,1344)
+[16:05:31.940] #92 S->C ch=0 len=55 REL GameMessage(3)
+  action|play_sfx
+file|audio/door_open.wav
+delayMS|0
+[16:05:31.940] #93 S->C ch=0 len=222 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=161
+  Variant: [0](s)="OnConsoleMessage", [1](s)="World `wEVILAX `0[```2NOPUNCH``, `2IMMUNE``, `2ANTIGRAVITY```0]`` `` entered.  There are `w0`` other people here, `w57,394`` online."
+[16:05:31.940] #94 S->C ch=0 len=157 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=96
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`5[```wEVILAX`` `$World Locked`` by clo0x (`2ACCESS GRANTED``)`5]``"
+[16:05:31.940] #95 S->C ch=0 len=108 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=47
+  Variant: [0](s)="OnSetRoleSkinsAndIcons", [1](u)=6, [2](u)=6, [3](i)=0
+[16:05:31.940] #96 S->C ch=0 len=143 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=100 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=82
+  Variant: [0](s)="OnSetClothing", [1](v3)=(15188,0,0), [2](v3)=(496,0,98), [3](v3)=(2390,0,0), [4](u)=3370516479, [5](v3)=(0,0,0)
+[16:05:31.940] #97 S->C ch=0 len=109 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=48
+  Variant: [0](s)="OnMagicCompassTrackingItemIDChanged", [1](u)=0
+[16:05:31.940] #98 S->C ch=0 len=111 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=50
+  Variant: [0](s)="OnDailyChallengeRequest", [1](s)="0|0|62684|3142"
+[16:05:31.940] #99 S->C ch=0 len=89 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=250 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=28
+  Variant: [0](s)="OnClearItemTransforms"
+[16:05:31.940] #100 S->C ch=0 len=387 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=326
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="AuctionButton", [2](i)=1, [3](s)="{"active":true,"buttonAction":"show_auction_ui","buttonState":0,"buttonTemplate":"BaseEventButton","counter":0,"counterMax":0,"endTime":0,"itemIdIcon":0,"name":"AuctionButton","notification":0,"order":30,"rcssClass":"auction","text":"Find Auction","visibilityFlag":10}"
+[16:05:31.940] #101 S->C ch=0 len=388 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=327
+  Variant: [0](s)="OnEventButtonDataSet", [1](s)="ActiveAuctionButton", [2](i)=0, [3](s)="{"active":false,"buttonAction":"","buttonState":0,"buttonTemplate":"ActiveAuctionEventButton","counter":0,"counterMax":20,"endTime":0,"itemIdIcon":0,"name":"ActiveAuctionButton","notification":0,"order":30,"rcssClass":"activeauction","text":"","visibilityFlag":0}"
+[16:05:31.940] #102 S->C ch=0 len=111 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=50
+  Variant: [0](s)="OnActiveAuctionUpdate", [1](s)="{"Active":false}"
+[16:05:31.940] #103 S->C ch=0 len=974 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=913
+  Variant: [0](s)="OnEmoticonDataChanged", [1](i)=201560520, [2](s)="(wl)|ā|0&(yes)|Ă|0&(no)|ă|1&(love)|Ą|0&(oops)|ą|0&(shy)|Ć|1&(wink)|ć|1&(tongue)|Ĉ|1&(agree)|ĉ|0&(sleep)|Ċ|0&(punch)|ċ|0&(music)|Č|1&(build)|č|0&(megaphone)|Ď|0&(sigh)|ď|1&(mad)|Đ|1&(wow)|đ|1&(dance)|Ē|0&(see-no-evil)|ē|0&(bheart)|Ĕ|0&(heart)|ĕ|0&(grow)|Ė|0&(gems)|ė|0&(kiss)|Ę|0&(gtoken)|ę|0&(lol)|Ě|1&(smile)|Ā|1&(cool)|Ĝ|0&(cry)|ĝ|0&(vend)|Ğ|0&(bunny)|ě|0&(cactus)|ğ|0&(pine)|Ĥ|0&(peace)|ģ|0&(terror)|ġ|0&(troll)|Ġ|0&(evil)|Ģ|0&(fireworks)|Ħ|0&(football)|ĥ|0&(alien)|ħ|0&(party)|Ĩ|0&(pizza)|ĩ|0&(clap)|Ī|0&(song)|ī|0&(ghost)|Ĭ|0&(nuke)|ĭ|0&(halo)|Į|0&(turkey)|į|0&(gift)|İ|0&(cake)|ı|0&(heartarrow)|Ĳ|0&(lucky)|ĳ|0&(shamrock)|Ĵ|0&(grin)|ĵ|0&(ill)|Ķ|0&(eyes)|ķ|0&(weary)|ĸ|0&(moyai)|ļ|0&(plead)|Ľ|0&(fire)|ľ|0&(flirty)|Ŀ|0&(lightbulb)|ŀ|0&(moneymouth)|Ł|0&(nerd)|ł|0&(skull)|Ń|0&(trophy)|ń|0&(wilted)|Ņ|0&"
+[16:05:31.940] #104 S->C ch=0 len=53 REL GameMessage(3)
+  action|play_sfx
+file|audio/choir.wav
+delayMS|200
+[16:05:32.103] #105 S->C ch=0 len=6338 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=1000 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=6277
+  Variant: [0](s)="OnDialogRequest", [1](s)="﻿set_default_color|`o
+add_label_with_icon|big|`wThe Growtopia Gazette``|left|5016|
+add_spacer|small|
+add_image_button|banner|interface/large/news_banner.rttex|bannerlayout||
+add_spacer|small|
+add_textbox|`wNovember 20th: `5Thanksgiving Week``|left|
+add_spacer|small|
+add_image_button|iotm_layout|interface/large/gazette/gazette_3columns_feature_btn06.rttex|3imageslayout|OPENSTORE|main/thanksgiving_bell_pack|
+add_image_button|iotm_layout|interface/large/gazette/gazette_3columns_feature_btn08.rttex|3imageslayout|OPENSTORE|main/thanksgiving_weather|
+add_image_button|iotm_layout|interface/large/gazette/gazette_3columns_feature_btn09.rttex|3imageslayout|OPENSTORE|main/gems_bundle06|
+add_spacer|small|
+add_textbox|The feast is on, and the flock is running wild as `2Thanksgiving Week`` has returned to Growtopia!|left|
+add_spacer|small|
+add_textbox|These turkeys aren't going down without a flap! Chase down those runaway birds and summon the legendary `6Sgt. Stuffins`` for a showdown that's sure to leave you stuffed with excitement! Join your fellow Growtopians to inflict damage, pile up rewards, and peck your way up the leaderboard for a chance to claim the coveted `9Thanksgiving Title``! Think you've got what it takes to rule the roost?|left|
+add_spacer|small|
+add_textbox|Keep the feast going with `4Stuffins' Support Package``! Packed with turkey-tastic goodies, each purchase also restores some of `6Sgt. Stuffins'`` health, giving the whole community more time to battle and scoop up some extra rewards!|left|
+add_spacer|small|
+add_textbox|To keep the festivities rolling, starting today until the end of `2Thanksgiving Week``, we're adding a flock of `8Organic Turkeys`` with every purchase of select Gem Packs!|left|
+add_spacer|small|
+add_textbox|We are also back with 2 new Sponsored Items `8Auino's Puppy`` and `8ashuex's Cool Caren``! Congrats Auino and ashuex on completing all the Epic Quests!|left|
+add_spacer|small|
+add_textbox|Roar into action and unleash your wild side with the November Grow Pass items!|left|
+add_spacer|small|
+add_label_with_icon|small|Item of the Season: `2Mighty Beast``|left|24|
+add_label_with_icon|small|Royal Item of the Season: `2Royal Mighty Beast``|left|24|
+add_label_with_icon|small|Subscriber Item: `8Monkey Plushie`` chosen by evauwU!|left|24|
+add_spacer|small|
+add_textbox|Freebie alert! Complete offers and earn for free!|left|
+add_url_button|open_store|`wEarn Free Gems with Xsolla``|noflags|OPENSTORE|main/xsollawall|0|0|
+add_url_button|open_store|`wEarn Free Gems with MyChips``|noflags|OPENSTORE|main/mafwall|0|0|
+add_spacer|small|
+add_textbox|The Growtopia survey for the October Update is still open! By completing the survey, you will receive `22 Growtokens`` if you have Advanced Account Protection enabled. Complete the survey and claim your reward on your mobile device to let us know what you think!|left|
+add_spacer|small|
+add_url_button|survey|`wGive us your opinion!``|noflags|OPENSURVEY||
+add_spacer|small|
+add_textbox|Don't forget to join our `2Official Growtopia Discord Server`` on `2discord.gg/growtopia`` or click the link below!|left|
+add_spacer|small|
+add_image_button|iotm_layout|interface/large/gazette/gazette_3columns_community_btn01.rttex|3imageslayout|OPENCOMMUNITY|community_growtorials/TUTORIAL_DOORS|
+add_image_button|gazette_DiscordServer|interface/large/gazette/gazette_3columns_community_btn04.rttex|3imageslayout|https://discord.gg/growtopia|Would you like to join our Discord Server?|
+add_image_button|gazette_Youtube|interface/large/gazette/gazette_3columns_community_btn03.rttex|3imageslayout|https://tiktok.com/@growtopia|Would you like to open this in TikTok?|
+add_spacer|small|
+add_textbox|Visit our Social Media pages for more Content!|left|
+add_spacer|small|
+add_image_button|gazette_DiscordServer|interface/large/gazette/gazette_5columns_social_btn01.rttex|7imageslayout20|https://discord.gg/growtopia|Would you like to join our Discord Server?|
+add_image_button|gazette_Instagram|interface/large/gazette/gazette_5columns_social_btn02.rttex|7imageslayout20|https://www.instagram.com/growtopia|Would you like to open this in Instagram?|
+add_image_button|gazette_TikTok|interface/large/gazette/gazette_5columns_social_btn03.rttex|7imageslayout20|https://tiktok.com/@growtopia|Would you like to open this in TikTok?|
+add_image_button|gazette_Twitch|interface/large/gazette/gazette_5columns_social_btn04.rttex|7imageslayout20|https://www.twitch.tv/growtopiagameofficial|Would you like to open this in Twitch?|
+add_image_button|gazette_Twitter|interface/large/gazette/gazette_5columns_social_btn06.rttex|7imageslayout20|https://twitter.com/growtopiagame|Would you like to open this in X?|
+add_image_button|gazette_Youtube|interface/large/gazette/gazette_5columns_btn04.rttex|7imageslayout20|https://www.youtube.com/growtopia_official|Would you like to open this in Youtube?|
+add_image_button|gazette_Facebook|interface/large/gazette/gazette_5columns_btn05.rttex|7imageslayout20|https://www.facebook.com/growtopia|Would you like to open this in Facebook?|
+add_spacer|small|
+add_image_button|gazette_PrivacyPolicy|interface/large/gazette/gazette_3columns_policy_btn02.rttex|3imageslayout|https://legal.ubi.com/privacypolicy/en-INTL|Do you want to read the Privacy Policy?|
+add_image_button|gazette_GrowtopianCode|interface/large/gazette/gazette_3columns_policy_btn01.rttex|3imageslayout|https://ubisoft-mobile.helpshift.com/hc/en/26-growtopia/section/337-the-growtopian-code/|Do you want to read the Growtopian Code?|
+add_image_button|gazette_TermsofUse|interface/large/gazette/gazette_3columns_policy_btn03.rttex|3imageslayout|https://legal.ubi.com/termsofuse/en-INTL|Do you want to read the Terms of Use?|
+add_spacer|small|
+add_spacer|small|
+
+add_quick_exit|add_spacer|small|
+add_url_button|gazette_visitforum|`wVisit Growtopia Forums``|noflags|https://www.growtopiagame.com/forums|Visit the Growtopia forums?|0|0|
+add_spacer|small|
+add_url_button||`wWOTD: `1FLOWERYWORLD`` by `#Hildegardes````|NOFLAGS|OPENWORLD|FLOWERYWORLD|0|0|
+add_spacer|small|
+add_url_button||`wVOTW: `1My Growtopia Mural!``|NOFLAGS|https://www.youtube.com/watch?v=k3ePe4-fd2Y|Watch 'My Growtopia Mural!' by ColockGT on YouTube?|0|0|
+set_survey_enabled|1
+end_dialog|gazette||OK|
+"
+[16:05:32.103] #106 S->C ch=0 len=221 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=160
+  Variant: [0](s)="OnNameChanged", [1](s)="`2clo0x``", [2](s)="{"PlayerWorldID":1,"WrenchCustomization":{"WrenchForegroundCanRotate":false,"WrenchForegroundID":-1,"WrenchIconID":-1}}"
+[16:05:32.103] #107 S->C ch=0 len=90 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=29
+  Variant: [0](s)="OnCountryState", [1](s)="us"
+[16:05:32.348] #108 S->C ch=0 len=117 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=56
+  Variant: [0](s)="OnSetFeatureEnableFlags", [1](s)="DAMIEQQMDQkBDgYCDw=="
+[16:05:33.297] #109 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=SPAWN_RELATED float=0 val=0 vec=(1568,1344) vec2=(0,8.28748) rot=0 tile=(-1,-1) extra=0
+[16:05:33.298] [ACTION] Walk ke tile (49,42) [Kanan]
+[16:05:33.437] #110 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=SPAWN_RELATED|STANDING float=0 val=0 vec=(1568,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:33.616] #111 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1568,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:33.837] #112 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1568,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:34.284] #113 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:05:35.712] #114 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:37.942] #115 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(1,0) extra=0
+[16:05:38.924] #116 C->S ch=0 len=25 REL GenericText(2)
+  action|input
+|text|a
+[16:05:38.924] #117 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:39.202] #118 S->C ch=0 len=114 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=53
+  Variant: [0](s)="OnTalkBubble", [1](u)=1, [2](s)="CP:0_PL:0_OID:_a", [3](u)=0
+[16:05:39.202] #119 S->C ch=0 len=140 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=79
+  Variant: [0](s)="OnConsoleMessage", [1](s)="CP:0_PL:0_OID:_CT:[W]_ `6<`2clo0x``>`` `$a``", [2](i)=1
+[16:05:39.309] #120 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(1549,1316) vec2=(-204.004,-425.138) rot=0 tile=(-1,-1) extra=0
+[16:05:39.309] [ACTION] Jump di tile (48,41) pos=(1549,1316)
+[16:05:39.514] #121 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1509,1246) vec2=(-163.203,-198.188) rot=0 tile=(-1,-1) extra=0
+[16:05:39.515] [ACTION] Walk ke tile (47,39) [Kiri]
+[16:05:39.719] #122 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1453,1245) vec2=(-289.6,72.4496) rot=0 tile=(-1,-1) extra=0
+[16:05:39.719] [ACTION] Walk ke tile (45,39) [Kiri]
+[16:05:39.923] #123 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1392,1271) vec2=(-289.6,171.899) rot=0 tile=(-1,-1) extra=0
+[16:05:39.923] [ACTION] Walk ke tile (43,40) [Kiri]
+[16:05:40.127] #124 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1331,1284) vec2=(-310,41.4374) rot=0 tile=(-1,-1) extra=0
+[16:05:40.127] [ACTION] Walk ke tile (41,40) [Kiri]
+[16:05:40.331] #125 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1269,1303) vec2=(-310,140.887) rot=0 tile=(-1,-1) extra=0
+[16:05:40.331] [ACTION] Walk ke tile (39,41) [Kiri]
+[16:05:40.535] #126 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1211,1343) vec2=(-228.398,240.337) rot=0 tile=(-1,-1) extra=0
+[16:05:40.535] [ACTION] Walk ke tile (38,42) [Kiri]
+[16:05:40.739] #127 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1191,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:40.739] [ACTION] Walk ke tile (37,42) [Kiri]
+[16:05:40.943] #128 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1191,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:41.698] #129 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:42.032] #130 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(1,0) extra=0
+[16:05:42.542] #131 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:05:51.710] #132 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:05:53.315] #133 C->S ch=0 len=33 REL GenericText(2)
+  action|input
+|text|/evanchat
+[16:05:53.549] #134 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1186,1346) vec2=(-102.002,0) rot=0 tile=(-1,-1) extra=0
+[16:05:53.753] #135 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1139,1346) vec2=(-289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:05:53.753] [ACTION] Walk ke tile (35,42) [Kiri]
+[16:05:53.958] #136 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1086,1346) vec2=(-161.2,0) rot=0 tile=(-1,-1) extra=0
+[16:05:53.958] [ACTION] Walk ke tile (34,42) [Kiri]
+[16:05:54.161] #137 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1077,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:54.162] [ACTION] Walk ke tile (33,42) [Kiri]
+[16:05:54.366] #138 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1077,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:54.774] #139 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1073,1346) vec2=(-81.6016,0) rot=0 tile=(-1,-1) extra=0
+[16:05:54.978] #140 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1030,1346) vec2=(-310,0) rot=0 tile=(-1,-1) extra=0
+[16:05:54.978] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:05:55.183] #141 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(980,1346) vec2=(-146.797,0) rot=0 tile=(-1,-1) extra=0
+[16:05:55.183] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:05:55.387] #142 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(977,1346) vec2=(98.0078,0) rot=0 tile=(-1,-1) extra=0
+[16:05:55.591] #143 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(980,1296) vec2=(0,-400.275) rot=0 tile=(-1,-1) extra=0
+[16:05:55.591] [ACTION] Jump di tile (30,40) pos=(980,1296)
+[16:05:55.794] #144 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(988,1266) vec2=(142.803,17.9246) rot=0 tile=(-1,-1) extra=0
+[16:05:55.794] [ACTION] Walk ke tile (31,40) [Kanan]
+[16:05:55.998] #145 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1007,1280) vec2=(0,117.374) rot=0 tile=(-1,-1) extra=0
+[16:05:56.201] #146 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1007,1315) vec2=(0,216.824) rot=0 tile=(-1,-1) extra=0
+[16:05:56.202] [ACTION] Walk ke tile (31,41) [Kanan]
+[16:05:56.406] #147 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1007,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:56.406] [ACTION] Walk ke tile (31,42) [Kanan]
+[16:05:56.610] #148 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1007,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:56.648] #149 C->S ch=0 len=25 REL GenericText(2)
+  action|input
+|text|s
+[16:05:56.814] #150 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1008,1346) vec2=(40.8008,0) rot=0 tile=(-1,-1) extra=0
+[16:05:56.931] #151 S->C ch=0 len=138 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=77
+  Variant: [0](s)="OnTalkBubble", [1](u)=1, [2](s)="CP:0_PL:0_OID:_player_chat=[EvanProxy] s", [3](u)=0
+[16:05:56.931] #152 S->C ch=0 len=156 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=95
+  Variant: [0](s)="OnConsoleMessage", [1](s)="CP:0_PL:0_OID:_CT:[W]_ `6<`2clo0x``>`` `$`$[EvanProxy] s````", [2](i)=1
+[16:05:57.018] #153 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(1033,1295) vec2=(81.6016,-400.275) rot=0 tile=(-1,-1) extra=0
+[16:05:57.018] [ACTION] Jump di tile (32,40) pos=(1033,1295)
+[16:05:57.222] #154 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1034,1260) vec2=(0,17.9246) rot=0 tile=(-1,-1) extra=0
+[16:05:57.222] [ACTION] Walk ke tile (32,39) [Kanan]
+[16:05:57.426] #155 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1061,1274) vec2=(244.805,117.374) rot=0 tile=(-1,-1) extra=0
+[16:05:57.426] [ACTION] Walk ke tile (33,40) [Kanan]
+[16:05:57.630] #156 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1107,1309) vec2=(122.402,216.824) rot=0 tile=(-1,-1) extra=0
+[16:05:57.630] [ACTION] Walk ke tile (34,41) [Kanan]
+[16:05:57.834] #157 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1112,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:57.834] [ACTION] Walk ke tile (35,42) [Kanan]
+[16:05:58.038] #158 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1138,1346) vec2=(204.004,0) rot=0 tile=(-1,-1) extra=0
+[16:05:58.242] #159 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1154,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:05:58.242] [ACTION] Walk ke tile (36,42) [Kanan]
+[16:05:58.446] #160 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1154,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:01.088] #161 C->S ch=0 len=33 REL GenericText(2)
+  action|input
+|text|/evanchat
+[16:06:01.694] #162 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:02.325] #163 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1152,1346) vec2=(-61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:06:02.529] #164 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1116,1346) vec2=(-183.604,0) rot=0 tile=(-1,-1) extra=0
+[16:06:02.529] [ACTION] Walk ke tile (35,42) [Kiri]
+[16:06:02.733] #165 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1104,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:02.733] [ACTION] Walk ke tile (34,42) [Kiri]
+[16:06:02.937] #166 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1104,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:07.190] #167 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/evantag
+[16:06:09.941] #168 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(1,0) extra=0
+[16:06:09.996] #169 C->S ch=0 len=25 REL GenericText(2)
+  action|input
+|text|s
+[16:06:09.996] #170 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:06:10.276] #171 S->C ch=0 len=114 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=53
+  Variant: [0](s)="OnTalkBubble", [1](u)=1, [2](s)="CP:0_PL:0_OID:_s", [3](u)=0
+[16:06:10.276] #172 S->C ch=0 len=140 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=79
+  Variant: [0](s)="OnConsoleMessage", [1](s)="CP:0_PL:0_OID:_CT:[W]_ `6<`2clo0x``>`` `$s``", [2](i)=1
+[16:06:10.281] #173 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1102,1346) vec2=(-61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:06:10.485] #174 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1062,1346) vec2=(-306.006,0) rot=0 tile=(-1,-1) extra=0
+[16:06:10.485] [ACTION] Walk ke tile (33,42) [Kiri]
+[16:06:10.689] #175 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1009,1346) vec2=(-167.197,0) rot=0 tile=(-1,-1) extra=0
+[16:06:10.689] [ACTION] Walk ke tile (31,42) [Kanan]
+[16:06:10.893] #176 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(995,1276) vec2=(-85.5957,-343.538) rot=0 tile=(-1,-1) extra=0
+[16:06:10.893] [ACTION] Jump di tile (31,40) pos=(995,1276)
+[16:06:11.097] #177 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(952,1256) vec2=(-289.6,42.787) rot=0 tile=(-1,-1) extra=0
+[16:06:11.097] [ACTION] Walk ke tile (30,39) [Kiri]
+[16:06:11.301] #178 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(904,1276) vec2=(-126.396,142.237) rot=0 tile=(-1,-1) extra=0
+[16:06:11.301] [ACTION] Walk ke tile (28,40) [Kiri]
+[16:06:11.504] #179 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(904,1316) vec2=(102.002,241.686) rot=0 tile=(-1,-1) extra=0
+[16:06:11.505] [ACTION] Walk ke tile (28,41) [Kanan]
+[16:06:11.692] #180 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:11.709] #181 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(945,1346) vec2=(183.604,0) rot=0 tile=(-1,-1) extra=0
+[16:06:11.709] [ACTION] Walk ke tile (29,42) [Kanan]
+[16:06:11.913] #182 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(957,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:11.913] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:06:12.117] #183 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(957,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:18.552] #184 C->S ch=0 len=37 REL GenericText(2)
+  action|tutorialTaskPhoneClicked
+
+[16:06:18.837] #185 S->C ch=0 len=649 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=588
+  Variant: [0](s)="OnDialogRequest", [1](s)="set_default_color|`o
+add_label_with_icon|big|`wCrazy Jim's Quest Emporium``|left|3902|
+embed_data|tilex|30
+embed_data|tiley|42
+embed_data|num|12345
+add_popup_name|Telephone12345|
+embed_data|remote|1
+add_textbox|HEEEEYYY there Growtopian! I'm Crazy Jim, and my quests are so crazy they're KERRRRAAAAZZY!! And that is clearly very crazy, so please, be cautious around them. What can I do ya for, partner?|left|
+add_button|chc0|Daily Quest|noflags|0|0|1
+add_button|chc1|Goals|noflags|0|0|1
+add_button|chc2|Epic Quests|noflags|0|0|0
+end_dialog|phonecall|Hang Up||
+"
+[16:06:18.857] #186 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:06:19.961] #187 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:06:21.693] #188 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:31.694] #189 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:37.391] #190 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/proxy
+[16:06:37.423] #191 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:06:40.442] #192 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:06:40.442] #193 C->S ch=0 len=84 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_home
+buttonClicked|nav_go_commands
+
+
+[16:06:40.479] #194 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:06:41.696] #195 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:51.693] #196 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:06:53.329] #197 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:06:53.329] #198 C->S ch=0 len=57 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_commands
+
+[16:06:56.652] #199 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/overlay
+[16:06:57.157] #200 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(957,1346) vec2=(-20.4004,0) rot=0 tile=(-1,-1) extra=0
+[16:06:57.361] #201 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(926,1346) vec2=(-224.404,0) rot=0 tile=(-1,-1) extra=0
+[16:06:57.361] [ACTION] Walk ke tile (29,42) [Kiri]
+[16:06:57.565] #202 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(908,1346) vec2=(21.5996,0) rot=0 tile=(-1,-1) extra=0
+[16:06:57.565] [ACTION] Walk ke tile (28,42) [Kanan]
+[16:06:57.770] #203 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(913,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:06:57.975] #204 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(913,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:01.692] #205 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:02.203] #206 C->S ch=0 len=34 REL GenericText(2)
+  action|input
+|text|/overlay a
+[16:07:02.467] #207 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(911,1346) vec2=(-61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:07:02.671] #208 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(874,1346) vec2=(-224.404,0) rot=0 tile=(-1,-1) extra=0
+[16:07:02.671] [ACTION] Walk ke tile (27,42) [Kiri]
+[16:07:02.875] #209 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(855,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:03.113] #210 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(855,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:04.908] #211 C->S ch=0 len=25 REL GenericText(2)
+  action|input
+|text|s
+[16:07:05.123] #212 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(857,1346) vec2=(61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:07:05.189] #213 S->C ch=0 len=114 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=53
+  Variant: [0](s)="OnTalkBubble", [1](u)=1, [2](s)="CP:0_PL:0_OID:_s", [3](u)=0
+[16:07:05.189] #214 S->C ch=0 len=140 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=79
+  Variant: [0](s)="OnConsoleMessage", [1](s)="CP:0_PL:0_OID:_CT:[W]_ `6<`2clo0x``>`` `$s``", [2](i)=1
+[16:07:05.327] #215 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(889,1346) vec2=(142.803,0) rot=0 tile=(-1,-1) extra=0
+[16:07:05.327] [ACTION] Walk ke tile (28,42) [Kanan]
+[16:07:05.531] #216 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(893,1272) vec2=(-81.6016,-271.5) rot=0 tile=(-1,-1) extra=0
+[16:07:05.531] [ACTION] Jump di tile (28,40) pos=(893,1272)
+[16:07:05.735] #217 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(860,1262) vec2=(-122.402,51.0745) rot=0 tile=(-1,-1) extra=0
+[16:07:05.735] [ACTION] Walk ke tile (27,39) [Kiri]
+[16:07:05.941] #218 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(862,1284) vec2=(122.402,150.524) rot=0 tile=(-1,-1) extra=0
+[16:07:05.941] [ACTION] Walk ke tile (27,40) [Kanan]
+[16:07:06.145] #219 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(867,1327) vec2=(0,252.412) rot=0 tile=(-1,-1) extra=0
+[16:07:06.145] [ACTION] Walk ke tile (27,41) [Kanan]
+[16:07:06.349] #220 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(867,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:06.349] [ACTION] Walk ke tile (27,42) [Kanan]
+[16:07:06.553] #221 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(867,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:11.543] #222 C->S ch=0 len=34 REL GenericText(2)
+  action|input
+|text|/overlay a
+[16:07:11.694] #223 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:12.064] #224 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(860,1346) vec2=(-122.402,0) rot=0 tile=(-1,-1) extra=0
+[16:07:12.268] #225 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(810,1309) vec2=(-310,-416.85) rot=0 tile=(-1,-1) extra=0
+[16:07:12.268] [ACTION] Jump di tile (25,41) pos=(810,1309)
+[16:07:12.676] #226 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(773,1260) vec2=(0,100.799) rot=0 tile=(-1,-1) extra=0
+[16:07:12.676] [ACTION] Walk ke tile (24,39) [Kanan]
+[16:07:12.880] #227 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(773,1292) vec2=(0,200.249) rot=0 tile=(-1,-1) extra=0
+[16:07:12.880] [ACTION] Walk ke tile (24,40) [Kanan]
+[16:07:13.084] #228 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(773,1343) vec2=(0,299.699) rot=0 tile=(-1,-1) extra=0
+[16:07:13.084] [ACTION] Walk ke tile (24,42) [Kanan]
+[16:07:13.288] #229 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(773,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:13.492] #230 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(773,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:15.912] #231 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/proxy
+[16:07:15.943] #232 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:17.172] #233 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:17.172] #234 C->S ch=0 len=84 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_home
+buttonClicked|nav_go_commands
+
+
+[16:07:17.240] #235 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:21.693] #236 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:31.699] #237 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:31.827] #238 S->C ch=0 len=61 REL GamePacket(4) -> PingRequest(22) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=93 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:31.835] #239 C->S ch=0 len=61 REL GamePacket(4) -> PingReply(21) obj=0 jump=0 anim=0 net=2 target=1431657640 flags=NONE float=0 val=143685 vec=(64,96) vec2=(1300,310) rot=0 tile=(0,0) extra=0
+[16:07:31.904] #240 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:35.138] #241 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/players
+[16:07:35.168] #242 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:37.751] #243 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:37.751] #244 C->S ch=0 len=84 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_players
+buttonClicked|nav_go_tools
+
+
+[16:07:37.787] #245 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:40.064] #246 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:40.698] #247 S->C ch=0 len=146 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=85
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`4Sgt. Stuffins``' Anger is at 85%!!! Keep up the fight!"
+[16:07:41.693] #248 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:42.434] #249 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/owner
+[16:07:43.534] #250 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(782,1346) vec2=(142.803,0) rot=0 tile=(-1,-1) extra=0
+[16:07:43.738] #251 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(835,1346) vec2=(289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:07:43.738] [ACTION] Walk ke tile (26,42) [Kanan]
+[16:07:43.942] #252 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(896,1346) vec2=(288.4,0) rot=0 tile=(-1,-1) extra=0
+[16:07:43.942] [ACTION] Walk ke tile (28,42) [Kanan]
+[16:07:44.164] #253 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(963,1346) vec2=(310,0) rot=0 tile=(-1,-1) extra=0
+[16:07:44.164] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:07:44.367] #254 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(1027,1338) vec2=(310,-450) rot=0 tile=(-1,-1) extra=0
+[16:07:44.367] [ACTION] Jump di tile (32,42) pos=(1027,1338)
+[16:07:44.571] #255 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1071,1265) vec2=(105.996,-191.175) rot=0 tile=(-1,-1) extra=0
+[16:07:44.571] [ACTION] Walk ke tile (33,40) [Kiri]
+[16:07:44.775] #256 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1103,1264) vec2=(269.199,67.6494) rot=0 tile=(-1,-1) extra=0
+[16:07:44.775] [ACTION] Walk ke tile (34,39) [Kanan]
+[16:07:44.979] #257 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1164,1289) vec2=(310,167.099) rot=0 tile=(-1,-1) extra=0
+[16:07:44.979] [ACTION] Walk ke tile (36,40) [Kanan]
+[16:07:45.184] #258 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1226,1334) vec2=(310,266.549) rot=0 tile=(-1,-1) extra=0
+[16:07:45.184] [ACTION] Walk ke tile (38,42) [Kanan]
+[16:07:45.398] #259 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(1276,1338) vec2=(143.199,-450) rot=0 tile=(-1,-1) extra=0
+[16:07:45.398] [ACTION] Jump di tile (40,42) pos=(1276,1338)
+[16:07:45.592] #260 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1279,1263) vec2=(-93.1982,-256.462) rot=0 tile=(-1,-1) extra=0
+[16:07:45.592] [ACTION] Walk ke tile (40,39) [Kiri]
+[16:07:45.797] #261 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1232,1258) vec2=(-289.6,82.6501) rot=0 tile=(-1,-1) extra=0
+[16:07:45.797] [ACTION] Walk ke tile (38,39) [Kiri]
+[16:07:46.001] #262 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1170,1286) vec2=(-289.6,182.1) rot=0 tile=(-1,-1) extra=0
+[16:07:46.001] [ACTION] Walk ke tile (36,40) [Kiri]
+[16:07:46.209] #263 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1117,1334) vec2=(-165.998,282.037) rot=0 tile=(-1,-1) extra=0
+[16:07:46.209] [ACTION] Walk ke tile (35,42) [Kiri]
+[16:07:46.423] #264 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1107,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:46.423] [ACTION] Walk ke tile (34,42) [Kiri]
+[16:07:46.626] #265 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1107,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:07:49.258] #266 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/title
+[16:07:49.298] #267 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:51.695] #268 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:07:52.180] #269 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:52.180] #270 C->S ch=0 len=86 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_master
+
+
+[16:07:52.227] #271 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:07:54.017] #272 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:07:54.017] #273 C->S ch=0 len=83 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_g4g
+
+
+[16:07:54.070] #274 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:01.699] #275 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:03.161] #276 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:03.162] #277 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_developer
+
+
+[16:08:03.211] #278 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:07.370] #279 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:07.370] #280 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_developer
+
+
+[16:08:07.407] #281 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:09.376] #282 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:09.376] #283 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_moderator
+
+
+[16:08:09.414] #284 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:11.695] #285 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:12.658] #286 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:12.658] #287 C->S ch=0 len=91 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_anniversary
+
+
+[16:08:12.695] #288 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:17.390] #289 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:17.390] #290 C->S ch=0 len=83 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_g4g
+
+
+[16:08:17.427] #291 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:18.535] #292 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:20.256] #293 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1091,1346) vec2=(-187.201,0) rot=0 tile=(-1,-1) extra=0
+[16:08:20.460] #294 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1035,1346) vec2=(-289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:08:20.460] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:08:20.664] #295 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(973,1346) vec2=(-289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:08:20.664] [ACTION] Walk ke tile (30,42) [Kiri]
+[16:08:20.868] #296 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(916,1346) vec2=(-207.998,0) rot=0 tile=(-1,-1) extra=0
+[16:08:20.868] [ACTION] Walk ke tile (28,42) [Kiri]
+[16:08:21.072] #297 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(901,1273) vec2=(36.8066,-271.5) rot=0 tile=(-1,-1) extra=0
+[16:08:21.072] [ACTION] Jump di tile (28,40) pos=(901,1273)
+[16:08:21.276] #298 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(921,1263) vec2=(36.8066,51.0745) rot=0 tile=(-1,-1) extra=0
+[16:08:21.276] [ACTION] Walk ke tile (29,39) [Kanan]
+[16:08:21.480] #299 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(921,1284) vec2=(0,150.524) rot=0 tile=(-1,-1) extra=0
+[16:08:21.480] [ACTION] Walk ke tile (29,40) [Kanan]
+[16:08:21.684] #300 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(946,1326) vec2=(163.203,249.974) rot=0 tile=(-1,-1) extra=0
+[16:08:21.685] [ACTION] Walk ke tile (29,41) [Kanan]
+[16:08:21.702] #301 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:21.890] #302 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(956,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:21.890] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:08:22.094] #303 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(956,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:22.502] #304 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(956,1346) vec2=(20.4004,0) rot=0 tile=(-1,-1) extra=0
+[16:08:22.706] #305 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(987,1346) vec2=(265.205,0) rot=0 tile=(-1,-1) extra=0
+[16:08:22.706] [ACTION] Walk ke tile (31,42) [Kanan]
+[16:08:22.910] #306 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1040,1346) vec2=(167.197,0) rot=0 tile=(-1,-1) extra=0
+[16:08:22.910] [ACTION] Walk ke tile (32,42) [Kanan]
+[16:08:23.114] #307 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1050,1346) vec2=(-20.4004,0) rot=0 tile=(-1,-1) extra=0
+[16:08:23.114] [ACTION] Walk ke tile (33,42) [Kiri]
+[16:08:23.318] #308 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1026,1346) vec2=(-102.002,0) rot=0 tile=(-1,-1) extra=0
+[16:08:23.318] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:08:23.522] #309 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1022,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:23.726] #310 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1020,1346) vec2=(-61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:08:23.930] #311 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1010,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:23.930] [ACTION] Walk ke tile (31,42) [Kiri]
+[16:08:24.134] #312 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1028,1346) vec2=(102.002,0) rot=0 tile=(-1,-1) extra=0
+[16:08:24.134] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:08:24.338] #313 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(1031,1289) vec2=(40.8008,-391.988) rot=0 tile=(-1,-1) extra=0
+[16:08:24.338] [ACTION] Jump di tile (32,40) pos=(1031,1289)
+[16:08:24.542] #314 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1042,1255) vec2=(-40.8008,26.212) rot=0 tile=(-1,-1) extra=0
+[16:08:24.542] [ACTION] Walk ke tile (32,39) [Kiri]
+[16:08:24.746] #315 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1034,1272) vec2=(0,125.662) rot=0 tile=(-1,-1) extra=0
+[16:08:24.746] [ACTION] Walk ke tile (32,40) [Kiri]
+[16:08:24.950] #316 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1034,1308) vec2=(0,225.111) rot=0 tile=(-1,-1) extra=0
+[16:08:24.950] [ACTION] Walk ke tile (32,41) [Kiri]
+[16:08:25.154] #317 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1034,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:25.154] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:08:25.358] #318 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1034,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:08:28.608] #319 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/title
+[16:08:28.638] #320 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:28.687] #321 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:31.089] #322 C->S ch=0 len=91 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_anniversary
+
+
+[16:08:31.126] #323 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:31.699] #324 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:34.831] #325 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:34.831] #326 C->S ch=0 len=92 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_thanksgiving
+
+
+[16:08:34.867] #327 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:36.286] #328 S->C ch=0 len=219 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=158
+  Variant: [0](s)="OnConsoleMessage", [1](s)="CP:0_PL:4_OID:_CT:[SB]_ `5** from (`2juneyaar`````5) in [```$JUNEYAR```5] ** : ```$sell DISPLAY BLOCK 1 EACH have 9K at JUNEYAR``"
+[16:08:36.286] #329 S->C ch=0 len=50 REL GameMessage(3)
+  action|play_sfx
+file|audio/beep.wav
+delayMS|0
+[16:08:37.408] #330 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:37.408] #331 C->S ch=0 len=92 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_thanksgiving
+
+
+[16:08:37.443] #332 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:39.789] #333 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:39.789] #334 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_growroyal
+
+
+[16:08:39.827] #335 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:41.694] #336 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:42.594] #337 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:42.594] #338 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_growroyal
+
+
+[16:08:42.631] #339 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:44.753] #340 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:44.753] #341 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_legendary
+
+
+[16:08:44.795] #342 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:48.800] #343 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:48.800] #344 C->S ch=0 len=86 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_doctor
+
+
+[16:08:48.837] #345 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:50.620] #346 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:50.620] #347 C->S ch=0 len=83 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_g4g
+
+
+[16:08:50.657] #348 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:51.700] #349 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:08:52.746] #350 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:52.746] #351 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_legendary
+
+
+[16:08:52.784] #352 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:55.382] #353 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:55.382] #354 C->S ch=0 len=91 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_royalwinter
+
+
+[16:08:55.420] #355 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:58.015] #356 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:58.015] #357 C->S ch=0 len=91 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_royalwinter
+
+
+[16:08:58.053] #358 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:08:59.224] #359 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:08:59.225] #360 C->S ch=0 len=86 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_doctor
+
+
+[16:08:59.261] #361 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:01.282] #362 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:01.282] #363 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_moderator
+
+
+[16:09:01.320] #364 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:01.699] #365 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:04.053] #366 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:04.053] #367 C->S ch=0 len=92 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_thanksgiving
+
+
+[16:09:04.091] #368 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:06.808] #369 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:06.808] #370 C->S ch=0 len=92 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_thanksgiving
+
+
+[16:09:06.844] #371 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:08.918] #372 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:08.918] #373 C->S ch=0 len=86 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_doctor
+
+
+[16:09:08.955] #374 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:11.009] #375 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:11.009] #376 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_legendary
+
+
+[16:09:11.046] #377 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:11.699] #378 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:17.255] #379 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:17.255] #380 C->S ch=0 len=88 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_maxlevel
+
+
+[16:09:17.292] #381 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:19.810] #382 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:19.810] #383 C->S ch=0 len=83 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|nav_go_visual
+
+
+[16:09:19.849] #384 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:21.699] #385 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:22.686] #386 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:25.961] #387 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/clothes
+[16:09:25.991] #388 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:26.141] #389 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:31.697] #390 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:31.833] #391 S->C ch=0 len=61 REL GamePacket(4) -> PingRequest(22) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1084 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:31.845] #392 C->S ch=0 len=61 REL GamePacket(4) -> PingReply(21) obj=0 jump=0 anim=0 net=2 target=1433312393 flags=NONE float=0 val=263793 vec=(64,96) vec2=(1300,310) rot=0 tile=(0,0) extra=0
+[16:09:33.049] #393 C->S ch=0 len=85 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_clothes
+clothes_search_input|legends
+
+[16:09:34.258] #394 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1033,1346) vec2=(-40.8008,0) rot=0 tile=(-1,-1) extra=0
+[16:09:34.461] #395 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(998,1346) vec2=(-210,0) rot=0 tile=(-1,-1) extra=0
+[16:09:34.461] [ACTION] Walk ke tile (31,42) [Kiri]
+[16:09:34.666] #396 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(982,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:09:34.869] #397 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(982,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:09:38.841] #398 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/legends
+[16:09:39.123] #399 S->C ch=0 len=33 REL GameMessage(3)
+  action|log
+msg| `6/legends``
+[16:09:39.123] #400 S->C ch=0 len=84 REL GameMessage(3)
+  action|log
+msg|`4Unknown command.``  Enter `$/?`` for a list of valid commands.
+[16:09:39.974] #401 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(974,1346) vec2=(-123.602,0) rot=0 tile=(-1,-1) extra=0
+[16:09:39.974] [ACTION] Walk ke tile (30,42) [Kiri]
+[16:09:40.178] #402 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(959,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:09:40.382] #403 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(959,1281) vec2=(0,-247.913) rot=0 tile=(-1,-1) extra=0
+[16:09:40.382] [ACTION] Jump di tile (30,40) pos=(959,1281)
+[16:09:40.587] #404 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(959,1276) vec2=(0,74.662) rot=0 tile=(-1,-1) extra=0
+[16:09:40.791] #405 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(959,1302) vec2=(0,174.599) rot=0 tile=(-1,-1) extra=0
+[16:09:40.791] [ACTION] Walk ke tile (30,41) [Kanan]
+[16:09:40.995] #406 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(959,1346) vec2=(0,274.049) rot=0 tile=(-1,-1) extra=0
+[16:09:40.995] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:09:41.199] #407 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(959,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:09:41.403] #408 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(959,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:09:41.712] #409 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:42.916] #410 C->S ch=0 len=31 REL GenericText(2)
+  action|input
+|text|/search
+[16:09:42.949] #411 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:49.286] #412 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:49.286] #413 C->S ch=0 len=84 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_search
+search_query_input|legendary
+
+[16:09:51.697] #414 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:09:53.905] #415 C->S ch=0 len=31 REL GenericText(2)
+  action|input
+|text|/search
+[16:09:53.942] #416 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:09:57.428] #417 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:09:57.428] #418 C->S ch=0 len=112 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_search
+buttonClicked|btn_search_go
+
+search_query_input|legenday
+
+[16:09:57.463] #419 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:00.334] #420 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:00.334] #421 C->S ch=0 len=83 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_search
+search_query_input|legenday
+
+[16:10:01.698] #422 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:04.713] #423 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(952,1346) vec2=(-123.602,0) rot=0 tile=(-1,-1) extra=0
+[16:10:04.924] #424 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(930,1346) vec2=(-3.59766,0) rot=0 tile=(-1,-1) extra=0
+[16:10:04.924] [ACTION] Walk ke tile (29,42) [Kanan]
+[16:10:05.123] #425 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(943,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:10:05.327] #426 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(943,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:10:06.783] #427 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/proxy
+[16:10:06.813] #428 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:08.274] #429 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:11.699] #430 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:14.692] #431 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/title
+[16:10:14.724] #432 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:14.753] #433 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:18.357] #434 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_moderator
+
+
+[16:10:18.398] #435 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:21.134] #436 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:21.134] #437 C->S ch=0 len=89 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_title
+buttonClicked|title_tog_developer
+
+
+[16:10:21.179] #438 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:21.701] #439 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:22.254] #440 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:30.933] #441 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(966,1346) vec2=(224.404,0) rot=0 tile=(-1,-1) extra=0
+[16:10:30.933] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:10:30.949] #442 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(970,1346) vec2=(244.805,0) rot=0 tile=(31,42) extra=0
+[16:10:30.949] [ACTION] Punch/Click tile (31,42)
+[16:10:31.154] #443 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1030,1346) vec2=(289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:10:31.154] [ACTION] Walk ke tile (32,42) [Kanan]
+[16:10:31.222] #444 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=18 vec=(1047,1346) vec2=(0,0) rot=0 tile=(32,43) extra=0
+[16:10:31.222] [ACTION] Punch blok di tile (32,43)
+[16:10:31.239] #445 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(1050,1346) vec2=(187.598,0) rot=0 tile=(32,43) extra=0
+[16:10:31.239] [ACTION] Punch/Click tile (32,43)
+[16:10:31.442] #446 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1061,1346) vec2=(-57.207,0) rot=0 tile=(-1,-1) extra=0
+[16:10:31.503] #447 S->C ch=0 len=61 REL GamePacket(4) -> TileApplyDamage(8) obj=0 jump=0 anim=0 net=1 target=98 flags=FACING_LEFT float=0 val=8 vec=(1047,1346) vec2=(0,0) rot=0 tile=(32,43) extra=0
+[16:10:31.646] #448 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1022,1346) vec2=(-302.012,0) rot=0 tile=(-1,-1) extra=0
+[16:10:31.646] [ACTION] Walk ke tile (32,42) [Kiri]
+[16:10:31.696] #449 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:31.850] #450 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(961,1346) vec2=(-289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:10:31.850] [ACTION] Walk ke tile (30,42) [Kiri]
+[16:10:32.054] #451 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|JUMP float=0 val=0 vec=(914,1272) vec2=(-126.396,-199.463) rot=0 tile=(-1,-1) extra=0
+[16:10:32.054] [ACTION] Jump di tile (28,40) pos=(914,1272)
+[16:10:32.258] #452 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(908,1269) vec2=(0,59.3619) rot=0 tile=(-1,-1) extra=0
+[16:10:32.462] #453 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(908,1292) vec2=(0,158.812) rot=0 tile=(-1,-1) extra=0
+[16:10:32.668] #454 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(908,1336) vec2=(0,259.236) rot=0 tile=(-1,-1) extra=0
+[16:10:32.668] [ACTION] Walk ke tile (28,42) [Kiri]
+[16:10:32.872] #455 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(908,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:10:33.076] #456 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(908,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:10:39.509] #457 C->S ch=0 len=32 REL GenericText(2)
+  action|input
+|text|/clothes
+[16:10:39.540] #458 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:39.588] #459 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:41.696] #460 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:42.955] #461 C->S ch=0 len=86 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_clothes
+clothes_search_input|legenday
+
+[16:10:46.415] #462 C->S ch=0 len=29 REL GenericText(2)
+  action|input
+|text|/help
+[16:10:46.692] #463 S->C ch=0 len=30 REL GameMessage(3)
+  action|log
+msg| `6/help``
+[16:10:46.692] #464 S->C ch=0 len=541 REL GameMessage(3)
+  action|log
+msg|>> Commands: /msg /status /broadcast /sb /cb /sdb /stats /top /ignore /time /who /me /radio /mods /uba /r /go /rgo /pull /kick /ban /wave /dance /love /sleep /facepalm /fp /smh /yes /no /renderworld /omg  /idk /shrug /trade /pb /furious /rolleyes /unaccess /report /rate /redeemcode /foldarms /fa /stubborn /fold /fc /secureaccount /gc /gwarp /guild /roles /fav /fav list /favorite list /favlist /home /sethome /gethome /dab /sassy /dance2 /march /favrm /grumpy /shy /discord /growpass /hideui /respawn /tradescan /dance3
+[16:10:51.381] #465 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/proxy
+[16:10:51.413] #466 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:10:51.700] #467 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:10:52.768] #468 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:10:52.768] #469 C->S ch=0 len=84 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_home
+buttonClicked|nav_go_commands
+
+
+[16:10:52.804] #470 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:11:01.699] #471 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:08.394] #472 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:08.394] #473 C->S ch=0 len=57 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_commands
+
+[16:11:11.696] #474 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:12.024] #475 C->S ch=0 len=30 REL GenericText(2)
+  action|input
+|text|/proxy
+[16:11:12.053] #476 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:11:19.587] #477 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:19.587] #478 C->S ch=0 len=85 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_home
+buttonClicked|home_tog_verbose
+
+
+[16:11:19.624] #479 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:11:21.705] #480 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:23.939] #481 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:27.479] #482 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=496 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:27.480] [ACTION] Use/Equip item #496
+[16:11:28.639] #483 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=496 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:28.640] [ACTION] Use/Equip item #496
+[16:11:30.037] #484 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=98 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:30.038] [ACTION] Use/Equip item #98
+[16:11:30.839] #485 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=98 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:30.840] [ACTION] Use/Equip item #98
+[16:11:31.698] #486 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:31.832] #487 S->C ch=0 len=61 REL GamePacket(4) -> PingRequest(22) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=629 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:31.848] #488 C->S ch=0 len=61 REL GamePacket(4) -> PingReply(21) obj=0 jump=0 anim=0 net=2 target=-1431598813 flags=NONE float=0 val=383947 vec=(64,96) vec2=(1300,310) rot=0 tile=(0,0) extra=0
+[16:11:32.800] #489 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=15188 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:32.801] [ACTION] Use/Equip item #15188
+[16:11:33.519] #490 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=15188 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:33.520] [ACTION] Use/Equip item #15188
+[16:11:34.490] #491 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1846 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:34.491] [ACTION] Use/Equip item #1846
+[16:11:35.412] #492 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1846 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:35.413] [ACTION] Use/Equip item #1846
+[16:11:36.154] #493 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1846 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:36.155] [ACTION] Use/Equip item #1846
+[16:11:37.031] #494 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=40 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:37.032] [ACTION] Use/Equip item #40
+[16:11:38.060] #495 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=40 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:38.061] [ACTION] Use/Equip item #40
+[16:11:38.935] #496 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=1846 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:38.936] [ACTION] Use/Equip item #1846
+[16:11:39.902] #497 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=15612 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:39.902] [ACTION] Use/Equip item #15612
+[16:11:41.702] #498 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:42.602] #499 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=4772 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:42.602] [ACTION] Use/Equip item #4772
+[16:11:43.377] #500 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=4772 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:43.377] [ACTION] Use/Equip item #4772
+[16:11:44.581] #501 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=8594 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:44.582] [ACTION] Use/Equip item #8594
+[16:11:45.344] #502 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=8594 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:45.345] [ACTION] Use/Equip item #8594
+[16:11:48.359] #503 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(918,1346) vec2=(142.803,0) rot=0 tile=(-1,-1) extra=0
+[16:11:48.360] [ACTION] Walk ke tile (29,42) [Kanan]
+[16:11:48.563] #504 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(949,1346) vec2=(61.2012,0) rot=0 tile=(-1,-1) extra=0
+[16:11:48.767] #505 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:48.767] [ACTION] Walk ke tile (30,42) [Kanan]
+[16:11:48.971] #506 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:49.023] #507 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=18 vec=(950,1346) vec2=(0,0) rot=0 tile=(30,43) extra=0
+[16:11:49.024] [ACTION] Punch blok di tile (30,43)
+[16:11:49.039] #508 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(30,43) extra=0
+[16:11:49.039] [ACTION] Punch/Click tile (30,43)
+[16:11:49.243] #509 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:49.302] #510 S->C ch=0 len=61 REL GamePacket(4) -> TileApplyDamage(8) obj=0 jump=0 anim=0 net=1 target=98 flags=NONE float=0 val=8 vec=(950,1346) vec2=(0,0) rot=0 tile=(30,43) extra=0
+[16:11:49.447] #511 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:51.347] #512 C->S ch=0 len=31 REL GenericText(2)
+  action|input
+|text|/search
+[16:11:51.379] #513 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:11:51.696] #514 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:11:53.650] #515 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:53.652] #516 C->S ch=0 len=102 REL GenericText(2)
+  action|dialog_return
+dialog_name|evanproxy_search
+buttonClicked|vpick_11556
+
+search_query_input|
+
+[16:11:53.689] #517 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:11:55.935] #518 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:11:56.976] #519 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(31,44) extra=0
+[16:11:56.976] [ACTION] Punch/Click tile (31,44)
+[16:11:57.179] #520 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:57.384] #521 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(950,1346) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:11:58.703] #522 S->C ch=0 len=146 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=85
+  Variant: [0](s)="OnConsoleMessage", [1](s)="`4Sgt. Stuffins``' Anger is at 90%!!! Keep up the fight!"
+[16:12:00.343] #523 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=11556 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:00.343] [ACTION] Use/Equip item #11556
+[16:12:01.271] #524 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=11556 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:01.272] [ACTION] Use/Equip item #11556
+[16:12:01.704] #525 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:12:03.018] #526 C->S ch=0 len=61 REL GamePacket(4) -> ItemActivateRequest(10) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=11556 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:03.019] [ACTION] Use/Equip item #11556
+[16:12:04.578] #527 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(954,1346) vec2=(81.6016,0) rot=0 tile=(-1,-1) extra=0
+[16:12:04.783] #528 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(997,1346) vec2=(310,0) rot=0 tile=(-1,-1) extra=0
+[16:12:04.783] [ACTION] Walk ke tile (31,42) [Kanan]
+[16:12:04.783] #529 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=18 vec=(997,1346) vec2=(0,0) rot=0 tile=(32,43) extra=0
+[16:12:04.784] [ACTION] Punch blok di tile (32,43)
+[16:12:04.798] #530 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(1002,1346) vec2=(289.6,0) rot=0 tile=(32,43) extra=0
+[16:12:04.799] [ACTION] Punch/Click tile (32,43)
+[16:12:05.003] #531 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1063,1346) vec2=(289.6,0) rot=0 tile=(-1,-1) extra=0
+[16:12:05.004] [ACTION] Walk ke tile (33,42) [Kanan]
+[16:12:05.064] #532 S->C ch=0 len=61 REL GamePacket(4) -> TileApplyDamage(8) obj=0 jump=0 anim=0 net=1 target=98 flags=NONE float=0 val=8 vec=(997,1346) vec2=(0,0) rot=0 tile=(32,43) extra=0
+[16:12:05.207] #533 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(1120,1282) vec2=(207.998,-383.7) rot=0 tile=(-1,-1) extra=0
+[16:12:05.208] [ACTION] Jump di tile (35,40) pos=(1120,1282)
+[16:12:05.411] #534 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1150,1244) vec2=(207.998,34.4995) rot=0 tile=(-1,-1) extra=0
+[16:12:05.412] [ACTION] Walk ke tile (36,39) [Kanan]
+[16:12:05.615] #535 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1208,1262) vec2=(289.6,133.949) rot=0 tile=(-1,-1) extra=0
+[16:12:05.615] [ACTION] Walk ke tile (38,39) [Kanan]
+[16:12:05.818] #536 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1249,1301) vec2=(85.5957,233.399) rot=0 tile=(-1,-1) extra=0
+[16:12:05.819] [ACTION] Walk ke tile (39,41) [Kanan]
+[16:12:06.023] #537 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1258,1346) vec2=(122.402,0) rot=0 tile=(-1,-1) extra=0
+[16:12:06.024] [ACTION] Walk ke tile (39,42) [Kanan]
+[16:12:06.227] #538 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1285,1346) vec2=(40.8008,0) rot=0 tile=(-1,-1) extra=0
+[16:12:06.227] [ACTION] Walk ke tile (40,42) [Kanan]
+[16:12:06.635] #539 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1331,1263) vec2=(163.203,-151.013) rot=0 tile=(-1,-1) extra=0
+[16:12:06.636] [ACTION] Walk ke tile (41,39) [Kanan]
+[16:12:06.839] #540 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1386,1266) vec2=(310,75.9369) rot=0 tile=(-1,-1) extra=0
+[16:12:06.839] [ACTION] Walk ke tile (43,40) [Kanan]
+[16:12:07.043] #541 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1444,1282) vec2=(228.398,0) rot=0 tile=(-1,-1) extra=0
+[16:12:07.044] [ACTION] Walk ke tile (45,40) [Kanan]
+[16:12:07.249] #542 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1464,1282) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:07.250] [ACTION] Walk ke tile (46,40) [Kanan]
+[16:12:07.454] #543 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1471,1282) vec2=(122.402,0) rot=0 tile=(-1,-1) extra=0
+[16:12:07.657] #544 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=JUMP float=0 val=0 vec=(1517,1238) vec2=(204.004,-408.563) rot=0 tile=(-1,-1) extra=0
+[16:12:07.658] [ACTION] Jump di tile (47,39) pos=(1517,1238)
+[16:12:07.862] #545 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1546,1201) vec2=(204.004,9.63708) rot=0 tile=(-1,-1) extra=0
+[16:12:07.862] [ACTION] Walk ke tile (48,38) [Kanan]
+[16:12:08.066] #546 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1577,1214) vec2=(81.6016,109.087) rot=0 tile=(-1,-1) extra=0
+[16:12:08.067] [ACTION] Walk ke tile (49,38) [Kanan]
+[16:12:08.271] #547 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=0 vec=(1619,1247) vec2=(244.805,208.536) rot=0 tile=(-1,-1) extra=0
+[16:12:08.271] [ACTION] Walk ke tile (50,39) [Kanan]
+[16:12:08.478] #548 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1641,1282) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:08.479] [ACTION] Walk ke tile (51,40) [Kanan]
+[16:12:08.682] #549 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1641,1282) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:11.017] #550 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=32 vec=(1641,1282) vec2=(0,0) rot=0 tile=(51,40) extra=0
+[16:12:11.018] [ACTION] Place/Click item #32 di tile (51,40)
+[16:12:11.301] #551 S->C ch=0 len=1019 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=958
+  Variant: [0](s)="OnDialogRequest", [1](s)="set_default_color|`o
+add_label_with_icon|big|`wDigiVend Machine``|left|9268|
+add_spacer|small|
+embed_data|tilex|51
+embed_data|tiley|40
+add_label_with_icon|sml|The machine contains a total of 1 `2Antigravity Generator``. |left|4992|
+add_spacer|small|
+add_textbox|For a cost of:|left|
+add_label_with_icon|small|600 x `8World Locks``|left|242|
+add_spacer|small|
+add_textbox|You will get:|left|
+add_label_with_icon|small|1 x `2Antigravity Generator``|left|4992|
+add_spacer|small|
+add_smalltext|Value Check: Based on current trading, this item is priced at roughly `676-100%  more`` than the current average.|left|
+add_spacer|small|
+add_button|pullstock|Empty the machine|noflags|0|0|
+add_smalltext|`5(DigiVend Machine will not function when price is set to 0)``|left|
+add_text_input|setprice|Price|600|5|
+add_checkbox|chk_peritem|World Locks per Item|1
+add_checkbox|chk_perlock|Items per World Lock|0
+end_dialog|vending|Close|Update|
+"
+[16:12:11.330] #552 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:12:11.697] #553 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:12:13.061] #554 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:14.407] #555 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1624,1282) vec2=(-122.402,0) rot=0 tile=(-1,-1) extra=0
+[16:12:14.612] #556 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1619,1282) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:14.613] [ACTION] Walk ke tile (50,40) [Kiri]
+[16:12:14.814] #557 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1618,1282) vec2=(-40.8008,0) rot=0 tile=(-1,-1) extra=0
+[16:12:15.018] #558 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1602,1287) vec2=(0,66.2998) rot=0 tile=(-1,-1) extra=0
+[16:12:15.223] #559 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1602,1311) vec2=(0,165.75) rot=0 tile=(-1,-1) extra=0
+[16:12:15.224] [ACTION] Walk ke tile (50,41) [Kiri]
+[16:12:15.427] #560 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1602,1356) vec2=(0,265.199) rot=0 tile=(-1,-1) extra=0
+[16:12:15.428] [ACTION] Walk ke tile (50,42) [Kiri]
+[16:12:15.631] #561 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1602,1421) vec2=(0,364.649) rot=0 tile=(-1,-1) extra=0
+[16:12:15.631] [ACTION] Walk ke tile (50,44) [Kiri]
+[16:12:15.835] #562 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=0 vec=(1602,1502) vec2=(0,400) rot=0 tile=(-1,-1) extra=0
+[16:12:15.835] [ACTION] Walk ke tile (50,47) [Kiri]
+[16:12:16.039] #563 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1602,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:16.040] [ACTION] Walk ke tile (50,48) [Kiri]
+[16:12:16.243] #564 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1602,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:16.482] #565 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT float=0 val=18 vec=(1602,1538) vec2=(0,0) rot=0 tile=(49,48) extra=0
+[16:12:16.482] [ACTION] Punch blok di tile (49,48)
+[16:12:16.498] #566 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING|PUNCH|TILE_CHANGE float=0 val=0 vec=(1602,1538) vec2=(0,0) rot=0 tile=(49,48) extra=0
+[16:12:16.498] [ACTION] Punch/Click tile (49,48)
+[16:12:16.703] #567 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1602,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:16.762] #568 S->C ch=0 len=61 REL GamePacket(4) -> TileApplyDamage(8) obj=0 jump=0 anim=0 net=1 target=98 flags=FACING_LEFT float=0 val=8 vec=(1602,1538) vec2=(0,0) rot=0 tile=(49,48) extra=0
+[16:12:16.906] #569 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1594,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:17.110] #570 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=FACING_LEFT|STANDING float=0 val=0 vec=(1594,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:17.730] #571 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1599,1538) vec2=(109.198,0) rot=0 tile=(-1,-1) extra=0
+[16:12:17.951] #572 C->S ch=0 len=61 UNREL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1608,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:18.155] #573 C->S ch=0 len=61 REL GamePacket(4) -> State(0) obj=0 jump=0 anim=0 net=0 target=0 flags=STANDING float=0 val=0 vec=(1608,1538) vec2=(0,0) rot=0 tile=(-1,-1) extra=0
+[16:12:18.682] #574 C->S ch=0 len=61 REL GamePacket(4) -> TileChangeRequest(3) obj=0 jump=0 anim=0 net=0 target=0 flags=NONE float=0 val=32 vec=(1608,1538) vec2=(0,0) rot=0 tile=(49,48) extra=0
+[16:12:18.683] [ACTION] Place/Click item #32 di tile (49,48)
+[16:12:18.962] #575 S->C ch=0 len=483 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=500 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=422
+  Variant: [0](s)="OnDialogRequest", [1](s)="set_default_color|`o
+add_label_with_icon|big|`wTelephone``|left|3898|
+embed_data|tilex|49
+embed_data|tiley|48
+embed_data|num|-2
+add_popup_name|Telephone-2|
+add_textbox|Dial a number to call somebody in Growtopia. Phone numbers have 5 digits, like 12345 (try it - you'd be crazy not to!). Most numbers are not in service!|left|
+add_text_input|dial|Phone #||5|
+end_dialog|phonecall|Hang Up|Dial|
+"
+[16:12:19.483] #576 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:12:21.701] #577 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0
+[16:12:22.687] #578 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:22.688] #579 C->S ch=0 len=87 REL GenericText(2)
+  action|dialog_return
+dialog_name|phonecall
+tilex|49|
+tiley|48|
+num|-2|
+dial|53785
+
+[16:12:22.688] [ACTION] Submit Dialog 'phonecall'
+[16:12:22.968] #580 S->C ch=0 len=688 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=500 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=627
+  Variant: [0](s)="OnDialogRequest", [1](s)="set_default_color|`o
+add_label_with_icon|big|`wSales-Man``|left|4358|
+embed_data|tilex|49
+embed_data|tiley|48
+embed_data|num|53785
+add_popup_name|Telephone53785|
+add_textbox|It is I, Sales-Man, savior of the wealthy! Let me rescue you from your riches. What would you like to buy today?|left|
+add_button|chc0|Surgery Items|noflags|0|0|0
+add_button|chc1|Wolfworld Items|noflags|0|0|0
+add_button|chc2|Zombie Defense Items|noflags|0|0|0
+add_button|chc3|Cooking Items|noflags|0|0|0
+add_button|chc4|Startopia Items|noflags|0|0|0
+add_button|chc5|Blue Gem Lock|noflags|0|0|0
+end_dialog|phonecall|Hang Up||
+"
+[16:12:23.487] #581 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:12:25.577] #582 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:25.578] #583 C->S ch=0 len=99 REL GenericText(2)
+  action|dialog_return
+dialog_name|phonecall
+tilex|49|
+tiley|48|
+num|53785|
+buttonClicked|chc5
+
+
+[16:12:25.579] [ACTION] Submit Dialog 'phonecall' btn=chc5
+[16:12:25.856] #584 S->C ch=0 len=468 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=500 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=407
+  Variant: [0](s)="OnDialogRequest", [1](s)="set_default_color|`o
+add_label_with_icon|big|`wBlue Gem Lock``|left|7188|
+embed_data|tilex|49
+embed_data|tiley|48
+embed_data|num|-34
+add_popup_name|Telephone-34|
+add_textbox|Excellent! I'm happy to sell you a Blue Gem Lock in exchange for 100 Diamond Lock..|left|
+add_smalltext|`6You have 1 Diamond Lock.``|left|
+add_button|chc1|Back|noflags|0|0|0
+end_dialog|phonecall|Hang Up||
+"
+[16:12:26.379] #585 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(2,0) extra=0
+[16:12:28.605] #586 C->S ch=0 len=61 REL GamePacket(4) -> SetIconState(18) obj=0 jump=0 anim=0 net=1 target=0 flags=NONE float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=0
+[16:12:31.704] #587 S->C ch=0 len=96 REL GamePacket(4) -> CallFunction(1) obj=0 jump=0 anim=0 net=-1 target=0 flags=EXTENDED float=0 val=0 vec=(0,0) vec2=(0,0) rot=0 tile=(0,0) extra=35
+  Variant: [0](s)="OnUpdateRespawnTimeout", [1](i)=0

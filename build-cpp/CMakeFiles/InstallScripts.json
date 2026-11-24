@@ -1,0 +1,16 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-build/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/framework/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/include/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/everest/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/p256-m/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/library/cmake_install.cmake",
+		"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/pkgconfig/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
