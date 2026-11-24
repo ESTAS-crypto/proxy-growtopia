@@ -128,72 +128,79 @@
 55134	60561	8172078239884035	_deps/mbedtls_src-build/library/CMakeFiles/mbedtls.dir/ssl_tls13_client.c.obj	10de02fc92bf8436
 49731	63142	8172078185873460	_deps/mbedtls_src-build/library/CMakeFiles/mbedtls.dir/net_sockets.c.obj	8bc7ba41bbba48b5
 63143	64691	8172078319954380	_deps/mbedtls_src-build/library/libmbedtls.a	4df929a9cdf8ddbe
-202	15863	8172121982799405	CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj	1ffc561a52f110bf
-56752	74359	8172078256144055	CMakeFiles/evanproxy_core.dir/src/dns.cpp.obj	58c7f3caa49bab13
-79	23107	8172121981562596	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
-118	6224	8172084671110299	CMakeFiles/evanproxy_core.dir/src/hosts.cpp.obj	bf35d98409f05646
-1370	25648	8172121994495923	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
-57101	78383	8172078259676725	CMakeFiles/evanproxy_core.dir/src/cert.cpp.obj	ebf67c27c1aee087
-954	31447	8172121990312442	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
-1164	35344	8172121992430737	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
-35346	36262	8172122334256791	libevanproxy_core.a	aa03f8fa284c8e75
-1586	34451	8172121996680979	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-36262	38230	8172122343388887	EvanProxy.exe	5771bc37203a26e8
-36346	38458	8172122344235662	evanproxy_tests.exe	2272ae5fca408594
-32	5212	8172140292419622	build.ninja	b1b3d3da9ee9fae1
-32	5212	8172140289642558	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140289848295	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-build/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140289920888	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140290021299	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/framework/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140290155499	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/include/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140290241941	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140290397619	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/everest/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140290534417	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/p256-m/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140291479867	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/library/cmake_install.cmake	b1b3d3da9ee9fae1
-32	5212	8172140291568125	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/pkgconfig/cmake_install.cmake	b1b3d3da9ee9fae1
-307	14621	8172121983838698	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
-751	24518	8172121988289169	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
-538	23667	8172121986153548	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
-182	12853	8172140299789005	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
 111	14304	8172140299072038	CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj	1ffc561a52f110bf
-475	21694	8172140302724085	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
-34	21772	8172140298295019	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
-315	22928	8172140301110497	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
-1549	23405	8172140313499633	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
-679	25505	8172140304758174	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
-924	28439	8172140307260759	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
-1776	34165	8172140315736438	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-1302	34897	8172140311118256	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
-34897	35666	8172140646933539	libevanproxy_core.a	626a997f80cebd78
-35666	37877	8172140654625745	EvanProxy.exe	5771bc37203a26e8
-35753	38022	8172140655509314	evanproxy_tests.exe	2272ae5fca408594
-37	13890	8172141194184747	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-13892	15211	8172141332735429	evanproxy_tests.exe	2272ae5fca408594
-36	19245	8172161486363832	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
-134	19535	8172161487342399	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
-1048	21034	8172161496504806	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
-230	22581	8172161488295309	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
-405	26428	8172161490048368	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
-604	26597	8172161492047690	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
-829	31116	8172161494300311	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
-31118	31865	8172161797178723	libevanproxy_core.a	626a997f80cebd78
-1316	32318	8172161499182426	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-31865	33576	8172161804652030	EvanProxy.exe	5771bc37203a26e8
-32319	34214	8172161809190247	evanproxy_tests.exe	2272ae5fca408594
-121	10520	8172182500245785	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
-684	10774	8172182505880231	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
-38	10914	8172182499423654	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
-192	12080	8172182500955419	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
-434	13685	8172182503373096	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
-322	15649	8172182502255834	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
-561	18270	8172182504646050	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
-36	893	8172183137372692	libevanproxy_core.a	626a997f80cebd78
-894	2578	8172183145945075	EvanProxy.exe	5771bc37203a26e8
-119	14873	8172183138204496	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-14874	16283	8172183285751093	evanproxy_tests.exe	2272ae5fca408594
-37	12702	8172183684063398	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-12704	14011	8172183810744670	evanproxy_tests.exe	2272ae5fca408594
-41	12903	8172184201871279	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-12905	14086	8172184330507448	evanproxy_tests.exe	2272ae5fca408594
-52	13908	8172184777228060	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
-13910	15678	8172184915810427	evanproxy_tests.exe	2272ae5fca408594
+56752	74359	8172078256144055	CMakeFiles/evanproxy_core.dir/src/dns.cpp.obj	58c7f3caa49bab13
+51	11572	8172260135637335	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
+118	6224	8172084671110299	CMakeFiles/evanproxy_core.dir/src/hosts.cpp.obj	bf35d98409f05646
+951	12254	8172260144654566	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
+57101	78383	8172078259676725	CMakeFiles/evanproxy_core.dir/src/cert.cpp.obj	ebf67c27c1aee087
+697	16806	8172260142101729	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
+823	23778	8172260143365849	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
+23779	24459	8172260372921736	libevanproxy_core.a	82e71bb3b9b0fdb6
+1076	25194	8172260145901667	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
+24459	25870	8172260379719959	EvanProxy.exe	5771bc37203a26e8
+25195	26415	8172260387080656	evanproxy_tests.exe	2272ae5fca408594
+38	3683	8172280576908600	build.ninja	b1b3d3da9ee9fae1
+38	3683	8172280575107146	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575247933	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-build/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575318044	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575395319	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/framework/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575461020	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/include/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575517666	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575646914	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/everest/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280575760499	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/3rdparty/p256-m/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280576400203	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/library/cmake_install.cmake	b1b3d3da9ee9fae1
+38	3683	8172280576470250	C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-build/pkgconfig/cmake_install.cmake	b1b3d3da9ee9fae1
+187	13592	8172260136992429	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
+571	19665	8172260140839127	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
+436	13467	8172260139502539	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
+304	12250	8172260138168726	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
+120	3913	8172260136326126	CMakeFiles/evanproxy_core.dir/src/banner.cpp.obj	b86bdbaac503bf19
+41	14197	8172280580353729	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
+182	14280	8172280581759748	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
+310	14790	8172280583046636	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
+109	16720	8172280581039836	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
+929	17819	8172280589256102	CMakeFiles/evanproxy_core.dir/src/proxy_controller.cpp.obj	fbf2078425dec98a
+1091	22347	8172280590870042	CMakeFiles/evanproxy_core.dir/src/overlay_hud.cpp.obj	7ec3afbb4502cdd
+1342	22527	8172280593383744	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
+438	23825	8172280584323029	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
+566	24875	8172280585598502	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
+789	31533	8172280587831609	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
+1480	33600	8172280594765563	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
+31	11038	8172281146011347	CMakeFiles/evanproxy_core.dir/src/desktop_gui.cpp.obj	dfb511ca7d9d3258
+11040	11791	8172281256102124	libevanproxy_core.a	a3ca539d4eda118f
+11791	13872	8172281263615753	EvanProxy.exe	ba14c13457a055fb
+11869	14020	8172281264393851	evanproxy_tests.exe	60c7ce65eec45f3f
+39	8577	8172281620365863	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
+8580	9296	8172281705769736	libevanproxy_core.a	a3ca539d4eda118f
+9296	11027	8172281712930002	EvanProxy.exe	ba14c13457a055fb
+9380	11197	8172281713769874	evanproxy_tests.exe	60c7ce65eec45f3f
+84	20693	8172296512429128	CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj	1ffc561a52f110bf
+1044	28913	8172296522292587	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
+567	30685	8172296517396788	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
+2356	31864	8172296535170370	CMakeFiles/evanproxy_core.dir/src/proxy_controller.cpp.obj	fbf2078425dec98a
+270	33725	8172296514337210	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
+3048	35724	8172296542103577	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
+1440	39096	8172296526124881	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
+1753	40866	8172296529174276	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
+2751	46792	8172296539124955	CMakeFiles/evanproxy_core.dir/src/desktop_gui.cpp.obj	dfb511ca7d9d3258
+2055	51260	8172296532142138	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
+51260	52160	8172297024186801	libevanproxy_core.a	a3ca539d4eda118f
+3318	53714	8172296544843795	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
+52160	54548	8172297033185814	EvanProxy.exe	ba14c13457a055fb
+53714	55408	8172297048725435	evanproxy_tests.exe	60c7ce65eec45f3f
+203	11119	8172313744426525	CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj	740fd9ed343f569c
+40	11699	8172313742804860	CMakeFiles/evanproxy_core.dir/src/config.cpp.obj	dd00cacb032545d7
+122	13626	8172313743616487	CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj	f189e6a02c8065ad
+343	18207	8172313745820330	CMakeFiles/evanproxy_core.dir/src/session.cpp.obj	92aab4fb2ceb35dd
+18207	32216	8172313924483597	CMakeFiles/evanproxy_core.dir/src/proxy_controller.cpp.obj	fbf2078425dec98a
+11726	33038	8172313860057598	CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj	77eeb490e15db5fa
+11133	35696	8172313853750396	CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj	8c2d5777711cdb00
+13627	41838	8172313878693979	CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj	31a440d91f0c2dae
+32217	45136	8172314064573846	CMakeFiles/evanproxy_core.dir/src/overlay_hud.cpp.obj	7ec3afbb4502cdd
+35697	48462	8172314099384578	CMakeFiles/EvanProxy.dir/EvanProxy.cpp.obj	9d784d49453a0fa7
+33040	60008	8172314072823748	CMakeFiles/evanproxy_core.dir/src/desktop_gui.cpp.obj	dfb511ca7d9d3258
+60010	61377	8172314342507268	libevanproxy_core.a	a3ca539d4eda118f
+61377	64003	8172314356167687	EvanProxy.exe	ba14c13457a055fb
+41839	77735	8172314160802529	CMakeFiles/evanproxy_tests.dir/tests/test_proxy.cpp.obj	1cc18548ecae786b
+77735	79670	8172314519755241	evanproxy_tests.exe	60c7ce65eec45f3f

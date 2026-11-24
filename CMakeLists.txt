@@ -35,6 +35,7 @@ add_library(evanproxy_core STATIC
     src/hosts.cpp
     src/dns.cpp
     src/cert.cpp
+    src/banner.cpp
     src/protocol.cpp
     src/packet_logger.cpp
     src/items_db.cpp
@@ -42,6 +43,9 @@ add_library(evanproxy_core STATIC
     src/ui_menu.cpp
     src/http_bridge.cpp
     src/enet_proxy.cpp
+    src/proxy_controller.cpp
+    src/overlay_hud.cpp
+    src/desktop_gui.cpp
 )
 
 target_include_directories(evanproxy_core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
@@ -61,6 +65,9 @@ target_link_libraries(evanproxy_core PUBLIC
     bcrypt
     crypt32
     shell32
+    gdiplus
+    gdi32
+    user32
 )
 
 add_executable(EvanProxy EvanProxy.cpp)

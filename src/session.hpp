@@ -88,6 +88,16 @@ struct SavedWorld {
     std::string door_id;
 };
 
+struct WorldDropObject {
+    int32_t uid = 0;
+    uint32_t seq_idx = 0;
+    uint32_t item_id = 0;
+    uint32_t count = 1;
+    float x = 0.0f;
+    float y = 0.0f;
+    bool collected = false;
+};
+
 class Session {
 public:
     // Local player state
@@ -131,11 +141,17 @@ public:
     bool formalize_chat = false;
     bool chat_prefix_enabled = false;
     bool style_all_dialogs = false;
+    bool custom_banner = true;
+    bool hud_overlay = true;
+    int zoom_percent = 100;
+    bool weather_override = false;
+    uint32_t weather_id = 15;
     std::string ui_theme = "ocean";
     bool auto_bgl = false;
+    bool gems_tracker = true;
     bool hotkeys_enabled = true;
     int fast_buy = 0;
-    int fast_buy_qty = 0;
+    int fast_buy_qty = 1;
     bool vending_info = true;
     std::vector<HotkeyBinding> hotkeys = default_hotkeys();
     int hk_edit_slot = -1;
@@ -182,6 +198,11 @@ public:
     bool has_char_state_pkt = false;
     int live_fps = 60;
     int live_ping_ms = 0;
+    int ping_min_ms = 0;
+    int ping_max_ms = 0;
+    int ping_jitter_ms = 0;
+    int proxy_overhead_us = 0;
+    int players_page = 0;
     std::string last_sent_display_name;
 
     // Auto-BGL Telephone state machine
@@ -198,6 +219,7 @@ public:
 
     // Visual clothes & backpack state
     bool visual_clothes_mode = false;
+    std::string active_clothes_preset;
     ClothingSet real_clothes;
     ClothingSet visual_clothes;
     std::set<uint32_t> visual_bp_items;
@@ -224,6 +246,23 @@ public:
     bool timer_active = false;
     std::chrono::steady_clock::time_point timer_end{};
     std::string timer_label;
+
+    // Gems & world floor drop tracking (/gems)
+    struct PickupReqPos {
+        float x = 0.0f;
+        float y = 0.0f;
+    };
+    int64_t gems_collected_world = 0;
+    int64_t gems_collected_session = 0;
+    int64_t gem_pickup_burst = 0;
+    std::chrono::steady_clock::time_point last_gem_pickup_time{};
+    std::vector<WorldDropObject> world_drops;
+    bool drop_uid_calibrated = false;
+    int32_t drop_base_uid = 1;
+    std::map<int32_t, PickupReqPos> recent_pickup_reqs;
+    uint16_t last_obj_credit_item = 0;
+    uint32_t last_obj_credit_count = 0;
+    std::chrono::steady_clock::time_point last_obj_credit_time{};
 
     // Saved worlds & action feed
     std::vector<SavedWorld> saved_worlds;
@@ -268,8 +307,16 @@ public:
     void on_server_inventory(const uint8_t* extra, size_t len);
     void on_server_modify_inventory(const proto::GameUpdatePacket& gp);
     void on_server_console_message(const std::string& msg);
+    void on_enter_world_map(const uint8_t* extra, size_t len);
     void on_server_track(const std::string& track_text);
+    void on_client_pickup_request(const proto::GameUpdatePacket& gp);
+    int64_t on_server_item_change_object(const proto::GameUpdatePacket& gp);
     void on_leave_world();
+
+    int64_t world_floor_gems_total() const;
+    size_t world_floor_gems_clusters() const;
+    std::vector<std::pair<std::pair<int, int>, uint32_t>> world_gem_tiles_top(size_t max_tiles = 8) const;
+    std::vector<std::pair<uint32_t, uint32_t>> world_floor_items_summary() const;
 };
 
 std::optional<double> evaluate_calc(const std::string& expr, std::string& err);
@@ -285,6 +332,8 @@ bool plan_lock_drops(
 );
 
 // Custom hotkeys
+bool is_modifier_vk(int vk);
+int canonical_modifier_vk(int vk);
 std::optional<HotkeySpec> parse_hotkey(const std::string& text);
 std::string format_hotkey(const HotkeySpec& spec);
 const std::vector<int>& hotkey_capture_vks();

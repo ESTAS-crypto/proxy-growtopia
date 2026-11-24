@@ -178,6 +178,12 @@ std::optional<int64_t> Variant::as_int() const {
     if (type == Type::Unsigned && std::holds_alternative<uint32_t>(value)) {
         return static_cast<int64_t>(std::get<uint32_t>(value));
     }
+    if (type == Type::Int64 && std::holds_alternative<int64_t>(value)) {
+        return std::get<int64_t>(value);
+    }
+    if (type == Type::Uint64 && std::holds_alternative<uint64_t>(value)) {
+        return static_cast<int64_t>(std::get<uint64_t>(value));
+    }
     return std::nullopt;
 }
 
@@ -247,6 +253,18 @@ std::optional<VariantList> VariantList::parse(const uint8_t* data, size_t len) {
                 var.value = s;
                 break;
             }
+            case Variant::Type::Int64: {
+                int64_t v = 0;
+                if (!read_le(data, len, pos, v)) return std::nullopt;
+                var.value = v;
+                break;
+            }
+            case Variant::Type::Uint64: {
+                uint64_t v = 0;
+                if (!read_le(data, len, pos, v)) return std::nullopt;
+                var.value = v;
+                break;
+            }
             default:
                 return std::nullopt;
         }
@@ -297,6 +315,12 @@ std::vector<uint8_t> VariantList::serialize() const {
             case Variant::Type::Signed:
                 append_le(out, std::get<int32_t>(var.value));
                 break;
+            case Variant::Type::Int64:
+                append_le(out, std::get<int64_t>(var.value));
+                break;
+            case Variant::Type::Uint64:
+                append_le(out, std::get<uint64_t>(var.value));
+                break;
         }
     }
     return out;
@@ -342,6 +366,12 @@ std::string VariantList::summary() const {
             case Variant::Type::Signed:
                 oss << std::get<int32_t>(v.value);
                 break;
+            case Variant::Type::Int64:
+                oss << std::get<int64_t>(v.value);
+                break;
+            case Variant::Type::Uint64:
+                oss << std::get<uint64_t>(v.value) << "u";
+                break;
         }
     }
     return oss.str();
@@ -381,6 +411,12 @@ std::string VariantList::detailed_dump(bool truncate_strings) const {
                 break;
             case Variant::Type::Signed:
                 oss << "(i)=" << std::get<int32_t>(v.value);
+                break;
+            case Variant::Type::Int64:
+                oss << "(i64)=" << std::get<int64_t>(v.value);
+                break;
+            case Variant::Type::Uint64:
+                oss << "(u64)=" << std::get<uint64_t>(v.value);
                 break;
         }
     }

@@ -1,5 +1,6 @@
 #include "enet_proxy.hpp"
 
+#include "banner.hpp"
 #include "packet_logger.hpp"
 #include "items_db.hpp"
 #include "protocol.hpp"
@@ -13,6 +14,7 @@
 #include <mmsystem.h>
 #include <enet/enet.h>
 
+#include <algorithm>
 #include <array>
 #include <cctype>
 #include <chrono>
@@ -59,29 +61,37 @@ std::string build_join_request_str(const std::string& world, const std::string& 
 struct DwmFpsSampler {
     bool initialized = false;
     UINT64 prev_refresh = 0;
-    UINT64 prev_dropped = 0;
     std::chrono::steady_clock::time_point prev_time{};
+
+    static int detect_display_hz(const DWM_TIMING_INFO* ti) {
+        if (ti && ti->rateRefresh.uiDenominator > 0 && ti->rateRefresh.uiNumerator > 0) {
+            const int hz = static_cast<int>(
+                (ti->rateRefresh.uiNumerator + ti->rateRefresh.uiDenominator / 2) /
+                ti->rateRefresh.uiDenominator);
+            if (hz >= 30 && hz <= 360) {
+                return hz;
+            }
+        }
+        DEVMODEW dm{};
+        dm.dmSize = sizeof(dm);
+        if (EnumDisplaySettingsW(nullptr, ENUM_CURRENT_SETTINGS, &dm) &&
+            dm.dmDisplayFrequency >= 30 && dm.dmDisplayFrequency <= 360) {
+            return static_cast<int>(dm.dmDisplayFrequency);
+        }
+        return 60;
+    }
 
     int sample_fps() {
         DWM_TIMING_INFO ti{};
         ti.cbSize = sizeof(ti);
         if (DwmGetCompositionTimingInfo(nullptr, &ti) != S_OK) {
-            return 60;
+            return detect_display_hz(nullptr);
         }
-        int max_hz = 60;
-        if (ti.rateRefresh.uiDenominator > 0 && ti.rateRefresh.uiNumerator > 0) {
-            const int hz = static_cast<int>(
-                (ti.rateRefresh.uiNumerator + ti.rateRefresh.uiDenominator / 2) /
-                ti.rateRefresh.uiDenominator);
-            if (hz >= 30 && hz <= 360) {
-                max_hz = hz;
-            }
-        }
+        const int max_hz = detect_display_hz(&ti);
         const auto now = std::chrono::steady_clock::now();
         if (!initialized) {
             initialized = true;
             prev_refresh = ti.cRefresh;
-            prev_dropped = ti.cFramesDropped;
             prev_time = now;
             return max_hz;
         }
@@ -90,14 +100,12 @@ struct DwmFpsSampler {
             return max_hz;
         }
         const UINT64 d_ref = (ti.cRefresh >= prev_refresh) ? (ti.cRefresh - prev_refresh) : 0;
-        const UINT64 d_drop = (ti.cFramesDropped >= prev_dropped) ? (ti.cFramesDropped - prev_dropped) : 0;
-        const UINT64 rendered = (d_ref > d_drop) ? (d_ref - d_drop) : 0;
         prev_refresh = ti.cRefresh;
-        prev_dropped = ti.cFramesDropped;
         prev_time = now;
-        int fps = static_cast<int>(static_cast<double>(rendered) / dt + 0.5);
-        if (fps <= 0) fps = max_hz;
-        if (fps > max_hz) fps = max_hz;
+        int fps = (d_ref > 0) ? static_cast<int>(static_cast<double>(d_ref) / dt + 0.5) : max_hz;
+        if (fps < 30 || fps > max_hz) {
+            fps = max_hz;
+        }
         return fps;
     }
 };
@@ -151,6 +159,17 @@ std::optional<std::string> extract_embed_str(const std::string& markup, const st
     }
     if (end == pos) return std::nullopt;
     return markup.substr(pos, end - pos);
+}
+
+void configure_low_latency_udp(ENetSocket sock) {
+    if (sock == ENET_SOCKET_NULL) return;
+    enet_socket_set_option(sock, ENET_SOCKOPT_RCVBUF, 1024 * 1024);
+    enet_socket_set_option(sock, ENET_SOCKOPT_SNDBUF, 1024 * 1024);
+    constexpr DWORD kSioUdpConnreset = _WSAIOW(IOC_VENDOR, 12);
+    BOOL new_behavior = FALSE;
+    DWORD bytes_returned = 0;
+    WSAIoctl(static_cast<SOCKET>(sock), kSioUdpConnreset, &new_behavior, sizeof(new_behavior),
+             nullptr, 0, &bytes_returned, nullptr, nullptr);
 }
 
 bool is_growtopia_foreground() {
@@ -228,6 +247,17 @@ bool EnetProxy::run(std::string& err) {
         ~TimerResGuard() { timeEndPeriod(1); }
     } timer_res_guard;
 
+    struct ThreadPriorityGuard {
+        int prev_prio = THREAD_PRIORITY_NORMAL;
+        ThreadPriorityGuard() {
+            prev_prio = GetThreadPriority(GetCurrentThread());
+            SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_HIGHEST);
+        }
+        ~ThreadPriorityGuard() {
+            SetThreadPriority(GetCurrentThread(), prev_prio);
+        }
+    } thread_prio_guard;
+
     ENetAddress bind_addr{};
     enet_address_build_any(&bind_addr, ENET_ADDRESS_TYPE_IPV4);
     bind_addr.port = cfg_.enet_port;
@@ -246,6 +276,7 @@ bool EnetProxy::run(std::string& err) {
     }
     server_host->checksum = enet_crc32;
     server_host->usingNewPacketForServer = cfg_.using_new_packet ? 1 : 0;
+    configure_low_latency_udp(server_host->socket);
 
     // Upstream uses 1 slot as required by ZTzTopia/enet usingNewPacket integrity calculation
     ENetHost* client_host = enet_host_create(ENET_ADDRESS_TYPE_IPV4, nullptr, 1, 2, 0, 0);
@@ -262,9 +293,13 @@ bool EnetProxy::run(std::string& err) {
     }
     client_host->checksum = enet_crc32;
     client_host->usingNewPacket = cfg_.using_new_packet ? 1 : 0;
+    configure_low_latency_udp(client_host->socket);
 
     shared_.hex_log.store(cfg_.log_hex);
-    PacketLogger logger(log_dir_, cfg_.log_to_file);
+    PacketLogger logger(log_dir_, cfg_.log_to_file,
+                        [&](LogTag tag, const std::string& tag_txt, const std::string& msg) {
+                            shared_.push_console_line(tag, tag_txt, msg);
+                        });
     if (logger.is_file_open()) {
         shared_.set_log_file_path(logger.log_file_path().string());
         std::cout << "[Log] Semua paket detail direkam ke: " << logger.log_file_path().string() << "\n";
@@ -294,6 +329,19 @@ bool EnetProxy::run(std::string& err) {
     auto log_both = [&](const std::string& line) {
         std::cout << line << "\n";
         logger.log_event(line);
+        LogTag tag = LogTag::Info;
+        std::string ttxt = "INFO";
+        if (line.rfind("[!]", 0) == 0) {
+            tag = LogTag::Error;
+            ttxt = "ERROR";
+        } else if (line.rfind("[ENet]", 0) == 0) {
+            tag = LogTag::Enet;
+            ttxt = "ENET";
+        } else if (line.rfind("[Log]", 0) == 0 || line.rfind("[Redirect]", 0) == 0) {
+            tag = LogTag::Ok;
+            ttxt = "OK";
+        }
+        shared_.push_console_line(tag, ttxt, line);
     };
 
     auto persist_config_if_needed = [&](const ui::UiEffects& eff) {
@@ -317,6 +365,9 @@ bool EnetProxy::run(std::string& err) {
 
     auto apply_ui_effects = [&](const ui::UiEffects& eff) {
         persist_config_if_needed(eff);
+        if (eff.calc_toast) {
+            shared_.notify_calc_toast(eff.calc_toast->first, eff.calc_toast->second);
+        }
         for (const auto& pkt : eff.to_client) {
             if (downstream_peer) {
                 send_enet_bytes(downstream_peer, 0, pkt, ENET_PACKET_FLAG_RELIABLE);
@@ -369,19 +420,138 @@ bool EnetProxy::run(std::string& err) {
         pending_c2s.clear();
     };
 
-    auto last_stats_tick = std::chrono::steady_clock::now();
-    auto last_hotkey_tick = last_stats_tick;
+    auto last_ping_tick = std::chrono::steady_clock::now();
+    auto last_anim_tick = last_ping_tick;
+    auto last_ping_name_push = last_ping_tick;
+    auto last_hotkey_tick = last_ping_tick;
+    auto last_snapshot_tick = last_ping_tick;
+    auto last_fps_tick = last_ping_tick;
+    DwmFpsSampler fps_sampler;
     std::array<bool, kHotkeySlots> prev_hk_down{};
+    std::array<bool, kHotkeySlots> hk_mod_dirty{};
     std::array<bool, 256> prev_cap_down{};
     bool cap_initialized = false;
+    int cap_pending_mod_vk = 0;
+    bool cap_mod_combo_used = false;
+    double ovh_ema_us = 0.0;
+
+    auto publish_live_snapshot = [&]() {
+        UiSnapshot snap;
+        snap.proxy_running = true;
+        snap.http_running = true;
+        snap.enet_running = true;
+        snap.port_conflict = false;
+        snap.http_port = cfg_.http_port;
+        snap.enet_port = cfg_.enet_port;
+        snap.manage_hosts = cfg_.manage_hosts;
+
+        snap.client_connected = (downstream_peer != nullptr && downstream_peer->state == ENET_PEER_STATE_CONNECTED);
+        snap.in_world = session.in_world;
+        snap.player_name = session.player_name;
+        snap.current_world = session.current_world;
+        snap.previous_world = session.previous_world;
+        snap.world_owner = session.world_owner;
+        snap.player_count = session.in_world ? (session.players.size() + 1) : 0;
+        if (auto cur_up = shared_.get_current_upstream()) {
+            snap.upstream_addr = cur_up->first + ":" + std::to_string(cur_up->second);
+        }
+        snap.log_file_path = shared_.get_log_file_path();
+
+        snap.wl = session.wl_count();
+        snap.dl = session.dl_count();
+        snap.bgl = session.bgl_count();
+        snap.gems = session.gems;
+        snap.gems_collected_world = session.gems_collected_world;
+        snap.gems_collected_session = session.gems_collected_session;
+        snap.world_floor_gems = session.world_floor_gems_total();
+        snap.live_ping_ms = session.live_ping_ms;
+        snap.ping_min_ms = session.ping_min_ms;
+        snap.ping_max_ms = session.ping_max_ms;
+        snap.ping_jitter_ms = session.ping_jitter_ms;
+        snap.live_fps = session.live_fps;
+        snap.proxy_overhead_us = session.proxy_overhead_us;
+        snap.c2s_packets = shared_.c2s_packets.load(std::memory_order_relaxed);
+        snap.s2c_packets = shared_.s2c_packets.load(std::memory_order_relaxed);
+
+        snap.evan_branding = session.evan_branding;
+        snap.outgoing_evan_prefix = session.outgoing_evan_prefix;
+        snap.fps_boost = session.fps_boost;
+        snap.fps_show_name = session.fps_show_name;
+        snap.fps_hide_bubbles = session.fps_hide_bubbles;
+        snap.vending_info = session.vending_info;
+        snap.auto_bgl = session.auto_bgl;
+        snap.gems_tracker = session.gems_tracker;
+        snap.hotkeys_enabled = session.hotkeys_enabled;
+        snap.fast_drop = session.fast_drop;
+        snap.fast_trash = session.fast_trash;
+        snap.rainbow_name = session.rainbow_name;
+        snap.unlimited_zoom = session.unlimited_zoom;
+        snap.weather_override = session.weather_override;
+        snap.hide_clothes = session.hide_clothes;
+        snap.visual_clothes_mode = session.visual_clothes_mode;
+        snap.custom_banner = session.custom_banner;
+        snap.hud_overlay = session.hud_overlay;
+        snap.log_actions = session.log_actions;
+        snap.log_raw_movement = session.log_raw_movement;
+        snap.verbose_log = shared_.verbose_log.load(std::memory_order_relaxed);
+        snap.hex_log = shared_.hex_log.load(std::memory_order_relaxed);
+
+        snap.zoom_percent = session.zoom_percent;
+        snap.weather_id = session.weather_id;
+        snap.fast_buy = session.fast_buy;
+        snap.fast_buy_qty = session.fast_buy_qty;
+
+        snap.active_preset = session.active_clothes_preset;
+        snap.active_titles_summary = session.active_titles_summary();
+        snap.title_maxlevel = session.title_maxlevel;
+        snap.title_doctor = session.title_doctor;
+        snap.title_legendary = session.title_legendary;
+        snap.title_g4g = session.title_g4g;
+        snap.title_master = session.title_master;
+        snap.title_mentor = session.title_mentor;
+        snap.title_anniversary = session.title_anniversary;
+        snap.title_award = session.title_award;
+        snap.title_party = session.title_party;
+        snap.title_royalwinter = session.title_royalwinter;
+        snap.title_immortal = session.title_immortal;
+        snap.title_thanksgiving = session.title_thanksgiving;
+        snap.title_cc_badge = session.title_cc_badge;
+        snap.title_tt_badge = session.title_tt_badge;
+        snap.title_moderator = session.title_moderator;
+        snap.title_developer = session.title_developer;
+        snap.title_growroyal_tier = session.title_growroyal_tier;
+        snap.title_pbl_role = session.title_pbl_role;
+        snap.hotkeys = session.hotkeys;
+
+        if (session.timer_active) {
+            const auto rem = std::chrono::duration_cast<std::chrono::seconds>(
+                session.timer_end - std::chrono::steady_clock::now()).count();
+            shared_.update_timer_hud(true, static_cast<int>(std::max<long long>(0, rem)), session.timer_label);
+        } else {
+            shared_.update_timer_hud(false, 0, "");
+        }
+        shared_.publish_snapshot(snap);
+    };
 
     log_both("[ENet] Proxy UDP aktif di 0.0.0.0:" + std::to_string(cfg_.enet_port) +
              " (usingNewPacket=" + (cfg_.using_new_packet ? "true" : "false") +
              ", slots=" + std::to_string(kServerPeerCount) + ")");
+    publish_live_snapshot();
 
     while (!shared_.stop_requested.load()) {
+        if (shared_.has_pending_ui_commands()) {
+            const auto cmds = shared_.drain_ui_commands();
+            ui::UiEffects ui_eff;
+            for (const auto& cmd : cmds) {
+                ui::apply_ui_command(cmd, session, shared_, ui_eff);
+            }
+            apply_ui_effects(ui_eff);
+            publish_live_snapshot();
+        }
         ENetEvent event{};
         bool any_event = false;
+        bool queued_c2s_now = false;
+        bool queued_s2c_now = false;
 
         // 1. Drain downstream (game client -> proxy)
         while (enet_host_service(server_host, &event, 0) > 0) {
@@ -389,6 +559,8 @@ bool EnetProxy::run(std::string& err) {
             switch (event.type) {
                 case ENET_EVENT_TYPE_CONNECT: {
                     log_both("[ENet] Klien Growtopia terhubung dari " + format_enet_ip(event.peer->address));
+                    enet_peer_ping_interval(event.peer, 250);
+                    enet_peer_throttle_configure(event.peer, 500, 0, 0);
                     enet_peer_timeout(event.peer, 0, ENET_PEER_TIMEOUT_MAXIMUM / 2, 0);
 
                     if (downstream_peer && downstream_peer != event.peer) {
@@ -433,6 +605,7 @@ bool EnetProxy::run(std::string& err) {
                         enet_packet_destroy(event.packet);
                         break;
                     }
+                    const auto pkt_t0 = std::chrono::steady_clock::now();
 
                     shared_.c2s_packets.fetch_add(1, std::memory_order_relaxed);
                     const uint64_t seq = ++packet_seq;
@@ -618,6 +791,8 @@ bool EnetProxy::run(std::string& err) {
                         std::memcpy(&gp, raw + 4, sizeof(gp));
                         if (gp.type == static_cast<uint8_t>(proto::GamePacketType::SetIconState)) {
                             session.client_icon_state = gp.int_x;
+                        } else if (gp.type == static_cast<uint8_t>(proto::GamePacketType::ItemActivateObjectRequest)) {
+                            session.on_client_pickup_request(gp);
                         }
                         if (auto act_desc = session.describe_client_game_packet(gp, session.log_raw_movement)) {
                             session.record_action(*act_desc);
@@ -670,7 +845,13 @@ bool EnetProxy::run(std::string& err) {
                             ? std::move(*replacement)
                             : std::vector<uint8_t>(raw, raw + len);
                         queue_to_upstream(chan, std::move(buf), flags);
+                        queued_c2s_now = true;
                     }
+
+                    const auto pkt_t1 = std::chrono::steady_clock::now();
+                    const double pkt_us = std::chrono::duration<double, std::micro>(pkt_t1 - pkt_t0).count();
+                    ovh_ema_us = (ovh_ema_us <= 0.0) ? pkt_us : (ovh_ema_us * 0.85 + pkt_us * 0.15);
+                    session.proxy_overhead_us = static_cast<int>(ovh_ema_us + 0.5);
 
                     enet_packet_destroy(event.packet);
 
@@ -697,6 +878,9 @@ bool EnetProxy::run(std::string& err) {
                     break;
             }
         }
+        if (queued_c2s_now && upstream_peer) {
+            enet_host_flush(client_host);
+        }
 
         // Track incoming half-open ENet handshakes for diagnostics
         for (size_t i = 0; i < kServerPeerCount; ++i) {
@@ -719,6 +903,15 @@ bool EnetProxy::run(std::string& err) {
                 switch (event.type) {
                     case ENET_EVENT_TYPE_CONNECT: {
                         log_both("[ENet] Terhubung ke server Growtopia " + format_enet_ip(event.peer->address));
+                        enet_peer_ping_interval(event.peer, 250);
+                        enet_peer_throttle_configure(event.peer, 500, 0, 0);
+                        enet_peer_ping(event.peer);
+                        if (event.peer->roundTripTime > 0 &&
+                            event.peer->roundTripTime != ENET_PEER_DEFAULT_ROUND_TRIP_TIME) {
+                            session.live_ping_ms = static_cast<int>(event.peer->roundTripTime);
+                            session.ping_min_ms = session.live_ping_ms;
+                            session.ping_max_ms = session.live_ping_ms;
+                        }
                         for (const auto& p : pending_c2s) {
                             send_enet_bytes(upstream_peer, p.channel, p.data, p.flags);
                         }
@@ -728,6 +921,7 @@ bool EnetProxy::run(std::string& err) {
                     }
 
                     case ENET_EVENT_TYPE_RECEIVE: {
+                        const auto pkt_t0 = std::chrono::steady_clock::now();
                         shared_.s2c_packets.fetch_add(1, std::memory_order_relaxed);
                         const uint64_t seq = ++packet_seq;
                         const uint8_t* raw = event.packet->data;
@@ -769,6 +963,10 @@ bool EnetProxy::run(std::string& err) {
                             if (gp.type == static_cast<uint8_t>(proto::GamePacketType::State)) {
                                 session.on_server_state(gp);
                             } else if (gp.type == static_cast<uint8_t>(proto::GamePacketType::SendMapData)) {
+                                session.on_enter_world_map(
+                                    has_extra ? (raw + 4 + sizeof(gp)) : nullptr,
+                                    has_extra ? gp.extra_data_size : 0
+                                );
                                 session.warp_active = false;
                                 session.warp_waiting_menu = false;
                                 session.warp_suppress_menu = false;
@@ -778,6 +976,13 @@ bool EnetProxy::run(std::string& err) {
                                     send_enet_bytes(downstream_peer, chan, buf, flags);
                                     send_enet_bytes(downstream_peer, 0,
                                                     proto::build_on_set_current_weather(0),
+                                                    ENET_PACKET_FLAG_RELIABLE);
+                                    forwarded = true;
+                                } else if (session.weather_override && downstream_peer) {
+                                    std::vector<uint8_t> buf(raw, raw + len);
+                                    send_enet_bytes(downstream_peer, chan, buf, flags);
+                                    send_enet_bytes(downstream_peer, 0,
+                                                    proto::build_on_set_current_weather(session.weather_id),
                                                     ENET_PACKET_FLAG_RELIABLE);
                                     forwarded = true;
                                 }
@@ -802,6 +1007,18 @@ bool EnetProxy::run(std::string& err) {
                                 }
                             } else if (gp.type == static_cast<uint8_t>(proto::GamePacketType::ModifyItemInventory)) {
                                 session.on_server_modify_inventory(gp);
+                            } else if (gp.type == static_cast<uint8_t>(proto::GamePacketType::ItemChangeObject)) {
+                                const int64_t picked_gems = session.on_server_item_change_object(gp);
+                                if (picked_gems > 0 && session.gems_tracker &&
+                                    downstream_peer && session.local_net_id >= 0) {
+                                    std::ostringstream gb;
+                                    gb << "`9[`#EvanProxy`9] `2+" << format_number_commas(session.gem_pickup_burst)
+                                       << " Gems `o(World: `2+" << format_number_commas(session.gems_collected_world)
+                                       << " `o| Total: `5" << format_number_commas(session.gems) << " Gems`o)";
+                                    send_enet_bytes(downstream_peer, 0,
+                                                    proto::build_on_talk_bubble(session.local_net_id, gb.str()),
+                                                    ENET_PACKET_FLAG_RELIABLE);
+                                }
                             } else if (gp.type == static_cast<uint8_t>(proto::GamePacketType::SetCharacterState)) {
                                 if (gp.net_id == session.local_net_id) {
                                     session.last_char_state_pkt = gp;
@@ -859,6 +1076,10 @@ bool EnetProxy::run(std::string& err) {
                                         }
                                     } else if (fn == "OnRemove" && vl->items.size() >= 2) {
                                         session.on_server_remove(vl->items[1].as_string());
+                                    } else if (fn == "OnSetBux" && vl->items.size() >= 2) {
+                                        if (auto g = vl->items[1].as_int()) {
+                                            session.gems = *g;
+                                        }
                                     } else if (fn == "OnConsoleMessage" && vl->items.size() >= 2) {
                                         const std::string msg = vl->items[1].as_string();
                                         session.on_server_console_message(msg);
@@ -901,6 +1122,7 @@ bool EnetProxy::run(std::string& err) {
                                                 const int64_t rem_dl = rem_wl / 100;
                                                 const int64_t rem_wl_part = rem_wl % 100;
                                                 const std::string iname = items_db.name_or_fallback(static_cast<uint32_t>(session.vend.item_id));
+                                                shared_.notify_vend_toast(rem_stock, rem_wl, iname);
                                                 std::ostringstream vm;
                                                 vm << "`9[`#EvanProxy`9]`2 [Vending Privat] `wBeli " << session.vend.items
                                                    << "x " << iname << " `o(-" << session.vend.cost << " WL) - `9Sisa Stok Vend: `2"
@@ -929,18 +1151,27 @@ bool EnetProxy::run(std::string& err) {
                                             }
                                             forwarded = true;
                                         }
-                                    } else if (fn == "OnNameChanged" && gp.net_id == session.local_net_id && vl->items.size() >= 2) {
+                                    } else if (fn == "OnNameChanged" && vl->items.size() >= 2) {
                                         const std::string extra_json = (vl->items.size() >= 3) ? vl->items[2].as_string() : std::string{};
-                                        session.on_server_name_changed(vl->items[1].as_string(), extra_json);
-                                        if (session.needs_custom_name()) {
-                                            std::string dn = session.compose_display_name();
-                                            vl->items[1].value = dn;
-                                            session.last_sent_display_name = dn;
-                                            auto mod = proto::build_call_function_packet(gp.net_id, gp.value, *vl);
-                                            if (downstream_peer) {
-                                                send_enet_bytes(downstream_peer, chan, mod, flags);
+                                        if (gp.net_id == session.local_net_id) {
+                                            session.on_server_name_changed(vl->items[1].as_string(), extra_json);
+                                            if (session.needs_custom_name()) {
+                                                std::string dn = session.compose_display_name();
+                                                vl->items[1].value = dn;
+                                                session.last_sent_display_name = dn;
+                                                auto mod = proto::build_call_function_packet(gp.net_id, gp.value, *vl);
+                                                if (downstream_peer) {
+                                                    send_enet_bytes(downstream_peer, chan, mod, flags);
+                                                }
+                                                forwarded = true;
                                             }
-                                            forwarded = true;
+                                        } else {
+                                            auto pit = session.players.find(gp.net_id);
+                                            if (pit != session.players.end()) {
+                                                pit->second.raw_name = vl->items[1].as_string();
+                                                const std::string clean_rn = proto::strip_growtopia_colors(pit->second.raw_name);
+                                                if (!clean_rn.empty()) pit->second.name = clean_rn;
+                                            }
                                         }
                                     } else if (fn == "OnSetClothing" && vl->items.size() >= 5) {
                                         ClothingSet cs;
@@ -1025,7 +1256,11 @@ bool EnetProxy::run(std::string& err) {
                                         }
                                     } else if (fn == "OnDialogRequest" && vl->items.size() >= 2) {
                                         const std::string markup = vl->items[1].as_string();
-                                        if (markup.find("Gazette") != std::string::npos) {
+                                        const bool is_gazette =
+                                            (markup.find("interface/large/news_banner.rttex") != std::string::npos ||
+                                             markup.find("The Growtopia Gazette") != std::string::npos ||
+                                             markup.find("end_dialog|gazette|") != std::string::npos);
+                                        if (is_gazette) {
                                             session.last_news_markup = markup;
                                         }
                                         const auto now_dlg = std::chrono::steady_clock::now();
@@ -1162,6 +1397,16 @@ bool EnetProxy::run(std::string& err) {
                                             }
                                         }
 
+                                        if (markup.find("end_dialog|drop_item|") != std::string::npos) {
+                                            auto sync_id = extract_embed_item_id(markup);
+                                            auto sync_avail = extract_drop_count(markup);
+                                            if (sync_id && *sync_id > 0 && *sync_id <= 65535 &&
+                                                sync_avail && *sync_avail >= 0) {
+                                                session.inventory[static_cast<uint16_t>(*sync_id)] =
+                                                    static_cast<uint32_t>(*sync_avail);
+                                            }
+                                        }
+
                                         if (!handled_dlg && session.active_planned_drop &&
                                             markup.find("end_dialog|drop_item|") != std::string::npos) {
                                             auto item_id = extract_embed_item_id(markup);
@@ -1203,14 +1448,29 @@ bool EnetProxy::run(std::string& err) {
 
                                                 if (session.fast_buy == 2) {
                                                     const int64_t max_b = vending_max_buy(*offer);
-                                                    int64_t want = (session.fast_buy_qty > 0)
-                                                        ? std::min<int64_t>(session.fast_buy_qty, max_b)
-                                                        : max_b;
-                                                    if (offer->price < 0 && want > 0) {
-                                                        const int64_t per_lock = -offer->price;
-                                                        want = (want / per_lock) * per_lock;
+                                                    int64_t want = 0;
+                                                    if (max_b > 0) {
+                                                        if (session.fast_buy_qty <= 0) {
+                                                            want = max_b;
+                                                        } else if (offer->price < 0) {
+                                                            const int64_t per_lock = -offer->price;
+                                                            if (session.fast_buy_qty < per_lock) {
+                                                                want = std::min<int64_t>(per_lock, max_b);
+                                                            } else {
+                                                                want = std::min<int64_t>((session.fast_buy_qty / per_lock) * per_lock, max_b);
+                                                            }
+                                                        } else {
+                                                            want = std::min<int64_t>(session.fast_buy_qty, max_b);
+                                                        }
                                                     }
                                                     if (want > 0) {
+                                                        int64_t est_items = 0, est_cost = 0;
+                                                        if (vending_cost(*offer, want, est_items, est_cost)) {
+                                                            session.vend.active = true;
+                                                            session.vend.items = est_items;
+                                                            session.vend.cost = est_cost;
+                                                            session.vend.deadline = now_dlg + std::chrono::seconds(4);
+                                                        }
                                                         std::ostringstream vr;
                                                         vr << "action|dialog_return\ndialog_name|vending\ntilex|" << offer->tilex
                                                            << "|\ntiley|" << offer->tiley << "|\nexpectprice|" << offer->price
@@ -1333,6 +1593,13 @@ bool EnetProxy::run(std::string& err) {
                                                 }
                                                 forwarded = true;
                                             }
+                                        } else if (!handled_dlg && session.custom_banner && is_gazette) {
+                                            vl->items[1].value = ui::build_changelog_dialog(session);
+                                            auto mod = proto::build_call_function_packet(gp.net_id, gp.value, *vl);
+                                            if (downstream_peer) {
+                                                send_enet_bytes(downstream_peer, chan, mod, flags);
+                                            }
+                                            forwarded = true;
                                         } else if (!handled_dlg && session.style_all_dialogs && session.ui_theme != "classic") {
                                             vl->items[1].value = ui::apply_theme_to_dialog(markup, session.ui_theme);
                                             auto mod = proto::build_call_function_packet(gp.net_id, gp.value, *vl);
@@ -1366,7 +1633,15 @@ bool EnetProxy::run(std::string& err) {
                         if (!forwarded && downstream_peer) {
                             std::vector<uint8_t> buf(raw, raw + len);
                             send_enet_bytes(downstream_peer, chan, buf, flags);
+                            queued_s2c_now = true;
+                        } else if (forwarded && downstream_peer) {
+                            queued_s2c_now = true;
                         }
+
+                        const auto pkt_t1 = std::chrono::steady_clock::now();
+                        const double pkt_us = std::chrono::duration<double, std::micro>(pkt_t1 - pkt_t0).count();
+                        ovh_ema_us = (ovh_ema_us <= 0.0) ? pkt_us : (ovh_ema_us * 0.85 + pkt_us * 0.15);
+                        session.proxy_overhead_us = static_cast<int>(ovh_ema_us + 0.5);
 
                         enet_packet_destroy(event.packet);
                         break;
@@ -1378,6 +1653,10 @@ bool EnetProxy::run(std::string& err) {
                             log_both("[ENet] Server Growtopia memutus koneksi.");
                             upstream_peer = nullptr;
                             pending_c2s.clear();
+                            session.live_ping_ms = 0;
+                            session.ping_min_ms = 0;
+                            session.ping_max_ms = 0;
+                            session.ping_jitter_ms = 0;
                             if (downstream_peer) {
                                 enet_peer_disconnect_later(downstream_peer, 0);
                                 enet_host_flush(server_host);
@@ -1389,6 +1668,9 @@ bool EnetProxy::run(std::string& err) {
                     default:
                         break;
                 }
+            }
+            if (queued_s2c_now && downstream_peer) {
+                enet_host_flush(server_host);
             }
         }
 
@@ -1438,6 +1720,8 @@ bool EnetProxy::run(std::string& err) {
                 if (now >= session.hk_capture_deadline) {
                     session.hk_capture_slot = -1;
                     cap_initialized = false;
+                    cap_pending_mod_vk = 0;
+                    cap_mod_combo_used = false;
                     if (downstream_peer) {
                         send_enet_bytes(downstream_peer, 0,
                             proto::build_on_console_message("`9[`#EvanProxy`9]`4 Rekam tombol dibatalkan (timeout)."),
@@ -1448,11 +1732,16 @@ bool EnetProxy::run(std::string& err) {
                     if (!cap_initialized) {
                         prev_cap_down.fill(false);
                         prev_cap_down[VK_ESCAPE] = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) != 0;
+                        for (int mvk : {VK_CONTROL, VK_MENU, VK_SHIFT}) {
+                            prev_cap_down[static_cast<size_t>(mvk)] = (GetAsyncKeyState(mvk) & 0x8000) != 0;
+                        }
                         for (int vk : cap_vks) {
                             if (vk >= 0 && vk < 256) {
                                 prev_cap_down[static_cast<size_t>(vk)] = (GetAsyncKeyState(vk) & 0x8000) != 0;
                             }
                         }
+                        cap_pending_mod_vk = 0;
+                        cap_mod_combo_used = false;
                         cap_initialized = true;
                     } else {
                         const bool esc_down = (GetAsyncKeyState(VK_ESCAPE) & 0x8000) != 0;
@@ -1460,11 +1749,14 @@ bool EnetProxy::run(std::string& err) {
                             const int slot = session.hk_capture_slot;
                             session.hk_capture_slot = -1;
                             cap_initialized = false;
+                            cap_pending_mod_vk = 0;
+                            cap_mod_combo_used = false;
                             send_enet_bytes(downstream_peer, 0,
                                 proto::build_on_dialog_request(ui::build_hotkey_edit_dialog(session, slot)),
                                 ENET_PACKET_FLAG_RELIABLE);
                         } else {
                             prev_cap_down[VK_ESCAPE] = esc_down;
+                            bool recorded_now = false;
                             for (int vk : cap_vks) {
                                 if (vk < 0 || vk >= 256) continue;
                                 const bool down = (GetAsyncKeyState(vk) & 0x8000) != 0;
@@ -1478,68 +1770,207 @@ bool EnetProxy::run(std::string& err) {
                                     ui::hotkey_capture_finish(session, format_hotkey(spec), cap_eff);
                                     apply_ui_effects(cap_eff);
                                     cap_initialized = false;
+                                    cap_pending_mod_vk = 0;
+                                    cap_mod_combo_used = false;
                                     prev_hk_down.fill(false);
+                                    hk_mod_dirty.fill(false);
+                                    recorded_now = true;
                                     break;
                                 }
                                 prev_cap_down[static_cast<size_t>(vk)] = down;
+                            }
+                            if (!recorded_now) {
+                                for (int mvk : {VK_CONTROL, VK_MENU, VK_SHIFT}) {
+                                    const bool mdown = (GetAsyncKeyState(mvk) & 0x8000) != 0;
+                                    if (mdown && !prev_cap_down[static_cast<size_t>(mvk)]) {
+                                        if (cap_pending_mod_vk == 0) {
+                                            cap_pending_mod_vk = mvk;
+                                            cap_mod_combo_used = false;
+                                        } else {
+                                            cap_mod_combo_used = true;
+                                        }
+                                    } else if (!mdown && prev_cap_down[static_cast<size_t>(mvk)] &&
+                                               cap_pending_mod_vk == mvk) {
+                                        if (!cap_mod_combo_used) {
+                                            HotkeySpec spec;
+                                            spec.vk = mvk;
+                                            ui::UiEffects cap_eff;
+                                            ui::hotkey_capture_finish(session, format_hotkey(spec), cap_eff);
+                                            apply_ui_effects(cap_eff);
+                                            cap_initialized = false;
+                                            prev_hk_down.fill(false);
+                                            hk_mod_dirty.fill(false);
+                                            cap_pending_mod_vk = 0;
+                                            break;
+                                        }
+                                        cap_pending_mod_vk = 0;
+                                        cap_mod_combo_used = false;
+                                    }
+                                    prev_cap_down[static_cast<size_t>(mvk)] = mdown;
+                                }
                             }
                         }
                     }
                 }
             } else {
                 cap_initialized = false;
+                cap_pending_mod_vk = 0;
+                cap_mod_combo_used = false;
                 if (session.hotkeys_enabled && downstream_peer && session.in_world && is_growtopia_foreground()) {
                     const bool ctrl_now = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
                     const bool alt_now = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
                     const bool shift_now = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+
+                    bool has_ctrl_combo = false;
+                    bool has_alt_combo = false;
+                    bool has_shift_combo = false;
+                    std::array<std::optional<HotkeySpec>, kHotkeySlots> parsed_hk;
                     for (size_t i = 0; i < session.hotkeys.size() && i < kHotkeySlots; ++i) {
-                        auto spec = parse_hotkey(session.hotkeys[i].key);
-                        if (!spec || session.hotkeys[i].command.empty()) {
-                            prev_hk_down[i] = false;
-                            continue;
+                        if (session.hotkeys[i].command.empty()) continue;
+                        parsed_hk[i] = parse_hotkey(session.hotkeys[i].key);
+                        if (parsed_hk[i] && !is_modifier_vk(parsed_hk[i]->vk)) {
+                            if (parsed_hk[i]->ctrl) has_ctrl_combo = true;
+                            if (parsed_hk[i]->alt) has_alt_combo = true;
+                            if (parsed_hk[i]->shift) has_shift_combo = true;
                         }
-                        const bool is_bare_typing_key =
-                            !spec->ctrl && !spec->alt && !(spec->vk >= 0x70 && spec->vk <= 0x7B);
-                        const bool key_down =
-                            (GetAsyncKeyState(spec->vk) & 0x8000) != 0 &&
-                            ctrl_now == spec->ctrl &&
-                            alt_now == spec->alt &&
-                            shift_now == spec->shift;
-                        if (key_down && !prev_hk_down[i]) {
-                            if (!(is_bare_typing_key && session.client_icon_state != 0)) {
-                                ui::UiEffects hk_eff;
-                                ui::run_hotkey_command(session.hotkeys[i].command, session, shared_, hk_eff);
-                                apply_ui_effects(hk_eff);
+                    }
+
+                    bool any_other_key_down = false;
+                    if (has_ctrl_combo || has_alt_combo || has_shift_combo) {
+                        for (int vk : hotkey_capture_vks()) {
+                            if ((GetAsyncKeyState(vk) & 0x8000) != 0) {
+                                any_other_key_down = true;
+                                break;
                             }
                         }
-                        prev_hk_down[i] = key_down;
+                    }
+
+                    for (size_t i = 0; i < session.hotkeys.size() && i < kHotkeySlots; ++i) {
+                        const auto& spec = parsed_hk[i];
+                        if (!spec) {
+                            prev_hk_down[i] = false;
+                            hk_mod_dirty[i] = false;
+                            continue;
+                        }
+                        if (is_modifier_vk(spec->vk)) {
+                            const int canon = canonical_modifier_vk(spec->vk);
+                            const bool is_ctrl_key = (canon == 0x11);
+                            const bool is_alt_key = (canon == 0x12);
+                            const bool is_shift_key = (canon == 0x10);
+                            const bool self_down = (GetAsyncKeyState(spec->vk) & 0x8000) != 0;
+                            const bool other_mods_ok =
+                                (is_ctrl_key || ctrl_now == spec->ctrl) &&
+                                (is_alt_key || alt_now == spec->alt) &&
+                                (is_shift_key || shift_now == spec->shift);
+                            const bool held_ok = self_down && other_mods_ok;
+                            const bool shares_combo =
+                                (is_ctrl_key && has_ctrl_combo) ||
+                                (is_alt_key && has_alt_combo) ||
+                                (is_shift_key && has_shift_combo);
+
+                            if (shares_combo) {
+                                if (held_ok) {
+                                    if (!prev_hk_down[i]) hk_mod_dirty[i] = any_other_key_down;
+                                    else if (any_other_key_down) hk_mod_dirty[i] = true;
+                                } else if (prev_hk_down[i] && !hk_mod_dirty[i] && session.client_icon_state == 0) {
+                                    ui::UiEffects hk_eff;
+                                    ui::run_hotkey_command(session.hotkeys[i].command, session, shared_, hk_eff);
+                                    apply_ui_effects(hk_eff);
+                                    shared_.notify_hotkey_toast(session.hotkeys[i].key, session.hotkeys[i].command);
+                                    shared_.push_console_line(LogTag::Action, "HOTKEY",
+                                                              session.hotkeys[i].key + " ran " + session.hotkeys[i].command);
+                                    hk_mod_dirty[i] = false;
+                                } else if (!held_ok) {
+                                    hk_mod_dirty[i] = false;
+                                }
+                            } else {
+                                if (held_ok && !prev_hk_down[i] && session.client_icon_state == 0) {
+                                    ui::UiEffects hk_eff;
+                                    ui::run_hotkey_command(session.hotkeys[i].command, session, shared_, hk_eff);
+                                    apply_ui_effects(hk_eff);
+                                    shared_.notify_hotkey_toast(session.hotkeys[i].key, session.hotkeys[i].command);
+                                    shared_.push_console_line(LogTag::Action, "HOTKEY",
+                                                              session.hotkeys[i].key + " ran " + session.hotkeys[i].command);
+                                }
+                            }
+                            prev_hk_down[i] = held_ok;
+                        } else {
+                            const bool is_bare_typing_key =
+                                !spec->ctrl && !spec->alt && !(spec->vk >= 0x70 && spec->vk <= 0x7B);
+                            const bool key_down =
+                                (GetAsyncKeyState(spec->vk) & 0x8000) != 0 &&
+                                ctrl_now == spec->ctrl &&
+                                alt_now == spec->alt &&
+                                shift_now == spec->shift;
+                            if (key_down && !prev_hk_down[i]) {
+                                if (!(is_bare_typing_key && session.client_icon_state != 0)) {
+                                    ui::UiEffects hk_eff;
+                                    ui::run_hotkey_command(session.hotkeys[i].command, session, shared_, hk_eff);
+                                    apply_ui_effects(hk_eff);
+                                    shared_.notify_hotkey_toast(session.hotkeys[i].key, session.hotkeys[i].command);
+                                    shared_.push_console_line(LogTag::Action, "HOTKEY",
+                                                              session.hotkeys[i].key + " ran " + session.hotkeys[i].command);
+                                }
+                            }
+                            prev_hk_down[i] = key_down;
+                        }
                     }
                 } else {
                     prev_hk_down.fill(false);
+                    hk_mod_dirty.fill(false);
                 }
             }
         }
 
-        if (now - last_stats_tick >= std::chrono::milliseconds(1000)) {
-            last_stats_tick = now;
-            session.live_ping_ms = (upstream_peer && upstream_peer->state == ENET_PEER_STATE_CONNECTED)
-                ? static_cast<int>(upstream_peer->roundTripTime)
-                : 0;
+        if (now - last_ping_tick >= std::chrono::milliseconds(250)) {
+            last_ping_tick = now;
+            if (upstream_peer && upstream_peer->state == ENET_PEER_STATE_CONNECTED) {
+                const uint32_t rtt_ewma = upstream_peer->roundTripTime;
+                const uint32_t rtt_recent = upstream_peer->lastRoundTripTime;
+                const uint32_t cli_rtt =
+                    (downstream_peer &&
+                     downstream_peer->state == ENET_PEER_STATE_CONNECTED &&
+                     downstream_peer->lastRoundTripTime < 50u)
+                        ? downstream_peer->lastRoundTripTime
+                        : 0u;
+                const uint32_t base_rtt =
+                    (rtt_recent > 0 && rtt_recent < 5000 && rtt_recent != ENET_PEER_DEFAULT_ROUND_TRIP_TIME)
+                    ? rtt_recent
+                    : rtt_ewma;
+                const int live = static_cast<int>(base_rtt) + static_cast<int>(cli_rtt);
+                session.live_ping_ms = live;
+                session.ping_jitter_ms = static_cast<int>(upstream_peer->roundTripTimeVariance);
+                if (live > 0) {
+                    if (session.ping_min_ms == 0 || live < session.ping_min_ms) session.ping_min_ms = live;
+                    if (live > session.ping_max_ms) session.ping_max_ms = live;
+                }
+            } else {
+                session.live_ping_ms = 0;
+                session.ping_jitter_ms = 0;
+            }
+        }
+
+        const bool anim_due = (now - last_anim_tick >= std::chrono::milliseconds(700));
+        if (anim_due) {
+            last_anim_tick = now;
             if (session.needs_animated_name()) {
                 ++session.rainbow_step;
             }
-            if ((session.fps_show_name || session.needs_animated_name()) &&
-                session.in_world && session.local_net_id >= 0 && downstream_peer) {
-                const std::string composed = session.compose_display_name();
-                if (composed != session.last_sent_display_name) {
-                    send_enet_bytes(
-                        downstream_peer,
-                        0,
-                        proto::build_on_name_changed(session.local_net_id, composed, session.server_name_extra_json),
-                        ENET_PACKET_FLAG_RELIABLE
-                    );
-                    session.last_sent_display_name = composed;
-                }
+        }
+        if ((session.fps_show_name || session.needs_animated_name()) &&
+            session.in_world && session.local_net_id >= 0 && downstream_peer) {
+            const std::string composed = session.compose_display_name();
+            if (composed != session.last_sent_display_name &&
+                (anim_due || now - last_ping_name_push >= std::chrono::milliseconds(350))) {
+                last_ping_name_push = now;
+                send_enet_bytes(
+                    downstream_peer,
+                    0,
+                    proto::build_on_name_changed(session.local_net_id, composed, session.server_name_extra_json),
+                    ENET_PACKET_FLAG_RELIABLE
+                );
+                enet_host_flush(server_host);
+                session.last_sent_display_name = composed;
             }
         }
         if (session.timer_active && now >= session.timer_end) {
@@ -1555,6 +1986,14 @@ bool EnetProxy::run(std::string& err) {
                                 proto::build_play_sfx("audio/door_open.wav", 0),
                                 ENET_PACKET_FLAG_RELIABLE);
             }
+        }
+        if (now - last_fps_tick >= std::chrono::milliseconds(500)) {
+            last_fps_tick = now;
+            session.live_fps = fps_sampler.sample_fps();
+        }
+        if (now - last_snapshot_tick >= std::chrono::milliseconds(100)) {
+            last_snapshot_tick = now;
+            publish_live_snapshot();
         }
 
         enet_host_flush(server_host);
@@ -1574,7 +2013,7 @@ bool EnetProxy::run(std::string& err) {
                 has_sock = true;
             }
             if (has_sock) {
-                timeval tv{0, 2000};
+                timeval tv{0, 1000};
                 select(0, &rfds, nullptr, nullptr, &tv);
             } else {
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));

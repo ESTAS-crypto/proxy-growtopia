@@ -1,8 +1,11 @@
+#include "banner.hpp"
 #include "cert.hpp"
 #include "config.hpp"
+#include "desktop_gui.hpp"
 #include "enet_proxy.hpp"
 #include "hosts.hpp"
 #include "http_bridge.hpp"
+#include "proxy_controller.hpp"
 
 #include <winsock2.h>
 #include <windows.h>
@@ -16,6 +19,7 @@
 namespace {
 
 evan::SharedState* g_shared_state = nullptr;
+evan::ProxyController* g_controller = nullptr;
 std::atomic<bool> g_manage_hosts_active{false};
 
 BOOL WINAPI console_ctrl_handler(DWORD ctrl_type) {
@@ -25,6 +29,9 @@ BOOL WINAPI console_ctrl_handler(DWORD ctrl_type) {
         case CTRL_CLOSE_EVENT:
         case CTRL_SHUTDOWN_EVENT:
             std::cout << "\n[*] Menghentikan EvanProxy dan membersihkan hosts...\n";
+            if (g_controller) {
+                g_controller->stop();
+            }
             if (g_shared_state) {
                 g_shared_state->stop_requested.store(true);
             }
@@ -41,7 +48,9 @@ BOOL WINAPI console_ctrl_handler(DWORD ctrl_type) {
 void print_help() {
     std::cout << "EvanProxy - Growtopia Local Proxy (C++20 / HTTPS + ENet)\n\n"
               << "Penggunaan:\n"
-              << "  EvanProxy.exe                  Jalankan proxy (auto-elevate jika manage_hosts=true)\n"
+              << "  EvanProxy.exe                  Buka Desktop Launcher & Dashboard UI/UX + HUD Overlay\n"
+              << "  EvanProxy.exe --autostart      Buka UI Desktop dan langsung Start proxy\n"
+              << "  EvanProxy.exe --cli            Jalankan mode konsol klasik (tanpa UI Desktop)\n"
               << "  EvanProxy.exe --install-cert   Buat & install Root CA lokal ke Windows CurrentUser Store\n"
               << "  EvanProxy.exe --uninstall-cert Hapus Root CA lokal dari Windows CurrentUser Store\n"
               << "  EvanProxy.exe --clean-hosts    Hapus blok EvanProxy dari file hosts Windows\n"
@@ -79,6 +88,8 @@ int main(int argc, char* argv[]) {
     bool opt_clean_hosts = false;
     bool opt_no_hosts = false;
     bool opt_test_upstream = false;
+    bool opt_cli = false;
+    bool opt_autostart = false;
     bool opt_help = false;
 
     for (int i = 1; i < argc; ++i) {
@@ -88,6 +99,8 @@ int main(int argc, char* argv[]) {
         else if (arg == "--clean-hosts") opt_clean_hosts = true;
         else if (arg == "--no-hosts") opt_no_hosts = true;
         else if (arg == "--test-upstream") opt_test_upstream = true;
+        else if (arg == "--cli") opt_cli = true;
+        else if (arg == "--autostart") opt_autostart = true;
         else if (arg == "--help" || arg == "-h") opt_help = true;
         else {
             std::cerr << "[!] Argumen tidak dikenal: " << arg << "\n\n";
@@ -160,15 +173,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    evan::cert::CertPaths certs;
-    std::string cert_err;
-    if (!evan::cert::ensure_certs(cert_dir, cfg.server_data_hosts, certs, cert_err)) {
-        std::cerr << "[!] Gagal menyiapkan sertifikat TLS: " << cert_err << "\n";
-        pause_before_exit();
-        return 1;
-    }
-
     if (opt_install_cert) {
+        evan::cert::CertPaths certs;
+        std::string cert_err;
+        if (!evan::cert::ensure_certs(cert_dir, cfg.server_data_hosts, certs, cert_err)) {
+            std::cerr << "[!] Gagal menyiapkan sertifikat TLS: " << cert_err << "\n";
+            pause_before_exit();
+            return 1;
+        }
         std::string err;
         if (evan::cert::install_ca_user_root(certs.ca_cert, err)) {
             std::cout << "[+] Root CA berhasil di-install ke Windows CurrentUser Root Store.\n";
@@ -178,11 +190,63 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // Default GUI mode (Launcher + Dashboard + In-Game HUD Overlay)
+    if (!opt_cli) {
+        WSADATA wsa{};
+        if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
+            std::cerr << "[!] Gagal inisialisasi Winsock2.\n";
+            return 1;
+        }
+        struct WsaGuard {
+            ~WsaGuard() { WSACleanup(); }
+        } wsa_guard;
+
+        // Hide the standalone console window only when launched by double-click (no parent terminal)
+        DWORD pid_list[4] = {};
+        if (GetConsoleProcessList(pid_list, 4) <= 1) {
+            if (HWND cw = GetConsoleWindow()) {
+                ShowWindow(cw, SW_HIDE);
+            }
+        }
+
+        evan::ProxyController::Options opts;
+        opts.exe_dir = exe_dir;
+        opts.config_path = cfg_path;
+        opts.cert_dir = cert_dir;
+        opts.log_dir = exe_dir / "logs";
+        opts.worlds_path = exe_dir / "worlds.ini";
+        opts.no_hosts_override = opt_no_hosts;
+
+        evan::ProxyController controller(opts);
+        g_controller = &controller;
+        SetConsoleCtrlHandler(console_ctrl_handler, TRUE);
+
+        const int rc = evan::DesktopGui::run(controller, opt_autostart);
+        g_controller = nullptr;
+        return rc;
+    }
+
+    // Classic headless console mode (--cli)
+    evan::cert::CertPaths certs;
+    std::string cert_err;
+    if (!evan::cert::ensure_certs(cert_dir, cfg.server_data_hosts, certs, cert_err)) {
+        std::cerr << "[!] Gagal menyiapkan sertifikat TLS: " << cert_err << "\n";
+        pause_before_exit();
+        return 1;
+    }
+
     std::cout << "========================================\n";
     std::cout << "   EvanProxy (Growtopia HTTPS + ENet)\n";
     std::cout << "========================================\n";
     std::cout << "[*] Config : " << cfg_path.string() << "\n";
     std::cout << "[*] Certs  : " << cert_dir.string() << "\n";
+    {
+        const auto br = evan::banner::sync_banners_to_growtopia(exe_dir);
+        if (br.installed_count > 0) {
+            std::cout << "[Banner] " << br.installed_count
+                      << " aset banner EvanProxy siap di: " << br.cache_dir.string() << "\n";
+        }
+    }
 
     if (!evan::cert::is_ca_trusted_in_user_root()) {
         std::cout << "\n[!] Root CA lokal ('" << evan::cert::CA_COMMON_NAME

@@ -82,7 +82,7 @@ std::string pbl_label(int role) {
 
 std::string fastbuy_label(int mode, int qty) {
     const std::string qtxt = (qty > 0) ? (std::to_string(qty) + "x") : "Maks";
-    if (mode == 2) return "`2Auto (" + qtxt + ")``";
+    if (mode == 2) return "`2Auto 1-Klik (" + qtxt + ")``";
     if (mode == 1) return "`9Quick (" + qtxt + ")``";
     return "`4OFF``";
 }
@@ -148,6 +148,7 @@ void enter_visual_clothes_mode(Session& session, UiEffects& out) {
 
 void exit_visual_clothes_mode(Session& session, UiEffects& out) {
     session.visual_clothes_mode = false;
+    session.active_clothes_preset.clear();
     for (uint32_t id : session.visual_bp_items) {
         out.to_client.push_back(proto::build_modify_item_inventory(id, -1));
     }
@@ -200,6 +201,7 @@ void apply_clothes_preset(Session& session, const std::string& preset, UiEffects
         return;
     }
     enter_visual_clothes_mode(session, out);
+    session.active_clothes_preset = preset;
     std::fill(std::begin(session.visual_clothes.slots), std::end(session.visual_clothes.slots), 0u);
     for (uint32_t id : items) {
         give_and_equip_visual_item(session, id, out);
@@ -466,6 +468,9 @@ void schedule_custom_wl_drop(Session& session, const std::string& arg, UiEffects
     if (act_conv > 0) msg << "`o(" << act_conv << "x convert WL->DL) ";
     if (act_break > 0) msg << "`o(" << act_break << "x pecah lock) ";
     push_brand(out, msg.str());
+    out.calc_toast = std::make_pair(
+        "CALC · /cd " + std::to_string(*total),
+        format_cd_breakdown(static_cast<int64_t>(*total)));
 }
 
 void trigger_auto_bgl_toggle(Session& session, UiEffects& out) {
@@ -508,6 +513,10 @@ std::string build_home_dialog(const Session& session, const SharedState& shared)
                                  static_cast<uint64_t>(session.wl_count());
     std::ostringstream oss;
     oss << dialog_header(session, "`wEvanProxy `9Dashboard``", 7188);
+    if (session.custom_banner) {
+        oss << "add_image_button|nav_go_changelog|interface/large/evanproxy_banner.rttex|bannerlayout||\n"
+            << "add_spacer|small|\n";
+    }
 
     // Compact 3-line status summary (ZERO inner `|` characters!)
     oss << "add_smalltext|`9Player: `w"
@@ -519,36 +528,57 @@ std::string build_home_dialog(const Session& session, const SharedState& shared)
     oss << "add_smalltext|`9Wealth: `2" << session.bgl_count() << " BGL `o/ `1"
         << session.dl_count() << " DL `o/ `6" << session.wl_count() << " WL `o(=`9"
         << format_number_commas(static_cast<int64_t>(total_wl_eq)) << " WL`o)   `9Gems: `5"
-        << (session.gems >= 0 ? format_number_commas(session.gems) : "-") << "|left|\n";
+        << (session.gems >= 0 ? format_number_commas(session.gems) : "-")
+        << " `o(`2+" << format_number_commas(session.gems_collected_world)
+        << " World`o / `9" << format_number_commas(session.world_floor_gems_total())
+        << " Lantai`o)|left|\n";
 
     oss << "add_smalltext|`9Server: `2"
         << (cur_up ? (cur_up->first + ":" + std::to_string(cur_up->second)) : "none")
-        << "   `9Ping: `w" << session.live_ping_ms << "ms   `9Players: `w"
-        << (session.in_world ? (session.players.size() + 1) : 0)
+        << "   `9Ping: `w" << session.live_ping_ms << "ms `o(Jitter +/-" << session.ping_jitter_ms << "ms)"
+        << "   `9Players: `w" << (session.in_world ? (session.players.size() + 1) : 0)
         << "   `9FastBuy: " << fastbuy_label(session.fast_buy, session.fast_buy_qty)
         << "|left|\n"
         << "add_spacer|small|\n";
 
-    // Single crisp 5-icon Quick Bar (uniform 8-char labels so Growtopia never scales fonts unevenly!)
+    // Row 1: Main Navigation Icons (6 vibrant Growtopia item icons)
     oss << "add_button_with_icon|nav_go_nav|`w  Warp  |staticBlueFrame|242||\n"
         << "add_button_with_icon|nav_go_clothes|`wClothes |staticBlueFrame|2390||\n"
+        << "add_button_with_icon|nav_go_search|`wSearchBP|staticBlueFrame|6140||\n"
         << "add_button_with_icon|nav_go_title|`w Titles |staticBlueFrame|1486||\n"
         << "add_button_with_icon|nav_go_hotkeys|`wHotkeys |staticBlueFrame|3802||\n"
         << "add_button_with_icon|nav_go_tools|`w Tools  |staticBlueFrame|32||\n"
         << "add_button_with_icon||END_LIST|noflags|0||\n"
         << "add_spacer|big|\n";
 
-    oss << "add_label_with_icon|small|`wMenu Lainnya``|left|1750|\n"
-        << "add_button|nav_go_visual|`wVisual, Kulit, Cuaca & Tema UI|noflags|0|0|\n"
-        << "add_button|nav_go_search|`wCari & Ambil Item Visual ke BP (/search)|noflags|0|0|\n"
-        << "add_button|nav_go_packets|`wPacket & Action Monitor (" << shared.c2s_packets.load() << " / " << shared.s2c_packets.load() << ")|noflags|0|0|\n"
-        << "add_button|nav_go_worldinfo|`wInfo World & Daftar Pemain (" << (session.in_world ? (session.players.size() + 1) : 0) << ")|noflags|0|0|\n"
-        << "add_button|nav_go_commands|`9Daftar Command Lengkap (/phelp)|noflags|0|0|\n"
+    // Row 2: Live Scanners & Info Icons
+    oss << "add_button_with_icon|nav_go_gems|`5  Gems  |staticYellowFrame|112||\n"
+        << "add_button_with_icon|nav_go_visual|`w Visual |staticPurpleFrame|5250||\n"
+        << "add_button_with_icon|nav_go_worldinfo|`w WInfo  |staticBlueFrame|3898||\n"
+        << "add_button_with_icon|nav_go_players|`wPlayers |staticBlueFrame|1750||\n"
+        << "add_button_with_icon|nav_go_packets|`wPackets |staticBlueFrame|226||\n"
+        << "add_button_with_icon|nav_go_changelog|`wGazette |staticPurpleFrame|5016||\n"
+        << "add_button_with_icon||END_LIST|noflags|0||\n"
+        << "add_spacer|big|\n";
+
+    // 1-Click Quick Toggle Icon Strip (Gold frame = ON, Blue frame = OFF)
+    auto qframe = [](bool on) { return on ? "staticYellowFrame" : "staticBlueFrame"; };
+    oss << "add_label_with_icon|small|`wQuick Toggles (Klik Ikon Langsung ON/OFF)``|left|32|\n"
+        << "add_button_with_icon|home_tog_fastbuy|" << (session.fast_buy > 0 ? "`2FastBuy " : "`oFastBuy ") << "|" << qframe(session.fast_buy > 0) << "|9268||\n"
+        << "add_button_with_icon|home_tog_autobgl|" << (session.auto_bgl ? "`2AutoBGL " : "`oAutoBGL ") << "|" << qframe(session.auto_bgl) << "|7188||\n"
+        << "add_button_with_icon|home_tog_gems|" << (session.gems_tracker ? "`2GemTrack" : "`oGemTrack") << "|" << qframe(session.gems_tracker) << "|112||\n"
+        << "add_button_with_icon|home_tog_fps_boost|" << (session.fps_boost ? "`2AntiLag " : "`oAntiLag ") << "|" << qframe(session.fps_boost) << "|226||\n"
+        << "add_button_with_icon|home_tog_fps_name|" << (session.fps_show_name ? "`2PingTag " : "`oPingTag ") << "|" << qframe(session.fps_show_name) << "|3802||\n"
+        << "add_button_with_icon|home_tog_hotkeys|" << (session.hotkeys_enabled ? "`2Hotkeys " : "`oHotkeys ") << "|" << qframe(session.hotkeys_enabled) << "|18||\n"
+        << "add_button_with_icon||END_LIST|noflags|0||\n"
+        << "add_spacer|big|\n"
+        << "add_button|nav_go_commands|`9Daftar Command Lengkap (/phelp & /gems)|noflags|0|0|\n"
         << "add_spacer|small|\n";
 
-    oss << "add_label_with_icon|small|`wQuick Settings (Centang lalu klik Simpan)``|left|226|\n"
+    oss << "add_label_with_icon|small|`wPengaturan Detail (Centang lalu klik Simpan)``|left|226|\n"
         << "add_checkbox|chk_home_autobgl|Auto-Exchange Telephone -> BGL (Wrench #3898)|" << cb_val(session.auto_bgl) << "|\n"
-        << "add_checkbox|chk_home_fastbuy|Vending Fast Buy (Quick / Skip Konfirmasi)|" << cb_val(session.fast_buy > 0) << "|\n"
+        << "add_checkbox|chk_home_fastbuy|Vending Fast Buy 1-Klik Auto (/fastbuy)|" << cb_val(session.fast_buy > 0) << "|\n"
+        << "add_checkbox|chk_home_gems|Gems Live Pickup Bubble & World Drop Scanner (/gems)|" << cb_val(session.gems_tracker) << "|\n"
         << "add_checkbox|chk_home_fastdrop|Fast Drop (Auto Konfirmasi Jumlah Penuh)|" << cb_val(session.fast_drop) << "|\n"
         << "add_checkbox|chk_home_hotkeys|Keyboard Hotkeys Custom Aktif (/hotkey)|" << cb_val(session.hotkeys_enabled) << "|\n"
         << "add_checkbox|chk_home_fps_name|Tampilkan Ping (ms) di Sebelah Nama (/fps)|" << cb_val(session.fps_show_name) << "|\n"
@@ -684,6 +714,7 @@ std::string build_visual_dialog(const Session& session) {
         << "add_checkbox|chk_vis_zoom|Unlimited Zoom (Aktif saat masuk world)|" << cb_val(session.unlimited_zoom) << "|\n"
         << "add_checkbox|chk_vis_hideclothes|Sembunyikan Baju Pemain Lain (/hideclothes)|" << cb_val(session.hide_clothes) << "|\n"
         << "add_checkbox|chk_vis_styleall|Terapkan Tema Proxy ke Semua Dialog Game|" << cb_val(session.style_all_dialogs) << "|\n"
+        << "add_checkbox|chk_vis_banner|Banner Custom EvanProxy di Hub & Gazette (/banner)|" << cb_val(session.custom_banner) << "|\n"
         << "add_spacer|small|\n"
         << "end_dialog|evanproxy_visual|Tutup|Simpan|\n";
     return oss.str();
@@ -736,7 +767,12 @@ std::string build_fps_dialog(const Session& session) {
     oss << dialog_header(session, "`wPing Display & Anti-Lag Optimizer``", 226);
     append_back_home(oss);
 
-    oss << "add_smalltext|`9Ping Server (ENet RTT): `2" << session.live_ping_ms << " ms|left|\n"
+    oss << "add_smalltext|`9Ping Server (ENet RTT Real-Time): `2" << session.live_ping_ms
+        << " ms   `o(Min: `w" << session.ping_min_ms << "ms  `oMax: `w" << session.ping_max_ms
+        << "ms  `oJitter: +/-" << session.ping_jitter_ms << "ms)|left|\n"
+        << "add_smalltext|`9Overhead Proxy Lokal: `2"
+        << (session.proxy_overhead_us > 0 ? (std::to_string(session.proxy_overhead_us) + " us (<1ms)") : "<1ms")
+        << " `o(Async Logger + 1MB UDP + 0ms Throttle)|left|\n"
         << "add_spacer|small|\n";
 
     oss << "add_checkbox|chk_fps_name|Tampilkan Ping (ms) di Sebelah Nama (/fps)|" << cb_val(session.fps_show_name) << "|\n"
@@ -859,7 +895,7 @@ std::string build_worldinfo_dialog(const Session& session, const SharedState& sh
         << "   `9Gems: `5" << (session.gems >= 0 ? format_number_commas(session.gems) : "-") << "|left|\n"
         << "add_smalltext|`9Locks: `2" << session.bgl_count() << " BGL / `1" << session.dl_count() << " DL / `6" << session.wl_count() << " WL|left|\n"
         << "add_smalltext|`9Upstream: `2" << (cur_up ? (cur_up->first + ":" + std::to_string(cur_up->second)) : "none")
-        << "   `9Ping: `2" << session.live_ping_ms << "ms|left|\n"
+        << "   `9Ping: `2" << session.live_ping_ms << "ms `o(Jitter +/-" << session.ping_jitter_ms << "ms)|left|\n"
         << "add_spacer|small|\n"
         << "add_button|nav_go_players|`9Lihat Daftar Pemain di World (" << (session.in_world ? (session.players.size() + 1) : 0) << ")|noflags|0|0|\n"
         << "add_spacer|small|\n"
@@ -869,15 +905,15 @@ std::string build_worldinfo_dialog(const Session& session, const SharedState& sh
 
 std::string build_player_inspect_dialog(const Session& session, const PlayerInfo& p) {
     std::ostringstream oss;
-    oss << dialog_header(session, "`wPlayer Inspector (/wrench)``", 1750);
-    oss << "add_smalltext|`9Nama: `w" << safe_markup_text(p.name)
-        << " `o(netID=" << p.net_id << ", userID=" << p.user_id << ")|left|\n"
-        << "add_smalltext|`9Posisi Tile: `w(" << p.tile_x << "," << p.tile_y << ")|left|\n"
+    oss << dialog_header(session, "`wWrench: " + safe_markup_text(p.name) + "``", 1750);
+    oss << "add_smalltext|`9Player: `w" << safe_markup_text(p.name)
+        << " `o(netID=" << p.net_id << ", userID=" << p.user_id
+        << ", tile=(" << p.tile_x << "," << p.tile_y << "))|left|\n"
         << "add_spacer|small|\n";
 
     auto it = session.remote_clothes.find(p.net_id);
     if (it != session.remote_clothes.end() && it->second.valid) {
-        oss << "add_label_with_icon|small|`wOutfit Pemain``|left|5484|\n";
+        oss << "add_label_with_icon|small|`wOutfit Pemain (/wrench info)``|left|5484|\n";
         for (int s = 0; s < 10; ++s) {
             if (it->second.slots[s] != 0) {
                 std::string iname = session.items_db
@@ -887,16 +923,17 @@ std::string build_player_inspect_dialog(const Session& session, const PlayerInfo
                     << safe_markup_text(iname) << "|left|\n";
             }
         }
-        oss << "add_spacer|small|\n"
-            << "add_button|copy_outfit_" << p.net_id << "|`2Copy Outfit Ini ke Visual Clothes|noflags|0|0|\n";
+        oss << "add_button|copy_outfit_" << p.net_id << "|`2Copy Outfit ke Visual Clothes|noflags|0|0|\n"
+            << "add_spacer|small|\n";
     } else {
         oss << "add_smalltext|`oOutfit belum terekam.|left|\n";
     }
 
-    oss << "add_spacer|small|\n"
-        << "add_button|wrench_act_pull_" << p.net_id << "|Pull Pemain|noflags|0|0|\n"
-        << "add_button|wrench_act_kick_" << p.net_id << "|Kick Pemain|noflags|0|0|\n"
-        << "add_button|wrench_act_ban_" << p.net_id << "|Ban Pemain|noflags|0|0|\n"
+    oss << "add_button|wrench_act_pull_" << p.net_id << "|`wPull  `9(/wrench pull)|noflags|0|0|\n"
+        << "add_button|wrench_act_kick_" << p.net_id << "|`wKick  `9(/wrench kick)|noflags|0|0|\n"
+        << "add_button|wrench_act_ban_" << p.net_id << "|`4Ban   `w(/wrench ban)|noflags|0|0|\n"
+        << "add_spacer|small|\n"
+        << "add_button|wrench_turn_off|`oTurn wrench shortcuts off|noflags|0|0|\n"
         << "add_spacer|small|\n"
         << "end_dialog|evanproxy_inspect||Tutup|\n";
     return oss.str();
@@ -909,7 +946,13 @@ std::string build_tools_dialog(const Session& session) {
 
     oss << "add_label_with_icon|small|`wVending Machine Fast Buy (/fastbuy)``|left|9268|\n"
         << "add_button|btn_fastbuy_cycle|Mode Fast Buy (Klik Ganti): " << fastbuy_label(session.fast_buy, session.fast_buy_qty) << "|noflags|0|0|\n"
-        << "add_text_input|fb_qty_input|`wJumlah Fast Buy (0 = Maks / Auto):|" << session.fast_buy_qty << "|4|\n"
+        << "add_button|fb_qty_1|" << (session.fast_buy_qty == 1 ? "`2* " : "") << "1x (1-Klik)|noflags|0|0|\n"
+        << "add_button|fb_qty_5|" << (session.fast_buy_qty == 5 ? "`2* " : "") << "5x|noflags|0|0|\n"
+        << "add_button|fb_qty_10|" << (session.fast_buy_qty == 10 ? "`2* " : "") << "10x|noflags|0|0|\n"
+        << "add_button|fb_qty_50|" << (session.fast_buy_qty == 50 ? "`2* " : "") << "50x|noflags|0|0|\n"
+        << "add_button|fb_qty_200|" << (session.fast_buy_qty == 200 ? "`2* " : "") << "200x|noflags|0|0|\n"
+        << "add_button|fb_qty_0|" << (session.fast_buy_qty == 0 ? "`2* " : "") << "Maks|noflags|0|0|\n"
+        << "add_text_input|fb_qty_input|`wJumlah Custom Fast Buy (0 = Maks, 1..200 = Otomatis Beli):|" << session.fast_buy_qty << "|4|\n"
         << "add_checkbox|chk_vend_info|Info Privat Sisa Stok Vend & Sisa WL Anda (Hanya Anda Lihat)|" << cb_val(session.vending_info) << "|\n"
         << "add_spacer|small|\n";
 
@@ -941,11 +984,72 @@ std::string build_tools_dialog(const Session& session) {
         << "add_button|timer_180|Timer 3 Menit|noflags|0|0|\n"
         << "add_button|timer_cancel|`4Batalkan Timer|noflags|0|0|\n"
         << "add_spacer|small|\n"
+        << "add_button|nav_go_gems|`5Buka Gems Tracker & Scanner (/gems)|noflags|0|0|\n"
         << "add_button|nav_go_players|`9Daftar Pemain di World (" << (session.in_world ? (session.players.size() + 1) : 0) << ")|noflags|0|0|\n"
         << "add_button|nav_go_worldinfo|`9Info World & Lock (/winfo)|noflags|0|0|\n"
-        << "add_button|btn_open_news|`9Buka Growtopia Gazette (/news)|noflags|0|0|\n"
+        << "add_button|btn_open_news|`9Buka EvanProxy Gazette (/news)|noflags|0|0|\n"
         << "add_spacer|small|\n"
         << "end_dialog|evanproxy_tools|Tutup|Simpan|\n";
+    return oss.str();
+}
+
+std::string build_gems_dialog(const Session& session) {
+    const int64_t floor_gems = session.world_floor_gems_total();
+    const size_t floor_clusters = session.world_floor_gems_clusters();
+    const auto top_tiles = session.world_gem_tiles_top(8);
+    const auto floor_items = session.world_floor_items_summary();
+
+    std::ostringstream oss;
+    oss << dialog_header(session, "`wGems Tracker & World Drop Scanner (/gems)``", 112);
+    append_back_home(oss);
+
+    oss << "add_smalltext|`9Saldo Gems Anda: `5"
+        << (session.gems >= 0 ? format_number_commas(session.gems) : "-") << " Gems"
+        << "   `9World Ini: `2+" << format_number_commas(session.gems_collected_world)
+        << "   `9Sesi Ini: `2+" << format_number_commas(session.gems_collected_session) << "|left|\n"
+        << "add_smalltext|`9Gems di Lantai World ("
+        << (session.in_world ? safe_markup_text(session.current_world) : "Menu")
+        << "): `5" << format_number_commas(floor_gems) << " Gems `o(" << floor_clusters << " drop)|left|\n"
+        << "add_spacer|small|\n";
+
+    oss << "add_checkbox|chk_gems_tracker|Live Gem Pickup Bubble & Counter (tampilkan +Gems saat pungut)|"
+        << cb_val(session.gems_tracker) << "|\n"
+        << "add_spacer|small|\n";
+
+    oss << "add_button_with_icon|gems_refresh|`2Scan/Refresh|staticBlueFrame|112||\n"
+        << "add_button_with_icon|gems_show_bubble|`9Show Saldo|staticYellowFrame|9436||\n"
+        << "add_button_with_icon|gems_reset_stats|`4Reset Sesi|staticBlueFrame|32||\n"
+        << "add_button_with_icon||END_LIST|noflags|0||\n"
+        << "add_spacer|big|\n";
+
+    oss << "add_label_with_icon|small|`wLokasi Gems di Lantai World``|left|112|\n";
+    if (top_tiles.empty()) {
+        oss << "add_smalltext|`oBelum ada gem baru yang terdeteksi jatuh di lantai sejak masuk world.|left|\n";
+    } else {
+        for (const auto& [coord, cnt] : top_tiles) {
+            oss << "add_smalltext|`2> `wTile (" << coord.first << ", " << coord.second << ")`o: `5"
+                << format_number_commas(static_cast<int64_t>(cnt)) << " Gems|left|\n";
+        }
+    }
+
+    oss << "add_spacer|small|\n"
+        << "add_label_with_icon|small|`wItem & Lock Jatuh di Lantai World``|left|242|\n";
+    if (floor_items.empty()) {
+        oss << "add_smalltext|`oTidak ada drop item/lock baru yang tersisa di lantai.|left|\n";
+    } else {
+        size_t shown = 0;
+        for (const auto& [iid, cnt] : floor_items) {
+            const std::string iname = session.items_db
+                ? session.items_db->name_or_fallback(iid)
+                : ("Item #" + std::to_string(iid));
+            oss << "add_smalltext|`9> `w" << format_number_commas(static_cast<int64_t>(cnt))
+                << "x `2" << safe_markup_text(iname) << " `o(#" << iid << ")|left|\n";
+            if (++shown >= 10) break;
+        }
+    }
+
+    oss << "add_spacer|small|\n"
+        << "end_dialog|evanproxy_gems|Tutup|Simpan|\n";
     return oss.str();
 }
 
@@ -956,7 +1060,7 @@ std::string build_hotkeys_dialog(const Session& session) {
 
     oss << "add_checkbox|chk_hotkeys_enabled|Aktifkan Keyboard Hotkeys (Saat Growtopia Fokus)|"
         << cb_val(session.hotkeys_enabled) << "|\n"
-        << "add_smalltext|`oKlik slot mana saja di bawah untuk mengatur tombol (A, F1, CTRL+A, dll) & perintah bebas (misal /warp clunxz).|left|\n"
+        << "add_smalltext|`oKlik slot di bawah untuk mengatur tombol TUNGGAL (CTRL, ALT, SHIFT, TAB, SPACE, A, F1) atau kombinasi (CTRL+A) & command (misal /warp clunxz).|left|\n"
         << "add_spacer|small|\n";
 
     for (size_t i = 0; i < kHotkeySlots; ++i) {
@@ -994,13 +1098,13 @@ std::string build_hotkey_edit_dialog(const Session& session, int slot) {
         << "add_smalltext|`9Slot: `w#" << (slot + 1)
         << "   `9Tombol Saat Ini: `2" << (cur_key.empty() ? "Kosong" : safe_markup_text(cur_key)) << "|left|\n"
         << "add_spacer|small|\n"
-        << "add_text_input|hk_key_input|`wTombol Shortcut (contoh A, F1, CTRL+A, ALT+1, NUM1):|"
+        << "add_text_input|hk_key_input|`wTombol Shortcut (CTRL, ALT, SHIFT, TAB, SPACE, A, F1, CTRL+A):|"
         << safe_markup_text(cur_key) << "|16|\n"
-        << "add_button|hk_record_key|`9Rekam Tombol Langsung dari Keyboard|noflags|0|0|\n"
+        << "add_button|hk_record_key|`9Rekam Tombol Langsung dari Keyboard (Tekan 1 Tombol atau Combo)|noflags|0|0|\n"
         << "add_spacer|small|\n"
         << "add_text_input|hk_cmd_input|`wPerintah / Chat (contoh /warp clunxz atau /cd 102):|"
         << safe_markup_text(cur_cmd) << "|80|\n"
-        << "add_smalltext|`oTips: Tombol huruf tunggal (misal A) otomatis dijeda saat Anda sedang mengetik chat atau membuka dialog.|left|\n"
+        << "add_smalltext|`oTips: Bisa pakai 1 tombol saja seperti CTRL / ALT / SHIFT / TAB / A. Huruf biasa & CTRL dijeda otomatis saat chat atau dialog terbuka.|left|\n"
         << "add_spacer|small|\n"
         << "add_button|hk_test|`2Test Jalankan Sekarang|noflags|0|0|\n"
         << "add_button|hk_clear|`4Kosongkan Slot Ini|noflags|0|0|\n"
@@ -1010,9 +1114,20 @@ std::string build_hotkey_edit_dialog(const Session& session, int slot) {
     return oss.str();
 }
 
-std::string build_players_dialog(const Session& session) {
+std::string build_players_dialog(const Session& session, int page) {
     std::ostringstream oss;
-    oss << dialog_header(session, "`wDaftar Pemain di World``", 1750);
+    const size_t remote_count = session.players.size();
+    const size_t total_count = session.in_world ? (remote_count + 1) : 0;
+    constexpr size_t kPerPage = 25;
+    const int total_pages = std::max(1, static_cast<int>((remote_count + kPerPage - 1) / kPerPage));
+    if (page < 0) page = 0;
+    if (page >= total_pages) page = total_pages - 1;
+
+    oss << dialog_header(
+        session,
+        "`wDaftar Pemain di World (" + std::to_string(total_count) + " - Hal " +
+        std::to_string(page + 1) + "/" + std::to_string(total_pages) + ")``",
+        1750);
     append_back_home(oss);
 
     if (!session.in_world) {
@@ -1025,23 +1140,85 @@ std::string build_players_dialog(const Session& session) {
             << " - tile=(" << session.tile_x << "," << session.tile_y << ")|left|\n";
 
         if (session.players.empty()) {
-            oss << "add_smalltext|`oTidak ada pemain lain di world ini.|left|\n";
+            oss << "add_smalltext|`oTidak ada pemain lain terdeteksi di world ini.|left|\n";
         } else {
-            size_t cnt = 0;
+            const size_t start_idx = static_cast<size_t>(page) * kPerPage;
+            size_t idx = 0;
+            size_t shown = 0;
             for (const auto& [nid, p] : session.players) {
-                oss << "add_smalltext|`w" << safe_markup_text(p.name)
-                    << " `o- netID=" << nid
-                    << " - userID=" << p.user_id
-                    << " - tile=(" << p.tile_x << "," << p.tile_y << ")|left|\n";
-                if (++cnt >= 25) {
-                    oss << "add_smalltext|`o... (" << (session.players.size() - cnt) << " pemain lainnya)|left|\n";
-                    break;
+                if (idx >= start_idx && shown < kPerPage) {
+                    oss << "add_smalltext|`w" << safe_markup_text(p.name)
+                        << " `o- netID=" << nid
+                        << " - userID=" << p.user_id
+                        << " - tile=(" << p.tile_x << "," << p.tile_y << ")|left|\n";
+                    ++shown;
+                }
+                ++idx;
+            }
+            if (total_pages > 1) {
+                oss << "add_spacer|small|\n";
+                if (page > 0) {
+                    oss << "add_button|players_page_" << (page - 1)
+                        << "|`9<< Halaman Sebelumnya|noflags|0|0|\n";
+                }
+                if (page + 1 < total_pages) {
+                    oss << "add_button|players_page_" << (page + 1)
+                        << "|`2Halaman Berikutnya >>|noflags|0|0|\n";
                 }
             }
         }
     }
     oss << "add_spacer|small|\n"
         << "end_dialog|evanproxy_players||Tutup|\n";
+    return oss.str();
+}
+
+std::string build_changelog_dialog(const Session& session) {
+    std::ostringstream oss;
+    oss << dialog_header(session, "`wThe EvanProxy Gazette``", 5016);
+    oss << "add_image_button|banner|interface/large/evanproxy_banner.rttex|bannerlayout|||\n"
+        << "add_spacer|small|\n";
+
+    oss << "add_label_with_icon|medium|`wNovember 24th: `#EvanProxy v2.5 Latest Updates``|left|7188|\n"
+        << "add_spacer|small|\n"
+        << "add_image_button|evanproxy_card1|interface/large/evanproxy_card1.rttex|3imageslayout|OPENDASH||\n"
+        << "add_image_button|evanproxy_card2|interface/large/evanproxy_card2.rttex|3imageslayout|OPENTOOLS||\n"
+        << "add_image_button|evanproxy_card3|interface/large/evanproxy_card3.rttex|3imageslayout|OPENHOTKEYS||\n"
+        << "add_spacer|small|\n";
+
+    oss << "add_button_with_icon|nav_go_home|`wDashboard|staticYellowFrame|7188||\n"
+        << "add_button_with_icon|nav_go_gems|`5  Gems  |staticBlueFrame|112||\n"
+        << "add_button_with_icon|nav_go_clothes|`wClothes |staticBlueFrame|2390||\n"
+        << "add_button_with_icon|nav_go_title|`w Titles |staticBlueFrame|1486||\n"
+        << "add_button_with_icon|nav_go_tools|`w Tools  |staticBlueFrame|32||\n"
+        << "add_button_with_icon|nav_go_hotkeys|`wHotkeys |staticBlueFrame|3802||\n"
+        << "add_button_with_icon||END_LIST|noflags|0||\n"
+        << "add_spacer|big|\n";
+
+    oss << "add_label_with_icon|small|`4[UPDATE] `wCore Proxy & Protocol 5.62``|left|242|\n"
+        << "add_smalltext|`w- Dual ENet UDP 17091 + HTTPS 443 bridge, auto sub-server redirect & Hosts Backup Guard.|left|\n"
+        << "add_smalltext|`w- Real-time ENet RTT Ping & DWM 144Hz FPS Overlay + Variant Int64 OnSetBux sync.|left|\n"
+        << "add_spacer|small|\n"
+        << "add_label_with_icon|small|`9[IMPROVE] `wUI/UX Dashboard, Wardrobe & World Scanner``|left|2390|\n"
+        << "add_smalltext|`w- Desktop GUI 9 tab & In-Game /proxy ikon interaktif dengan quick toggle 1-klik.|left|\n"
+        << "add_smalltext|`w- Visual Wardrobe /clothes & /search (16,580+ item langsung masuk Backpack & equip).|left|\n"
+        << "add_spacer|small|\n"
+        << "add_label_with_icon|small|`2[NEW] `wFastBuy 1-Klik, Auto-BGL, Hotkeys & /gems``|left|112|\n"
+        << "add_smalltext|`w- /gems Live Pickup Bubble counter (+Gems dunia & sesi) + scanner gems & lock di lantai.|left|\n"
+        << "add_smalltext|`w- /fastbuy Auto 1-Klik tanpa konfirmasi + /vendinfo privat sisa stok & sisa WL Anda.|left|\n"
+        << "add_smalltext|`w- /autobgl Wrench Telephone -> BGL otomatis, /hotkey 12 slot (CTRL/ALT/A/F1), /cd pecah lock.|left|\n"
+        << "add_spacer|small|\n"
+        << "add_label_with_icon|small|`6[FIXED] `wBug Fixes & Sync``|left|32|\n"
+        << "add_smalltext|`w- Sinkronisasi lock pickup lantai ganda (DL+WL sekaligus) untuk /cd tanpa salah hitung.|left|\n"
+        << "add_smalltext|`w- Fix semua 18 Visual Titles GT 5.62 (10-Year, Award, Party, Winter, Immortal aura, CC/TT, PBL).|left|\n"
+        << "add_spacer|small|\n"
+        << "add_button|nav_go_home|`2Buka EvanProxy Dashboard (/proxy)|noflags|0|0|\n"
+        << "add_button|nav_go_gems|`5Buka Gems Tracker & Scanner (/gems)|noflags|0|0|\n";
+    if (!session.last_news_markup.empty()) {
+        oss << "add_button|btn_open_raw_news|`oLihat Gazette Asli Server Growtopia (/rawnews)|noflags|0|0|\n";
+    }
+    oss << "add_spacer|small|\n"
+        << "end_dialog|evanproxy_changelog|Tutup|Buka Dashboard|\n";
     return oss.str();
 }
 
@@ -1070,7 +1247,8 @@ std::string build_commands_dialog(const Session& session) {
         << "add_smalltext|`2/copy <nama>   /aura <efek>   /fps [on/off/boost/bubbles]   /rainbow   /nick   /skin   /flag|left|\n"
         << "add_spacer|small|\n";
 
-    oss << "add_smalltext|`9[Packet Monitor & Utilitas]``|left|\n"
+    oss << "add_smalltext|`9[Packet Monitor, Gems & Utilitas]``|left|\n"
+        << "add_smalltext|`2/gems [on/off/reset/scan] `w- Live Gem Counter bubble & scanner gem/lock jatuh di lantai|left|\n"
         << "add_smalltext|`2/paction   /pmove   /plog   /phex   /pstatus   /evantag   /evanchat|left|\n"
         << "add_smalltext|`2/wrench [info/pull/kick/ban/off]   /winfo   /news   /fastdrop   /fasttrash   /calc   /bal   /timer|left|\n"
         << "add_spacer|small|\n"
@@ -1125,8 +1303,9 @@ bool handle_dialog_return(
             session.auto_bgl = parse_cb(tp, "chk_home_autobgl", session.auto_bgl);
             if (!session.auto_bgl) session.auto_bgl_stage = AutoBglStage::Idle;
             const bool want_fb = parse_cb(tp, "chk_home_fastbuy", session.fast_buy > 0);
-            if (want_fb && session.fast_buy == 0) session.fast_buy = 1;
+            if (want_fb && session.fast_buy == 0) session.fast_buy = 2;
             else if (!want_fb) session.fast_buy = 0;
+            session.gems_tracker = parse_cb(tp, "chk_home_gems", session.gems_tracker);
             session.fast_drop = parse_cb(tp, "chk_home_fastdrop", session.fast_drop);
             session.hotkeys_enabled = parse_cb(tp, "chk_home_hotkeys", session.hotkeys_enabled);
             const bool old_fps_name = session.fps_show_name;
@@ -1138,6 +1317,16 @@ bool handle_dialog_return(
             if (old_fps_name != session.fps_show_name) push_visual_sync(session, out, true, false);
             if (session.fps_boost) out.to_client.push_back(proto::build_on_set_current_weather(0));
             push_brand(out, "`2Pengaturan Dashboard disimpan.");
+            return true;
+        }
+        if (dname == "evanproxy_changelog") {
+            push_dialog(out, build_home_dialog(session, shared));
+            return true;
+        }
+        if (dname == "evanproxy_gems" && tp.has("chk_gems_tracker")) {
+            session.gems_tracker = parse_cb(tp, "chk_gems_tracker", session.gems_tracker);
+            out.save_config = true;
+            push_brand(out, std::string("Gems Tracker: ") + badge(session.gems_tracker));
             return true;
         }
         if (dname == "evanproxy_title" && tp.has("chk_title_maxlevel")) {
@@ -1191,7 +1380,7 @@ bool handle_dialog_return(
             if (!raw_key.empty()) {
                 auto spec = parse_hotkey(raw_key);
                 if (!spec) {
-                    push_brand(out, "`4Tombol '" + raw_key + "' tidak valid! Contoh: A, F1, CTRL+A, ALT+1, NUM1.");
+                    push_brand(out, "`4Tombol '" + raw_key + "' tidak valid! Contoh: CTRL, ALT, SHIFT, TAB, SPACE, A, F1, CTRL+A.");
                     push_dialog(out, build_hotkey_edit_dialog(session, slot));
                     return true;
                 }
@@ -1237,6 +1426,7 @@ bool handle_dialog_return(
             session.unlimited_zoom = parse_cb(tp, "chk_vis_zoom", session.unlimited_zoom);
             session.hide_clothes = parse_cb(tp, "chk_vis_hideclothes", session.hide_clothes);
             session.style_all_dialogs = parse_cb(tp, "chk_vis_styleall", session.style_all_dialogs);
+            session.custom_banner = parse_cb(tp, "chk_vis_banner", session.custom_banner);
             out.save_config = true;
             if (old_rb != session.rainbow_name) push_visual_sync(session, out, true, false);
             push_brand(out, "`2Pengaturan Visual disimpan.");
@@ -1266,7 +1456,7 @@ bool handle_dialog_return(
     }
 
     // Navigation buttons
-    if (btn == "nav_go_home") { push_dialog(out, build_home_dialog(session, shared)); return true; }
+    if (btn == "nav_go_home" || btn == "evanproxy_card1") { push_dialog(out, build_home_dialog(session, shared)); return true; }
     if (btn == "nav_go_nav") { push_dialog(out, build_nav_dialog(session)); return true; }
     if (btn == "nav_go_packets") { push_dialog(out, build_packets_dialog(session, shared)); return true; }
     if (btn == "nav_go_visual") { push_dialog(out, build_visual_dialog(session)); return true; }
@@ -1274,9 +1464,43 @@ bool handle_dialog_return(
     if (btn == "nav_go_clothes") { push_dialog(out, build_clothes_dialog(session)); return true; }
     if (btn == "nav_go_search") { push_dialog(out, build_search_dialog(session, session.last_search_query, session.last_search_clothes_only)); return true; }
     if (btn == "nav_go_fps") { push_dialog(out, build_fps_dialog(session)); return true; }
-    if (btn == "nav_go_tools") { push_dialog(out, build_tools_dialog(session)); return true; }
-    if (btn == "nav_go_hotkeys") { push_dialog(out, build_hotkeys_dialog(session)); return true; }
-    if (btn == "nav_go_players") { push_dialog(out, build_players_dialog(session)); return true; }
+    if (btn == "nav_go_tools" || btn == "evanproxy_card2") { push_dialog(out, build_tools_dialog(session)); return true; }
+    if (btn == "nav_go_hotkeys" || btn == "evanproxy_card3") { push_dialog(out, build_hotkeys_dialog(session)); return true; }
+    if (btn == "nav_go_gems" || btn == "gems_refresh") { push_dialog(out, build_gems_dialog(session)); return true; }
+    if (btn == "gems_reset_stats") {
+        session.gems_collected_world = 0;
+        session.gems_collected_session = 0;
+        session.gem_pickup_burst = 0;
+        push_brand(out, "`2Statistik pengumpulan Gems sesi & world di-reset.");
+        push_dialog(out, build_gems_dialog(session));
+        return true;
+    }
+    if (btn == "gems_show_bubble") {
+        std::ostringstream gb;
+        gb << "`9[`#EvanProxy`9] `5Saldo: " << (session.gems >= 0 ? format_number_commas(session.gems) : "-")
+           << " Gems `o(World: `2+" << format_number_commas(session.gems_collected_world)
+           << " `o| Lantai: `9" << format_number_commas(session.world_floor_gems_total()) << "`o)";
+        if (session.local_net_id >= 0) {
+            out.to_client.push_back(proto::build_on_talk_bubble(session.local_net_id, gb.str()));
+        }
+        push_msg(out, gb.str());
+        push_dialog(out, build_gems_dialog(session));
+        return true;
+    }
+    if (btn == "nav_go_players") { session.players_page = 0; push_dialog(out, build_players_dialog(session, 0)); return true; }
+    if (btn.rfind("players_page_", 0) == 0) {
+        try {
+            session.players_page = std::stoi(btn.substr(13));
+        } catch (...) {
+            session.players_page = 0;
+        }
+        push_dialog(out, build_players_dialog(session, session.players_page));
+        return true;
+    }
+    if (btn == "nav_go_changelog" || btn == "evanproxy_banner_top" || btn == "banner") {
+        push_dialog(out, build_changelog_dialog(session));
+        return true;
+    }
     if (btn == "nav_go_worldinfo") { push_dialog(out, build_worldinfo_dialog(session, shared)); return true; }
     if (btn == "nav_go_commands") { push_dialog(out, build_commands_dialog(session)); return true; }
 
@@ -1306,8 +1530,8 @@ bool handle_dialog_return(
         session.hk_capture_slot = slot;
         session.hk_capture_deadline = std::chrono::steady_clock::now() + std::chrono::seconds(10);
         out.to_client.push_back(proto::build_on_text_overlay(
-            "`9[Hotkey #" + std::to_string(slot + 1) + "] `2Tekan tombol keyboard sekarang... `o(ESC batal)"));
-        push_brand(out, "`9[Hotkey #" + std::to_string(slot + 1) + "] `2Tekan tombol keyboard yang diinginkan (misal A, F1, CTRL+A)... Tekan ESC untuk batal.");
+            "`9[Hotkey #" + std::to_string(slot + 1) + "] `2Tekan 1 tombol (CTRL/ALT/A/F1) atau combo... `o(ESC batal)"));
+        push_brand(out, "`9[Hotkey #" + std::to_string(slot + 1) + "] `2Tekan tombol keyboard sekarang (misal CTRL, ALT, SHIFT, TAB, A, F1, CTRL+A)... Tekan ESC untuk batal.");
         return true;
     }
     if (btn == "hk_test") {
@@ -1348,7 +1572,21 @@ bool handle_dialog_return(
         return true;
     }
 
-    // Legacy quick toggle button IDs (kept for compatibility with tests/shortcuts)
+    // Quick toggle icon buttons in /proxy Dashboard
+    if (btn == "home_tog_fastbuy") {
+        session.fast_buy = (session.fast_buy > 0) ? 0 : 2;
+        out.save_config = true;
+        push_brand(out, "Mode Fast Buy Vending: " + fastbuy_label(session.fast_buy, session.fast_buy_qty));
+        push_dialog(out, build_home_dialog(session, shared));
+        return true;
+    }
+    if (btn == "home_tog_gems") {
+        session.gems_tracker = !session.gems_tracker;
+        out.save_config = true;
+        push_brand(out, std::string("Gems Tracker: ") + badge(session.gems_tracker));
+        push_dialog(out, build_home_dialog(session, shared));
+        return true;
+    }
     if (btn == "home_tog_autobgl") {
         trigger_auto_bgl_toggle(session, out);
         push_dialog(out, build_home_dialog(session, shared));
@@ -1624,6 +1862,11 @@ bool handle_dialog_return(
         }
         return true;
     }
+    if (btn == "wrench_turn_off") {
+        session.wrench_mode = WrenchMode::Off;
+        push_brand(out, "`oWrench Shortcuts dimatikan (`4OFF`o).");
+        return true;
+    }
     if (btn.rfind("wrench_act_", 0) == 0) {
         std::string rest = btn.substr(11);
         size_t us = rest.find('_');
@@ -1678,7 +1921,9 @@ bool handle_dialog_return(
 
     // Tools page actions
     if (btn == "btn_fastbuy_cycle") {
-        session.fast_buy = (session.fast_buy + 1) % 3;
+        if (session.fast_buy == 0) session.fast_buy = 2;
+        else if (session.fast_buy == 2) session.fast_buy = 1;
+        else session.fast_buy = 0;
         if (tp.has("fb_qty_input")) {
             try {
                 int q = std::stoi(trim_s(tp.get("fb_qty_input")));
@@ -1687,6 +1932,20 @@ bool handle_dialog_return(
         }
         out.save_config = true;
         push_brand(out, "Mode Fast Buy Vending: " + fastbuy_label(session.fast_buy, session.fast_buy_qty));
+        push_dialog(out, build_tools_dialog(session));
+        return true;
+    }
+    if (btn.rfind("fb_qty_", 0) == 0) {
+        try {
+            int q = std::stoi(btn.substr(7));
+            if (q < 0) q = 0;
+            if (q > 200) q = 200;
+            session.fast_buy = 2;
+            session.fast_buy_qty = q;
+            out.save_config = true;
+            push_brand(out, "Mode Fast Buy Vending: " + fastbuy_label(session.fast_buy, session.fast_buy_qty));
+        } catch (...) {
+        }
         push_dialog(out, build_tools_dialog(session));
         return true;
     }
@@ -1721,8 +1980,12 @@ bool handle_dialog_return(
         return true;
     }
     if (btn == "btn_open_news") {
+        push_dialog(out, build_changelog_dialog(session));
+        return true;
+    }
+    if (btn == "btn_open_raw_news") {
         if (session.last_news_markup.empty()) {
-            push_brand(out, "`oGazette belum tersedia di sesi ini.");
+            push_brand(out, "`oGazette server asli belum diterima di sesi ini.");
         } else {
             push_dialog(out, apply_theme_to_dialog(session.last_news_markup, session.ui_theme));
         }
@@ -1738,6 +2001,7 @@ bool handle_dialog_return(
             std::ostringstream res;
             res << std::setprecision(12) << *val;
             push_msg(out, "`2[Calc] `w" + expr + " = `9" + res.str());
+            out.calc_toast = std::make_pair("CALC · " + expr, "= " + res.str());
         }
         push_dialog(out, build_tools_dialog(session));
         return true;
@@ -1801,7 +2065,7 @@ bool handle_chat_command(
     if (cmd == "/fastbuy" || cmd == "/fb") {
         const std::string low = to_lower_s(arg);
         if (low.empty()) {
-            session.fast_buy = (session.fast_buy + 1) % 3;
+            session.fast_buy = (session.fast_buy == 0) ? 2 : 0;
         } else if (low == "off") {
             session.fast_buy = 0;
         } else if (low == "quick") {
@@ -1809,7 +2073,7 @@ bool handle_chat_command(
         } else if (low == "auto") {
             session.fast_buy = 2;
         } else if (low == "max") {
-            if (session.fast_buy == 0) session.fast_buy = 1;
+            session.fast_buy = 2;
             session.fast_buy_qty = 0;
         } else {
             size_t sp2 = low.find(' ');
@@ -1826,7 +2090,7 @@ bool handle_chat_command(
                     return true;
                 }
             } else if (auto q = parse_positive_u32(low); q && *q <= 200u) {
-                if (session.fast_buy == 0) session.fast_buy = 1;
+                session.fast_buy = 2;
                 session.fast_buy_qty = static_cast<int>(*q);
             } else {
                 push_brand(out, "`4Pakai: /fastbuy [off|quick|auto|max|<1..200>]");
@@ -2037,6 +2301,7 @@ bool handle_chat_command(
             push_brand(out, "`2Visual Clothes ON! Pakai /search <item> untuk menambah item ke BP.");
         } else if (low == "clear") {
             enter_visual_clothes_mode(session, out);
+            session.active_clothes_preset.clear();
             std::fill(std::begin(session.visual_clothes.slots), std::end(session.visual_clothes.slots), 0u);
             push_clothes_sync(session, out);
             push_brand(out, "`oSemua baju visual dilepas.");
@@ -2161,9 +2426,47 @@ bool handle_chat_command(
         push_dialog(out, build_worldinfo_dialog(session, shared));
         return true;
     }
-    if (cmd == "/news") {
+    if (cmd == "/gems" || cmd == "/gem") {
+        const std::string low = to_lower_s(arg);
+        if (low.empty()) {
+            push_dialog(out, build_gems_dialog(session));
+        } else if (low == "on") {
+            session.gems_tracker = true;
+            out.save_config = true;
+            push_brand(out, "Gems Tracker & Live Bubble: `2[ON]``");
+        } else if (low == "off") {
+            session.gems_tracker = false;
+            out.save_config = true;
+            push_brand(out, "Gems Tracker & Live Bubble: `4[OFF]``");
+        } else if (low == "reset") {
+            session.gems_collected_world = 0;
+            session.gems_collected_session = 0;
+            session.gem_pickup_burst = 0;
+            push_brand(out, "`2Statistik pengumpulan Gems sesi & world di-reset.");
+        } else if (low == "scan") {
+            const int64_t fg = session.world_floor_gems_total();
+            const auto top = session.world_gem_tiles_top(3);
+            std::ostringstream gs;
+            gs << "Saldo: `5" << (session.gems >= 0 ? format_number_commas(session.gems) : "-")
+               << " Gems `o| Terkumpul World: `2+" << format_number_commas(session.gems_collected_world)
+               << " `o| Lantai: `9" << format_number_commas(fg) << " Gems";
+            if (!top.empty()) {
+                gs << " `o(Top tile: (" << top[0].first.first << "," << top[0].first.second
+                   << ")=" << top[0].second << ")";
+            }
+            push_brand(out, gs.str());
+        } else {
+            push_brand(out, "`4Pakai: /gems [on|off|reset|scan]");
+        }
+        return true;
+    }
+    if (cmd == "/news" || cmd == "/gazette") {
+        push_dialog(out, build_changelog_dialog(session));
+        return true;
+    }
+    if (cmd == "/rawnews") {
         if (session.last_news_markup.empty()) {
-            push_brand(out, "`oGazette belum tersedia di sesi ini.");
+            push_brand(out, "`oGazette server asli belum diterima di sesi ini.");
         } else {
             push_dialog(out, apply_theme_to_dialog(session.last_news_markup, session.ui_theme));
         }
@@ -2227,7 +2530,13 @@ bool handle_chat_command(
         return true;
     }
     if (cmd == "/ping") {
-        push_brand(out, "Ping Server (ENet RTT): `2" + std::to_string(session.live_ping_ms) + " ms");
+        std::ostringstream oss;
+        oss << "Ping Server (ENet RTT Real-Time): `2" << session.live_ping_ms << " ms `o("
+            << "Min " << session.ping_min_ms << "ms, Max " << session.ping_max_ms
+            << "ms, Jitter +/-" << session.ping_jitter_ms << "ms, Overhead "
+            << (session.proxy_overhead_us > 0 ? (std::to_string(session.proxy_overhead_us) + "us") : "<1ms")
+            << ")";
+        push_brand(out, oss.str());
         return true;
     }
     if (cmd == "/nick" || cmd == "/pnick") {
@@ -2280,17 +2589,49 @@ bool handle_chat_command(
         return true;
     }
     if (cmd == "/weather") {
-        if (arg.empty()) {
-            push_msg(out, "`4[EvanProxy] Pakai: /weather <id> (contoh: 0=Sunny, 2=Night, 4=Rainy, 11=Spooky, 15=Snow)");
+        const std::string low = to_lower_s(arg);
+        if (low.empty() || low == "toggle") {
+            session.weather_override = !session.weather_override;
+            const uint32_t wid = session.weather_override ? session.weather_id : 0u;
+            out.to_client.push_back(proto::build_on_set_current_weather(wid));
+            out.save_config = true;
+            push_msg(out, std::string("`o[EvanProxy] Weather Override: ") + badge(session.weather_override) +
+                          (session.weather_override ? (" `o(ID=" + std::to_string(session.weather_id) + ")") : ""));
+            return true;
+        }
+        if (low == "on") {
+            session.weather_override = true;
+            out.to_client.push_back(proto::build_on_set_current_weather(session.weather_id));
+            out.save_config = true;
+            push_msg(out, "`2[EvanProxy] Weather Override: ON (ID=" + std::to_string(session.weather_id) + ")");
+            return true;
+        }
+        if (low == "off") {
+            session.weather_override = false;
+            out.to_client.push_back(proto::build_on_set_current_weather(0));
+            out.save_config = true;
+            push_msg(out, "`o[EvanProxy] Weather Override: `4[OFF]``");
             return true;
         }
         try {
             uint32_t wid = static_cast<uint32_t>(std::stoul(arg));
+            session.weather_id = wid;
+            session.weather_override = (wid != 0);
             out.to_client.push_back(proto::build_on_set_current_weather(wid));
+            out.save_config = true;
             push_msg(out, "`2[EvanProxy] Cuaca lokal diset ke ID `w" + std::to_string(wid));
         } catch (...) {
-            push_msg(out, "`4[EvanProxy] ID cuaca tidak valid.");
+            push_msg(out, "`4[EvanProxy] Pakai: /weather [on|off|<id>] (0=Sunny, 2=Night, 4=Rainy, 11=Spooky, 15=Snow)");
         }
+        return true;
+    }
+    if (cmd == "/hud") {
+        const std::string low = to_lower_s(arg);
+        if (low == "on") session.hud_overlay = true;
+        else if (low == "off") session.hud_overlay = false;
+        else session.hud_overlay = !session.hud_overlay;
+        out.save_config = true;
+        push_brand(out, std::string("HUD Overlay In-Game: ") + badge(session.hud_overlay));
         return true;
     }
     if (cmd == "/zoom") {
@@ -2337,6 +2678,7 @@ bool handle_chat_command(
             std::ostringstream res;
             res << std::setprecision(12) << *val;
             push_brand(out, "`2[Calc] `w" + arg + " = `9" + res.str());
+            out.calc_toast = std::make_pair("CALC · " + arg, "= " + res.str());
         }
         return true;
     }
@@ -2349,7 +2691,17 @@ bool handle_chat_command(
         return true;
     }
     if (cmd == "/players" || cmd == "/who") {
-        push_dialog(out, build_players_dialog(session));
+        session.players_page = 0;
+        push_dialog(out, build_players_dialog(session, 0));
+        return true;
+    }
+    if (cmd == "/banner") {
+        const std::string low = to_lower_s(arg);
+        if (low == "on") session.custom_banner = true;
+        else if (low == "off") session.custom_banner = false;
+        else session.custom_banner = !session.custom_banner;
+        out.save_config = true;
+        push_brand(out, std::string("Banner Custom EvanProxy: ") + badge(session.custom_banner));
         return true;
     }
     if (cmd == "/owner") {
@@ -2395,6 +2747,201 @@ bool handle_chat_command(
         return true;
     }
 
+    return false;
+}
+
+bool apply_ui_command(
+    const UiCommand& cmd,
+    Session& session,
+    SharedState& shared,
+    UiEffects& out
+) {
+    switch (cmd.kind) {
+        case UiCommand::Kind::RunChatCommand: {
+            run_hotkey_command(cmd.value, session, shared, out);
+            return true;
+        }
+        case UiCommand::Kind::SetToggle: {
+            const std::string k = to_lower_s(cmd.key);
+            const bool val = cmd.bool_arg;
+            if (k == "evantag") {
+                session.evan_branding = val;
+            } else if (k == "evanchat") {
+                session.outgoing_evan_prefix = val;
+            } else if (k == "fps") {
+                session.fps_boost = val;
+                if (val) {
+                    out.to_client.push_back(proto::build_on_set_current_weather(0));
+                }
+            } else if (k == "pingtag") {
+                session.fps_show_name = val;
+                push_visual_sync(session, out, true, false);
+            } else if (k == "bubbles") {
+                session.fps_hide_bubbles = val;
+            } else if (k == "vendinfo") {
+                session.vending_info = val;
+            } else if (k == "autobgl") {
+                session.auto_bgl = val;
+                if (!val) session.auto_bgl_stage = AutoBglStage::Idle;
+            } else if (k == "gems" || k == "gems_tracker") {
+                session.gems_tracker = val;
+            } else if (k == "hotkeys") {
+                session.hotkeys_enabled = val;
+            } else if (k == "fastdrop") {
+                session.fast_drop = val;
+            } else if (k == "fasttrash") {
+                session.fast_trash = val;
+            } else if (k == "rainbow") {
+                session.rainbow_name = val;
+                push_visual_sync(session, out, true, false);
+            } else if (k == "weather") {
+                session.weather_override = val;
+                out.to_client.push_back(proto::build_on_set_current_weather(val ? session.weather_id : 0u));
+            } else if (k == "hideclothes") {
+                session.hide_clothes = val;
+            } else if (k == "clothes") {
+                if (val) {
+                    enter_visual_clothes_mode(session, out);
+                } else {
+                    exit_visual_clothes_mode(session, out);
+                }
+            } else if (k == "hud") {
+                session.hud_overlay = val;
+            } else if (k == "banner") {
+                session.custom_banner = val;
+            } else if (k == "zoom") {
+                session.unlimited_zoom = val;
+                if (val && session.zoom_percent == 100) session.zoom_percent = 125;
+                if (!val) session.zoom_percent = 100;
+            } else if (k == "paction") {
+                session.log_actions = val;
+            } else if (k == "pmove") {
+                session.log_raw_movement = val;
+            } else if (k == "plog") {
+                shared.verbose_log.store(val);
+            } else if (k == "phex") {
+                shared.hex_log.store(val);
+            } else {
+                return false;
+            }
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::SetFastBuyMode: {
+            int mode = cmd.int_arg;
+            if (mode < 0) mode = 0;
+            if (mode > 2) mode = 2;
+            session.fast_buy = mode;
+            out.save_config = true;
+            push_brand(out, "Mode Fast Buy Vending: " + fastbuy_label(session.fast_buy, session.fast_buy_qty));
+            return true;
+        }
+        case UiCommand::Kind::SetFastBuyQty: {
+            int q = cmd.int_arg;
+            if (q < 0) q = 0;
+            if (q > 200) q = 200;
+            session.fast_buy_qty = q;
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::SetZoomPercent: {
+            int z = cmd.int_arg;
+            if (z < 50) z = 50;
+            if (z > 200) z = 200;
+            session.zoom_percent = z;
+            session.unlimited_zoom = (z != 100);
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::SetWeatherOverride: {
+            session.weather_override = cmd.bool_arg;
+            session.weather_id = static_cast<uint32_t>(std::max(0, cmd.int_arg));
+            out.to_client.push_back(proto::build_on_set_current_weather(
+                session.weather_override ? session.weather_id : 0u));
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::SetHotkeySlot: {
+            const int slot = cmd.int_arg;
+            if (slot < 0 || slot >= static_cast<int>(kHotkeySlots)) {
+                return false;
+            }
+            if (session.hotkeys.size() < kHotkeySlots) {
+                session.hotkeys.resize(kHotkeySlots);
+            }
+            const std::string raw_key = trim_s(cmd.key);
+            const std::string raw_cmd = trim_s(cmd.value);
+            std::string canonical_key;
+            if (!raw_key.empty()) {
+                auto spec = parse_hotkey(raw_key);
+                if (!spec) {
+                    shared.push_console_line(LogTag::Warn, "WARN", "Invalid hotkey key: " + raw_key);
+                    return false;
+                }
+                canonical_key = format_hotkey(*spec);
+            }
+            session.hotkeys[static_cast<size_t>(slot)] = HotkeyBinding{canonical_key, raw_cmd};
+            out.save_config = true;
+            shared.push_console_line(
+                LogTag::Ok,
+                "OK",
+                "Saved hotkey slot #" + std::to_string(slot + 1) + ": [" +
+                    (canonical_key.empty() ? "Empty" : canonical_key) + "] -> " + raw_cmd);
+            return true;
+        }
+        case UiCommand::Kind::ClearHotkeySlot: {
+            const int slot = cmd.int_arg;
+            if (slot < 0 || slot >= static_cast<int>(kHotkeySlots)) {
+                return false;
+            }
+            if (session.hotkeys.size() < kHotkeySlots) {
+                session.hotkeys.resize(kHotkeySlots);
+            }
+            session.hotkeys[static_cast<size_t>(slot)] = HotkeyBinding{};
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::ResetHotkeys: {
+            session.hotkeys = default_hotkeys();
+            out.save_config = true;
+            return true;
+        }
+        case UiCommand::Kind::WardrobeAddItem: {
+            const std::string q = trim_s(cmd.value);
+            if (!session.items_db || session.items_db->size() == 0) {
+                push_brand(out, "`4Database items.dat tidak tersedia untuk pencarian.");
+                shared.push_console_line(LogTag::Warn, "WARN", "items.dat not loaded for Wardrobe search");
+                return true;
+            }
+            if (q.empty()) {
+                if (session.local_net_id >= 0) {
+                    push_dialog(out, build_search_dialog(session, "", true));
+                }
+                return true;
+            }
+            session.last_search_query = q;
+            auto hits = session.items_db->search(q, true, 1);
+            if (hits.empty()) {
+                hits = session.items_db->search(q, false, 1);
+            }
+            if (!hits.empty()) {
+                give_and_equip_visual_item(session, hits[0]->id, out);
+                shared.push_console_line(
+                    LogTag::Ok,
+                    "OK",
+                    "Wardrobe added item #" + std::to_string(hits[0]->id) + " (" + hits[0]->name + ")");
+            } else {
+                push_brand(out, "`4Item '" + q + "' tidak ditemukan di items.dat.");
+                shared.push_console_line(LogTag::Warn, "WARN", "Wardrobe item not found: " + q);
+            }
+            return true;
+        }
+        case UiCommand::Kind::ClearConsole: {
+            shared.clear_packet_lines();
+            session.clear_actions();
+            return true;
+        }
+    }
     return false;
 }
 

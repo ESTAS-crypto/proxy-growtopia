@@ -2,15 +2,18 @@
 
 #include "cert.hpp"
 #include "config.hpp"
+#include "ui_bridge.hpp"
 
 #include <atomic>
 #include <cstdint>
+#include <deque>
 #include <filesystem>
 #include <mutex>
 #include <optional>
 #include <string>
 #include <thread>
 #include <utility>
+#include <vector>
 
 namespace evan {
 
@@ -21,6 +24,8 @@ public:
     std::atomic<bool> hex_log{false};
     std::atomic<uint64_t> c2s_packets{0};
     std::atomic<uint64_t> s2c_packets{0};
+
+    void reset_for_start();
 
     void set_pending_upstream(const std::string& ip, uint16_t port);
     std::optional<std::pair<std::string, uint16_t>> take_or_reuse_upstream();
@@ -33,6 +38,27 @@ public:
 
     void set_log_file_path(const std::string& path);
     std::string get_log_file_path() const;
+
+    // UI bridge: console & packet logs
+    void push_console_line(LogTag tag, const std::string& tag_text, const std::string& text);
+    std::vector<ConsoleLine> get_console_lines() const;
+    std::vector<ConsoleLine> get_packet_lines() const;
+    void clear_console_lines();
+    void clear_packet_lines();
+
+    // UI bridge: command queue (UI thread -> ENet thread)
+    void enqueue_ui_command(UiCommand cmd);
+    bool has_pending_ui_commands() const { return has_ui_cmds_.load(std::memory_order_acquire); }
+    std::vector<UiCommand> drain_ui_commands();
+
+    // UI bridge: live telemetry & HUD toasts (ENet thread -> UI/Overlay)
+    void publish_snapshot(const UiSnapshot& snap);
+    UiSnapshot get_snapshot() const;
+
+    void notify_hotkey_toast(const std::string& key, const std::string& cmd);
+    void notify_vend_toast(int64_t rem_stock, int64_t rem_wl, const std::string& item_name);
+    void notify_calc_toast(const std::string& title, const std::string& value);
+    void update_timer_hud(bool active, int remaining_sec, const std::string& label);
 
 private:
     mutable std::mutex mutex_;
@@ -48,6 +74,16 @@ private:
 
     int32_t local_net_id_ = -1;
     std::string log_file_path_;
+
+    uint64_t next_log_seq_ = 1;
+    std::deque<ConsoleLine> console_lines_;
+    std::deque<ConsoleLine> packet_lines_;
+
+    std::atomic<bool> has_ui_cmds_{false};
+    std::vector<UiCommand> ui_cmd_queue_;
+
+    UiSnapshot snapshot_;
+    HudToastState hud_toasts_;
 };
 
 class HttpBridge {
@@ -69,6 +105,7 @@ public:
     bool start(std::string& err);
     void stop();
     uint16_t bound_port() const { return bound_port_; }
+    bool last_start_port_in_use() const { return last_port_in_use_.load(); }
 
     static bool probe_upstream(
         const ProxyConfig& cfg,
@@ -98,6 +135,7 @@ private:
     uintptr_t listen_sock_ = static_cast<uintptr_t>(~0ULL);
     uint16_t bound_port_ = 0;
     std::atomic<bool> running_{false};
+    std::atomic<bool> last_port_in_use_{false};
     std::thread worker_;
 };
 

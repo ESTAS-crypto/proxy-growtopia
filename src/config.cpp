@@ -126,6 +126,7 @@ bool save_config(const std::filesystem::path& path, const ProxyConfig& cfg) {
         << "formalize_chat=" << (cfg.formalize_chat ? "true" : "false") << "\r\n"
         << "style_all_dialogs=" << (cfg.style_all_dialogs ? "true" : "false") << "\r\n"
         << "auto_bgl=" << (cfg.auto_bgl ? "true" : "false") << "\r\n"
+        << "gems_tracker=" << (cfg.gems_tracker ? "true" : "false") << "\r\n"
         << "hotkeys_enabled=" << (cfg.hotkeys_enabled ? "true" : "false") << "\r\n"
         << "fast_buy=" << cfg.fast_buy << "\r\n"
         << "fast_buy_qty=" << cfg.fast_buy_qty << "\r\n"
@@ -154,6 +155,11 @@ bool save_config(const std::filesystem::path& path, const ProxyConfig& cfg) {
         << "evan_branding=" << (cfg.evan_branding ? "true" : "false") << "\r\n"
         << "outgoing_evan_prefix=" << (cfg.outgoing_evan_prefix ? "true" : "false") << "\r\n"
         << "rainbow_name=" << (cfg.rainbow_name ? "true" : "false") << "\r\n"
+        << "custom_banner=" << (cfg.custom_banner ? "true" : "false") << "\r\n"
+        << "hud_overlay=" << (cfg.hud_overlay ? "true" : "false") << "\r\n"
+        << "zoom_percent=" << cfg.zoom_percent << "\r\n"
+        << "weather_override=" << (cfg.weather_override ? "true" : "false") << "\r\n"
+        << "weather_id=" << cfg.weather_id << "\r\n"
         << "\r\n"
         << "[hotkeys]\r\n"
         << "# hotkey_N_key = tombol (F1, A, CTRL+A, ALT+1, NUM1 ...), hotkey_N_cmd = command/chat\r\n";
@@ -247,6 +253,8 @@ ProxyConfig load_or_create_config(const std::filesystem::path& path) {
             cfg.style_all_dialogs = parse_bool(val, cfg.style_all_dialogs);
         } else if ((section.empty() || section == "features") && key == "auto_bgl") {
             cfg.auto_bgl = parse_bool(val, cfg.auto_bgl);
+        } else if ((section.empty() || section == "features") && key == "gems_tracker") {
+            cfg.gems_tracker = parse_bool(val, cfg.gems_tracker);
         } else if ((section.empty() || section == "features") && key == "hotkeys_enabled") {
             cfg.hotkeys_enabled = parse_bool(val, cfg.hotkeys_enabled);
         } else if ((section.empty() || section == "features") && key == "fast_buy") {
@@ -255,6 +263,16 @@ ProxyConfig load_or_create_config(const std::filesystem::path& path) {
             cfg.fast_buy_qty = parse_int_clamped(val, 0, 200, cfg.fast_buy_qty);
         } else if ((section.empty() || section == "features") && key == "vending_info") {
             cfg.vending_info = parse_bool(val, cfg.vending_info);
+        } else if ((section.empty() || section == "features") && key == "custom_banner") {
+            cfg.custom_banner = parse_bool(val, cfg.custom_banner);
+        } else if ((section.empty() || section == "features") && key == "hud_overlay") {
+            cfg.hud_overlay = parse_bool(val, cfg.hud_overlay);
+        } else if ((section.empty() || section == "features") && key == "zoom_percent") {
+            cfg.zoom_percent = parse_int_clamped(val, 50, 200, cfg.zoom_percent);
+        } else if ((section.empty() || section == "features") && key == "weather_override") {
+            cfg.weather_override = parse_bool(val, cfg.weather_override);
+        } else if ((section.empty() || section == "features") && key == "weather_id") {
+            cfg.weather_id = static_cast<uint32_t>(parse_int_clamped(val, 0, 255, static_cast<int>(cfg.weather_id)));
         } else if (section == "hotkeys" && key.rfind("hotkey_", 0) == 0) {
             // hotkey_<N>_key / hotkey_<N>_cmd
             const size_t us = key.find('_', 7);

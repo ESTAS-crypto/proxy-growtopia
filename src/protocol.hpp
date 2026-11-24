@@ -142,11 +142,13 @@ struct Variant {
         Vec2 = 3,
         Vec3 = 4,
         Unsigned = 5,
-        Signed = 9
+        Signed = 9,
+        Int64 = 10,
+        Uint64 = 11
     };
 
     Type type = Type::String;
-    std::variant<float, std::string, Vec2, Vec3, uint32_t, int32_t> value;
+    std::variant<float, std::string, Vec2, Vec3, uint32_t, int32_t, int64_t, uint64_t> value;
 
     static Variant make_float(float v) { return Variant{Type::Float, v}; }
     static Variant make_string(std::string v) { return Variant{Type::String, std::move(v)}; }
@@ -154,6 +156,8 @@ struct Variant {
     static Variant make_vec3(float x, float y, float z) { return Variant{Type::Vec3, Vec3{x, y, z}}; }
     static Variant make_unsigned(uint32_t v) { return Variant{Type::Unsigned, v}; }
     static Variant make_signed(int32_t v) { return Variant{Type::Signed, v}; }
+    static Variant make_int64(int64_t v) { return Variant{Type::Int64, v}; }
+    static Variant make_uint64(uint64_t v) { return Variant{Type::Uint64, v}; }
 
     std::string as_string() const;
     std::optional<int64_t> as_int() const;

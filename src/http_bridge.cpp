@@ -23,6 +23,41 @@
 
 namespace evan {
 
+void SharedState::reset_for_start() {
+    stop_requested.store(false);
+    c2s_packets.store(0);
+    s2c_packets.store(0);
+    has_ui_cmds_.store(false);
+    std::lock_guard<std::mutex> lock(mutex_);
+    pending_ip_.clear();
+    pending_port_ = 0;
+    has_pending_ = false;
+    last_ip_.clear();
+    last_port_ = 0;
+    current_ip_.clear();
+    current_port_ = 0;
+    local_net_id_ = -1;
+    log_file_path_.clear();
+    ui_cmd_queue_.clear();
+    hud_toasts_ = HudToastState{};
+    snapshot_.client_connected = false;
+    snapshot_.in_world = false;
+    snapshot_.player_name.clear();
+    snapshot_.current_world.clear();
+    snapshot_.previous_world.clear();
+    snapshot_.world_owner.clear();
+    snapshot_.player_count = 0;
+    snapshot_.upstream_addr.clear();
+    snapshot_.log_file_path.clear();
+    snapshot_.live_ping_ms = 0;
+    snapshot_.ping_min_ms = 0;
+    snapshot_.ping_max_ms = 0;
+    snapshot_.ping_jitter_ms = 0;
+    snapshot_.c2s_packets = 0;
+    snapshot_.s2c_packets = 0;
+    snapshot_.hud = HudToastState{};
+}
+
 void SharedState::set_pending_upstream(const std::string& ip, uint16_t port) {
     std::lock_guard<std::mutex> lock(mutex_);
     pending_ip_ = ip;
@@ -76,6 +111,113 @@ void SharedState::set_log_file_path(const std::string& path) {
 std::string SharedState::get_log_file_path() const {
     std::lock_guard<std::mutex> lock(mutex_);
     return log_file_path_;
+}
+
+void SharedState::push_console_line(LogTag tag, const std::string& tag_text, const std::string& text) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    ConsoleLine line;
+    line.seq = next_log_seq_++;
+    line.tag = tag;
+    line.tag_text = tag_text;
+    line.text = text;
+    console_lines_.push_back(line);
+    if (console_lines_.size() > 400) {
+        console_lines_.pop_front();
+    }
+    if (tag == LogTag::Action || tag == LogTag::Packet) {
+        packet_lines_.push_back(std::move(line));
+        if (packet_lines_.size() > 250) {
+            packet_lines_.pop_front();
+        }
+    }
+}
+
+std::vector<ConsoleLine> SharedState::get_console_lines() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return {console_lines_.begin(), console_lines_.end()};
+}
+
+std::vector<ConsoleLine> SharedState::get_packet_lines() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    return {packet_lines_.begin(), packet_lines_.end()};
+}
+
+void SharedState::clear_console_lines() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    console_lines_.clear();
+}
+
+void SharedState::clear_packet_lines() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    packet_lines_.clear();
+}
+
+void SharedState::enqueue_ui_command(UiCommand cmd) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    ui_cmd_queue_.push_back(std::move(cmd));
+    has_ui_cmds_.store(true, std::memory_order_release);
+}
+
+std::vector<UiCommand> SharedState::drain_ui_commands() {
+    std::lock_guard<std::mutex> lock(mutex_);
+    has_ui_cmds_.store(false, std::memory_order_release);
+    std::vector<UiCommand> out;
+    out.swap(ui_cmd_queue_);
+    return out;
+}
+
+void SharedState::publish_snapshot(const UiSnapshot& snap) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    snapshot_ = snap;
+}
+
+UiSnapshot SharedState::get_snapshot() const {
+    std::lock_guard<std::mutex> lock(mutex_);
+    UiSnapshot out = snapshot_;
+    const int64_t now_ms = steady_now_ms();
+    out.hud = hud_toasts_;
+    if (out.hud.hotkey_visible && now_ms >= out.hud.hotkey_expire_ms) {
+        out.hud.hotkey_visible = false;
+    }
+    if (out.hud.vend_visible && now_ms >= out.hud.vend_expire_ms) {
+        out.hud.vend_visible = false;
+    }
+    if (out.hud.calc_visible && now_ms >= out.hud.calc_expire_ms) {
+        out.hud.calc_visible = false;
+    }
+    return out;
+}
+
+void SharedState::notify_hotkey_toast(const std::string& key, const std::string& cmd) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    hud_toasts_.hotkey_visible = true;
+    hud_toasts_.hotkey_key = key;
+    hud_toasts_.hotkey_cmd = cmd;
+    hud_toasts_.hotkey_expire_ms = steady_now_ms() + 3500;
+}
+
+void SharedState::notify_vend_toast(int64_t rem_stock, int64_t rem_wl, const std::string& item_name) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    hud_toasts_.vend_visible = true;
+    hud_toasts_.vend_rem_stock = rem_stock;
+    hud_toasts_.vend_rem_wl = rem_wl;
+    hud_toasts_.vend_item_name = item_name;
+    hud_toasts_.vend_expire_ms = steady_now_ms() + 6000;
+}
+
+void SharedState::notify_calc_toast(const std::string& title, const std::string& value) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    hud_toasts_.calc_visible = true;
+    hud_toasts_.calc_title = title;
+    hud_toasts_.calc_value = value;
+    hud_toasts_.calc_expire_ms = steady_now_ms() + 6000;
+}
+
+void SharedState::update_timer_hud(bool active, int remaining_sec, const std::string& label) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    hud_toasts_.timer_active = active;
+    hud_toasts_.timer_remaining_sec = remaining_sec;
+    hud_toasts_.timer_label = label;
 }
 
 namespace {
@@ -306,15 +448,15 @@ HttpBridge::~HttpBridge() {
 }
 
 bool HttpBridge::start(std::string& err) {
+    last_port_in_use_.store(false);
     SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (s == INVALID_SOCKET) {
         err = "Gagal membuat socket HTTPS";
         return false;
     }
 
-    BOOL reuse = TRUE;
-    setsockopt(s, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&reuse), sizeof(reuse));
-
+    // Do not set SO_REUSEADDR on Windows: on Winsock SO_REUSEADDR allows binding
+    // over another app's active listener on :443 instead of reporting WSAEADDRINUSE.
     sockaddr_in addr{};
     addr.sin_family = AF_INET;
     addr.sin_port = htons(opts_.bind_port);
@@ -327,7 +469,8 @@ bool HttpBridge::start(std::string& err) {
     if (bind(s, reinterpret_cast<const sockaddr*>(&addr), sizeof(addr)) == SOCKET_ERROR) {
         int wsa_err = WSAGetLastError();
         closesocket(s);
-        if (wsa_err == WSAEADDRINUSE) {
+        if (wsa_err == WSAEADDRINUSE || wsa_err == WSAEACCES) {
+            last_port_in_use_.store(true);
             err = "Port " + std::to_string(opts_.bind_port) +
                   " sedang dipakai aplikasi lain (misalnya Laragon/Apache/Nginx/IIS). Matikan sementara layanan tersebut lalu coba lagi.";
         } else {
@@ -488,6 +631,7 @@ void HttpBridge::handle_client(uintptr_t client_sock_raw) {
     std::string err;
     if (!forward_server_data(ua, req.body, rewritten, real_ip, real_port, err)) {
         std::cerr << "[!] Gagal menghubungi server_data.php asli: " << err << "\n";
+        shared_.push_console_line(LogTag::Error, "HTTP", "Failed upstream server_data.php: " + err);
         ssl_write_all(&ssl, build_http_response(502, "Bad Gateway", "EvanProxy could not reach Growtopia"));
         cleanup();
         return;
@@ -496,6 +640,11 @@ void HttpBridge::handle_client(uintptr_t client_sock_raw) {
     shared_.set_pending_upstream(real_ip, real_port);
     std::cout << "[HTTP] Server asli: " << real_ip << ":" << real_port
               << " -> klien diarahkan ke " << cfg_.local_ip << ":" << cfg_.enet_port << "\n";
+    shared_.push_console_line(
+        LogTag::Http,
+        "HTTP",
+        "server_data.php -> " + real_ip + ":" + std::to_string(real_port) +
+            " (client -> " + cfg_.local_ip + ":" + std::to_string(cfg_.enet_port) + ")");
 
     ssl_write_all(&ssl, build_http_response(200, "OK", rewritten));
     cleanup();

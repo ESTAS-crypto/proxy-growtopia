@@ -16,6 +16,7 @@ struct UiEffects {
     std::vector<std::vector<uint8_t>> to_client;
     std::vector<std::vector<uint8_t>> to_server;
     std::optional<std::pair<std::string, std::string>> trigger_warp;
+    std::optional<std::pair<std::string, std::string>> calc_toast;
     bool save_config = false;
     bool save_worlds = false;
 };
@@ -32,12 +33,14 @@ std::string build_fps_dialog(const Session& session);
 std::string build_clothes_dialog(const Session& session);
 std::string build_search_dialog(const Session& session, const std::string& query, bool clothes_only);
 std::string build_tools_dialog(const Session& session);
+std::string build_gems_dialog(const Session& session);
 std::string build_hotkeys_dialog(const Session& session);
 std::string build_hotkey_edit_dialog(const Session& session, int slot);
-std::string build_players_dialog(const Session& session);
+std::string build_players_dialog(const Session& session, int page = 0);
 std::string build_worldinfo_dialog(const Session& session, const SharedState& shared);
 std::string build_player_inspect_dialog(const Session& session, const PlayerInfo& p);
 std::string build_commands_dialog(const Session& session);
+std::string build_changelog_dialog(const Session& session);
 
 bool handle_dialog_return(
     const proto::TextParse& tp,
@@ -58,5 +61,8 @@ void hotkey_capture_finish(Session& session, const std::string& key_text, UiEffe
 
 // Runs a hotkey command: proxy commands locally, anything else is sent as chat.
 void run_hotkey_command(const std::string& command, Session& session, SharedState& shared, UiEffects& out);
+
+// Applies an interactive command/toggle sent from the Desktop GUI or Dashboard.
+bool apply_ui_command(const UiCommand& cmd, Session& session, SharedState& shared, UiEffects& out);
 
 } // namespace evan::ui

@@ -53,10 +53,16 @@ struct ProxyConfig {
     bool hide_clothes = false;
     bool formalize_chat = false;
     bool style_all_dialogs = false;
+    bool custom_banner = true;
+    bool hud_overlay = true;
+    int zoom_percent = 100;
+    bool weather_override = false;
+    uint32_t weather_id = 15;
     bool auto_bgl = false;
+    bool gems_tracker = true;
     bool hotkeys_enabled = true;
     int fast_buy = 0;       // 0=Off, 1=Quick (prefill + skip confirmation), 2=Auto (buy on wrench)
-    int fast_buy_qty = 0;   // 0 = max affordable
+    int fast_buy_qty = 1;   // 0 = max affordable, 1..200 = exact qty on 1-click buy
     bool vending_info = true;
     std::vector<HotkeyBinding> hotkeys = default_hotkeys();
     bool title_maxlevel = false;

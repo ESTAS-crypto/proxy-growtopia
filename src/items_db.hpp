@@ -27,6 +27,7 @@ public:
     const std::filesystem::path& loaded_path() const { return loaded_path_; }
 
     const ItemEntry* find_by_id(uint32_t id) const;
+    const ItemEntry* find_by_name(const std::string& name) const;
     std::string name_or_fallback(uint32_t id) const;
 
     // Returns 0..9 clothing slot index, or -1 if item is not wearable
@@ -42,6 +43,7 @@ public:
 private:
     std::vector<ItemEntry> items_;
     std::unordered_map<uint32_t, size_t> items_by_id_;
+    std::unordered_map<std::string, size_t> items_by_name_lower_;
     std::filesystem::path loaded_path_;
 };
 

@@ -186,8 +186,14 @@ void Session::apply_config(const ProxyConfig& cfg) {
     hide_clothes = cfg.hide_clothes;
     formalize_chat = cfg.formalize_chat;
     style_all_dialogs = cfg.style_all_dialogs;
+    custom_banner = cfg.custom_banner;
+    hud_overlay = cfg.hud_overlay;
+    zoom_percent = cfg.zoom_percent;
+    weather_override = cfg.weather_override;
+    weather_id = cfg.weather_id;
     ui_theme = cfg.ui_theme;
     auto_bgl = cfg.auto_bgl;
+    gems_tracker = cfg.gems_tracker;
     hotkeys_enabled = cfg.hotkeys_enabled;
     fast_buy = cfg.fast_buy;
     fast_buy_qty = cfg.fast_buy_qty;
@@ -229,8 +235,14 @@ void Session::export_to_config(ProxyConfig& cfg) const {
     cfg.hide_clothes = hide_clothes;
     cfg.formalize_chat = formalize_chat;
     cfg.style_all_dialogs = style_all_dialogs;
+    cfg.custom_banner = custom_banner;
+    cfg.hud_overlay = hud_overlay;
+    cfg.zoom_percent = zoom_percent;
+    cfg.weather_override = weather_override;
+    cfg.weather_id = weather_id;
     cfg.ui_theme = ui_theme;
     cfg.auto_bgl = auto_bgl;
+    cfg.gems_tracker = gems_tracker;
     cfg.hotkeys_enabled = hotkeys_enabled;
     cfg.fast_buy = fast_buy;
     cfg.fast_buy_qty = fast_buy_qty;
@@ -853,14 +865,84 @@ void Session::on_server_console_message(const std::string& msg) {
         }
         std::string wname = to_upper_str(clean.substr(start, end - start));
         if (!wname.empty()) {
-            if (!current_world.empty() && current_world != wname) {
+            const bool switched = (current_world != wname);
+            if (switched && !current_world.empty()) {
                 previous_world = current_world;
             }
             current_world = wname;
             in_world = true;
-            world_owner.clear();
-            players.clear();
+            if (switched) {
+                world_owner.clear();
+            }
             push_world_history(world_history, wname);
+        }
+    }
+
+    // Example: "Collected `w15 World Lock``.``" -> sync local inventory
+    if (clean.rfind("Collected ", 0) == 0) {
+        size_t pos = 10;
+        while (pos < clean.size() && std::isspace(static_cast<unsigned char>(clean[pos]))) {
+            ++pos;
+        }
+        std::string count_digits;
+        while (pos < clean.size() &&
+               (std::isdigit(static_cast<unsigned char>(clean[pos])) || clean[pos] == ',')) {
+            if (clean[pos] != ',') {
+                count_digits.push_back(clean[pos]);
+            }
+            ++pos;
+        }
+        if (!count_digits.empty() && pos < clean.size() &&
+            std::isspace(static_cast<unsigned char>(clean[pos]))) {
+            while (pos < clean.size() && std::isspace(static_cast<unsigned char>(clean[pos]))) {
+                ++pos;
+            }
+            std::string item_name = clean.substr(pos);
+            while (!item_name.empty() &&
+                   (item_name.back() == '.' || item_name.back() == '!' ||
+                    std::isspace(static_cast<unsigned char>(item_name.back())))) {
+                item_name.pop_back();
+            }
+            if (!item_name.empty()) {
+                uint32_t qty = 0;
+                try {
+                    const unsigned long parsed_qty = std::stoul(count_digits);
+                    if (parsed_qty > 0 && parsed_qty <= 100000000UL) {
+                        qty = static_cast<uint32_t>(parsed_qty);
+                    }
+                } catch (...) {
+                }
+                if (qty > 0) {
+                    std::string low_name = item_name;
+                    std::transform(low_name.begin(), low_name.end(), low_name.begin(), [](unsigned char c) {
+                        return static_cast<char>(std::tolower(c));
+                    });
+                    std::optional<uint16_t> item_id;
+                    if (low_name == "world lock" || low_name == "world locks") {
+                        item_id = 242u;
+                    } else if (low_name == "diamond lock" || low_name == "diamond locks") {
+                        item_id = 1796u;
+                    } else if (low_name == "blue gem lock" || low_name == "blue gem locks") {
+                        item_id = 7188u;
+                    } else if (items_db) {
+                        if (const ItemEntry* e = items_db->find_by_name(item_name); e && e->id <= 65535u) {
+                            item_id = static_cast<uint16_t>(e->id);
+                        }
+                    }
+                    if (item_id) {
+                        const auto now_c = std::chrono::steady_clock::now();
+                        const bool already_credited =
+                            (last_obj_credit_item == *item_id &&
+                             last_obj_credit_count == qty &&
+                             now_c - last_obj_credit_time <= std::chrono::milliseconds(800));
+                        if (!already_credited) {
+                            inventory[*item_id] += qty;
+                        } else {
+                            last_obj_credit_item = 0;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -879,26 +961,285 @@ void Session::on_server_console_message(const std::string& msg) {
     }
 }
 
+void Session::on_enter_world_map(const uint8_t* extra, size_t len) {
+    players.clear();
+    remote_clothes.clear();
+    world_owner.clear();
+    world_drops.clear();
+    recent_pickup_reqs.clear();
+    drop_uid_calibrated = false;
+    drop_base_uid = 1;
+    gems_collected_world = 0;
+    gem_pickup_burst = 0;
+    players_page = 0;
+    in_world = true;
+    has_pos = false;
+    last_sent_display_name.clear();
+
+    if (extra && len >= 8) {
+        const uint16_t name_len =
+            static_cast<uint16_t>(extra[6]) | (static_cast<uint16_t>(extra[7]) << 8);
+        if (name_len > 0 && name_len <= 32 && 8u + static_cast<size_t>(name_len) <= len) {
+            bool valid = true;
+            std::string raw_w;
+            raw_w.reserve(name_len);
+            for (size_t i = 0; i < name_len; ++i) {
+                const unsigned char ch = extra[8 + i];
+                if (ch < 0x20 || ch >= 0x7F) {
+                    valid = false;
+                    break;
+                }
+                raw_w.push_back(static_cast<char>(ch));
+            }
+            if (valid) {
+                const std::string wname = to_upper_str(trim_str(raw_w));
+                if (!wname.empty()) {
+                    if (!current_world.empty() && current_world != wname) {
+                        previous_world = current_world;
+                    }
+                    current_world = wname;
+                    push_world_history(world_history, wname);
+                }
+            }
+        }
+    }
+}
+
 void Session::on_server_track(const std::string& track_text) {
     proto::TextParse tp(track_text);
+    auto strip_carets = [](std::string s) {
+        if (s.rfind("^^", 0) == 0) {
+            s.erase(0, 2);
+        }
+        return s;
+    };
     if (tp.has("Gems_balance")) {
         try {
-            gems = std::stoll(tp.get("Gems_balance"));
+            gems = std::stoll(strip_carets(tp.get("Gems_balance")));
         } catch (...) {
         }
     }
     if (tp.has("Level")) {
         try {
-            level = std::stoi(tp.get("Level"));
+            level = std::stoi(strip_carets(tp.get("Level")));
         } catch (...) {
         }
     }
     if (tp.has("othercurrency")) {
-        const std::string oc = tp.get("othercurrency");
+        const std::string oc = strip_carets(tp.get("othercurrency"));
         if (auto v = extract_json_uint_field(oc, "242")) inventory[242] = *v;
         if (auto v = extract_json_uint_field(oc, "1796")) inventory[1796] = *v;
         if (auto v = extract_json_uint_field(oc, "7188")) inventory[7188] = *v;
     }
+    const std::string ev = strip_carets(tp.get("eventName"));
+    if (ev == "gemscurrency") {
+        const std::string cat = strip_carets(tp.get("category"));
+        if (cat.find("pick_up") != std::string::npos) {
+            try {
+                const int64_t val = std::stoll(strip_carets(tp.get("value")));
+                if (val > 0) {
+                    const auto now_t = std::chrono::steady_clock::now();
+                    if (now_t - last_gem_pickup_time > std::chrono::seconds(10)) {
+                        gems_collected_world += val;
+                        gems_collected_session += val;
+                        if (gems >= 0) gems += val;
+                    }
+                }
+            } catch (...) {
+            }
+        }
+    }
+}
+
+void Session::on_client_pickup_request(const proto::GameUpdatePacket& gp) {
+    const int32_t uid = gp.value;
+    if (uid <= 0) return;
+    recent_pickup_reqs[uid] = PickupReqPos{gp.vec_x, gp.vec_y};
+
+    if (!drop_uid_calibrated && !world_drops.empty()) {
+        float best_d2 = 128.0f * 128.0f;
+        int best_idx = -1;
+        for (size_t i = 0; i < world_drops.size(); ++i) {
+            const auto& d = world_drops[i];
+            if (d.collected) continue;
+            if (uid <= static_cast<int32_t>(d.seq_idx)) continue;
+            const float dx = d.x - gp.vec_x;
+            const float dy = d.y - gp.vec_y;
+            const float d2 = dx * dx + dy * dy;
+            if (d2 < best_d2) {
+                best_d2 = d2;
+                best_idx = static_cast<int>(i);
+            }
+        }
+        if (best_idx >= 0) {
+            drop_base_uid = uid - static_cast<int32_t>(world_drops[static_cast<size_t>(best_idx)].seq_idx);
+            drop_uid_calibrated = true;
+            for (auto& d : world_drops) {
+                d.uid = drop_base_uid + static_cast<int32_t>(d.seq_idx);
+            }
+        }
+    }
+}
+
+int64_t Session::on_server_item_change_object(const proto::GameUpdatePacket& gp) {
+    if (gp.net_id == -1) {
+        if (gp.value <= 0) return 0;
+        WorldDropObject d;
+        d.seq_idx = static_cast<uint32_t>(world_drops.size());
+        d.uid = drop_uid_calibrated
+            ? (drop_base_uid + static_cast<int32_t>(d.seq_idx))
+            : static_cast<int32_t>(d.seq_idx + 1);
+        d.item_id = static_cast<uint32_t>(gp.value);
+        long long cnt = std::llround(gp.float_var);
+        d.count = (cnt > 0 && cnt <= 2000000000LL) ? static_cast<uint32_t>(cnt) : 1u;
+        d.x = gp.vec_x;
+        d.y = gp.vec_y;
+        d.collected = false;
+        world_drops.push_back(d);
+        return 0;
+    }
+
+    if (gp.net_id == -3 && gp.value > 0) {
+        long long cnt = std::llround(gp.float_var);
+        uint32_t new_cnt = (cnt > 0 && cnt <= 2000000000LL) ? static_cast<uint32_t>(cnt) : 1u;
+        for (auto& d : world_drops) {
+            if (!d.collected && d.item_id == static_cast<uint32_t>(gp.value)) {
+                const float dx = d.x - gp.vec_x;
+                const float dy = d.y - gp.vec_y;
+                if (dx * dx + dy * dy <= 24.0f * 24.0f) {
+                    d.count = new_cnt;
+                    break;
+                }
+            }
+        }
+        return 0;
+    }
+
+    if (gp.net_id > 0 && gp.target_net_id == -1 && gp.value > 0) {
+        const int32_t uid = gp.value;
+        if (!drop_uid_calibrated && !world_drops.empty()) {
+            float ref_x = pos_x;
+            float ref_y = pos_y;
+            float max_r2 = 160.0f * 160.0f;
+            auto rit = recent_pickup_reqs.find(uid);
+            if (rit != recent_pickup_reqs.end()) {
+                ref_x = rit->second.x;
+                ref_y = rit->second.y;
+                max_r2 = 128.0f * 128.0f;
+            }
+            if (rit != recent_pickup_reqs.end() || (gp.net_id == local_net_id && has_pos)) {
+                float best_d2 = max_r2;
+                int best_idx = -1;
+                for (size_t i = 0; i < world_drops.size(); ++i) {
+                    const auto& d = world_drops[i];
+                    if (d.collected || uid <= static_cast<int32_t>(d.seq_idx)) continue;
+                    const float dx = d.x - ref_x;
+                    const float dy = d.y - ref_y;
+                    const float d2 = dx * dx + dy * dy;
+                    if (d2 < best_d2) {
+                        best_d2 = d2;
+                        best_idx = static_cast<int>(i);
+                    }
+                }
+                if (best_idx >= 0) {
+                    drop_base_uid = uid - static_cast<int32_t>(world_drops[static_cast<size_t>(best_idx)].seq_idx);
+                    drop_uid_calibrated = true;
+                    for (auto& d : world_drops) {
+                        d.uid = drop_base_uid + static_cast<int32_t>(d.seq_idx);
+                    }
+                }
+            }
+        }
+
+        WorldDropObject* matched = nullptr;
+        for (auto& d : world_drops) {
+            if (!d.collected && d.uid == uid) {
+                matched = &d;
+                break;
+            }
+        }
+        if (!matched) {
+            return 0;
+        }
+        matched->collected = true;
+
+        if (gp.net_id == local_net_id) {
+            const auto now_t = std::chrono::steady_clock::now();
+            if (matched->item_id == 112u) {
+                if (gems < 0) gems = 0;
+                gems += static_cast<int64_t>(matched->count);
+                gems_collected_world += static_cast<int64_t>(matched->count);
+                gems_collected_session += static_cast<int64_t>(matched->count);
+                if (last_gem_pickup_time.time_since_epoch().count() > 0 &&
+                    now_t - last_gem_pickup_time <= std::chrono::milliseconds(1200)) {
+                    gem_pickup_burst += static_cast<int64_t>(matched->count);
+                } else {
+                    gem_pickup_burst = static_cast<int64_t>(matched->count);
+                }
+                last_gem_pickup_time = now_t;
+                return static_cast<int64_t>(matched->count);
+            }
+            if (matched->item_id > 0 && matched->item_id <= 65535u) {
+                inventory[static_cast<uint16_t>(matched->item_id)] += matched->count;
+                last_obj_credit_item = static_cast<uint16_t>(matched->item_id);
+                last_obj_credit_count = matched->count;
+                last_obj_credit_time = now_t;
+            }
+        }
+    }
+    return 0;
+}
+
+int64_t Session::world_floor_gems_total() const {
+    int64_t total = 0;
+    for (const auto& d : world_drops) {
+        if (!d.collected && d.item_id == 112u) {
+            total += static_cast<int64_t>(d.count);
+        }
+    }
+    return total;
+}
+
+size_t Session::world_floor_gems_clusters() const {
+    size_t cnt = 0;
+    for (const auto& d : world_drops) {
+        if (!d.collected && d.item_id == 112u) {
+            ++cnt;
+        }
+    }
+    return cnt;
+}
+
+std::vector<std::pair<std::pair<int, int>, uint32_t>> Session::world_gem_tiles_top(size_t max_tiles) const {
+    std::map<std::pair<int, int>, uint32_t> by_tile;
+    for (const auto& d : world_drops) {
+        if (!d.collected && d.item_id == 112u) {
+            auto t = proto::pixel_to_tile(d.x, d.y);
+            by_tile[t] += d.count;
+        }
+    }
+    std::vector<std::pair<std::pair<int, int>, uint32_t>> out(by_tile.begin(), by_tile.end());
+    std::sort(out.begin(), out.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+    });
+    if (out.size() > max_tiles) {
+        out.resize(max_tiles);
+    }
+    return out;
+}
+
+std::vector<std::pair<uint32_t, uint32_t>> Session::world_floor_items_summary() const {
+    std::map<uint32_t, uint32_t> by_item;
+    for (const auto& d : world_drops) {
+        if (!d.collected && d.item_id != 112u && d.item_id != 0u) {
+            by_item[d.item_id] += d.count;
+        }
+    }
+    std::vector<std::pair<uint32_t, uint32_t>> out(by_item.begin(), by_item.end());
+    std::sort(out.begin(), out.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+    });
+    return out;
 }
 
 void Session::on_leave_world() {
@@ -908,6 +1249,12 @@ void Session::on_leave_world() {
     in_world = false;
     world_owner.clear();
     players.clear();
+    world_drops.clear();
+    recent_pickup_reqs.clear();
+    drop_uid_calibrated = false;
+    drop_base_uid = 1;
+    gems_collected_world = 0;
+    gem_pickup_burst = 0;
     has_pos = false;
     was_jumping = false;
     was_walking = false;
@@ -917,6 +1264,9 @@ void Session::on_leave_world() {
     planned_drops.clear();
     active_planned_drop.reset();
     client_icon_state = 0;
+    players_page = 0;
+    ping_min_ms = 0;
+    ping_max_ms = 0;
     vend.active = false;
     hk_capture_slot = -1;
 }
@@ -1020,6 +1370,18 @@ bool plan_lock_drops(
 // ---------------------------------------------------------------------------
 // Custom hotkeys
 // ---------------------------------------------------------------------------
+bool is_modifier_vk(int vk) {
+    return vk == 0x10 || vk == 0x11 || vk == 0x12 ||
+           (vk >= 0xA0 && vk <= 0xA5);
+}
+
+int canonical_modifier_vk(int vk) {
+    if (vk == 0xA2 || vk == 0xA3) return 0x11; // CTRL
+    if (vk == 0xA4 || vk == 0xA5) return 0x12; // ALT
+    if (vk == 0xA0 || vk == 0xA1) return 0x10; // SHIFT
+    return vk;
+}
+
 std::optional<HotkeySpec> parse_hotkey(const std::string& text) {
     std::string t;
     for (char c : text) {
@@ -1051,6 +1413,25 @@ std::optional<HotkeySpec> parse_hotkey(const std::string& text) {
     }
 
     const std::string& k = parts.back();
+    auto finalize_mod = [&](int vk) -> HotkeySpec {
+        spec.vk = vk;
+        const int canon = canonical_modifier_vk(vk);
+        if (canon == 0x11) spec.ctrl = false;
+        else if (canon == 0x12) spec.alt = false;
+        else if (canon == 0x10) spec.shift = false;
+        return spec;
+    };
+
+    if (k == "CTRL" || k == "CONTROL") return finalize_mod(0x11);
+    if (k == "LCTRL" || k == "LCONTROL") return finalize_mod(0xA2);
+    if (k == "RCTRL" || k == "RCONTROL") return finalize_mod(0xA3);
+    if (k == "ALT") return finalize_mod(0x12);
+    if (k == "LALT") return finalize_mod(0xA4);
+    if (k == "RALT") return finalize_mod(0xA5);
+    if (k == "SHIFT") return finalize_mod(0x10);
+    if (k == "LSHIFT") return finalize_mod(0xA0);
+    if (k == "RSHIFT") return finalize_mod(0xA1);
+
     if (k.size() == 1 && ((k[0] >= 'A' && k[0] <= 'Z') || (k[0] >= '0' && k[0] <= '9'))) {
         spec.vk = k[0];
         return spec;
@@ -1072,6 +1453,26 @@ std::optional<HotkeySpec> parse_hotkey(const std::string& text) {
             return spec;
         }
     }
+    if (k == "TAB") { spec.vk = 0x09; return spec; }
+    if (k == "SPACE") { spec.vk = 0x20; return spec; }
+    if (k == "CAPS" || k == "CAPSLOCK") { spec.vk = 0x14; return spec; }
+    if (k == "BACKSPACE" || k == "BS") { spec.vk = 0x08; return spec; }
+    if (k == "ENTER" || k == "RETURN") { spec.vk = 0x0D; return spec; }
+    if (k == "UP") { spec.vk = 0x26; return spec; }
+    if (k == "DOWN") { spec.vk = 0x28; return spec; }
+    if (k == "LEFT") { spec.vk = 0x25; return spec; }
+    if (k == "RIGHT") { spec.vk = 0x27; return spec; }
+    if (k == "TILDE" || k == "GRAVE" || k == "`") { spec.vk = 0xC0; return spec; }
+    if (k == "MINUS" || k == "-") { spec.vk = 0xBD; return spec; }
+    if (k == "EQUALS" || k == "PLUS" || k == "=") { spec.vk = 0xBB; return spec; }
+    if (k == "[") { spec.vk = 0xDB; return spec; }
+    if (k == "]") { spec.vk = 0xDD; return spec; }
+    if (k == ";") { spec.vk = 0xBA; return spec; }
+    if (k == "'") { spec.vk = 0xDE; return spec; }
+    if (k == ",") { spec.vk = 0xBC; return spec; }
+    if (k == ".") { spec.vk = 0xBE; return spec; }
+    if (k == "/") { spec.vk = 0xBF; return spec; }
+    if (k == "\\") { spec.vk = 0xDC; return spec; }
     if (k == "INSERT" || k == "INS") { spec.vk = 0x2D; return spec; }
     if (k == "DELETE" || k == "DEL") { spec.vk = 0x2E; return spec; }
     if (k == "HOME") { spec.vk = 0x24; return spec; }
@@ -1083,16 +1484,46 @@ std::optional<HotkeySpec> parse_hotkey(const std::string& text) {
 
 std::string format_hotkey(const HotkeySpec& s) {
     std::string out;
-    if (s.ctrl) out += "CTRL+";
-    if (s.alt) out += "ALT+";
-    if (s.shift) out += "SHIFT+";
-    if ((s.vk >= 'A' && s.vk <= 'Z') || (s.vk >= '0' && s.vk <= '9')) {
+    const int canon = canonical_modifier_vk(s.vk);
+    if (s.ctrl && canon != 0x11) out += "CTRL+";
+    if (s.alt && canon != 0x12) out += "ALT+";
+    if (s.shift && canon != 0x10) out += "SHIFT+";
+    if (s.vk == 0x11) out += "CTRL";
+    else if (s.vk == 0xA2) out += "LCTRL";
+    else if (s.vk == 0xA3) out += "RCTRL";
+    else if (s.vk == 0x12) out += "ALT";
+    else if (s.vk == 0xA4) out += "LALT";
+    else if (s.vk == 0xA5) out += "RALT";
+    else if (s.vk == 0x10) out += "SHIFT";
+    else if (s.vk == 0xA0) out += "LSHIFT";
+    else if (s.vk == 0xA1) out += "RSHIFT";
+    else if ((s.vk >= 'A' && s.vk <= 'Z') || (s.vk >= '0' && s.vk <= '9')) {
         out.push_back(static_cast<char>(s.vk));
     } else if (s.vk >= 0x70 && s.vk <= 0x7B) {
         out += "F" + std::to_string(s.vk - 0x6F);
     } else if (s.vk >= 0x60 && s.vk <= 0x69) {
         out += "NUM" + std::to_string(s.vk - 0x60);
-    } else if (s.vk == 0x2D) out += "INSERT";
+    } else if (s.vk == 0x09) out += "TAB";
+    else if (s.vk == 0x20) out += "SPACE";
+    else if (s.vk == 0x14) out += "CAPS";
+    else if (s.vk == 0x08) out += "BACKSPACE";
+    else if (s.vk == 0x0D) out += "ENTER";
+    else if (s.vk == 0x26) out += "UP";
+    else if (s.vk == 0x28) out += "DOWN";
+    else if (s.vk == 0x25) out += "LEFT";
+    else if (s.vk == 0x27) out += "RIGHT";
+    else if (s.vk == 0xC0) out += "TILDE";
+    else if (s.vk == 0xBD) out += "-";
+    else if (s.vk == 0xBB) out += "=";
+    else if (s.vk == 0xDB) out += "[";
+    else if (s.vk == 0xDD) out += "]";
+    else if (s.vk == 0xBA) out += ";";
+    else if (s.vk == 0xDE) out += "'";
+    else if (s.vk == 0xBC) out += ",";
+    else if (s.vk == 0xBE) out += ".";
+    else if (s.vk == 0xBF) out += "/";
+    else if (s.vk == 0xDC) out += "\\";
+    else if (s.vk == 0x2D) out += "INSERT";
     else if (s.vk == 0x2E) out += "DELETE";
     else if (s.vk == 0x24) out += "HOME";
     else if (s.vk == 0x23) out += "END";
@@ -1109,7 +1540,11 @@ const std::vector<int>& hotkey_capture_vks() {
         for (int c = '0'; c <= '9'; ++c) v.push_back(c);
         for (int c = 0x70; c <= 0x7B; ++c) v.push_back(c);
         for (int c = 0x60; c <= 0x69; ++c) v.push_back(c);
-        for (int c : {0x2D, 0x2E, 0x24, 0x23, 0x21, 0x22}) v.push_back(c);
+        for (int c : {0x09, 0x20, 0x14, 0x08, 0x26, 0x28, 0x25, 0x27,
+                      0x2D, 0x2E, 0x24, 0x23, 0x21, 0x22,
+                      0xC0, 0xBD, 0xBB, 0xDB, 0xDD, 0xBA, 0xDE, 0xBC, 0xBE, 0xBF, 0xDC}) {
+            v.push_back(c);
+        }
         return v;
     }();
     return vks;

@@ -89,6 +89,16 @@ build CMakeFiles/evanproxy_core.dir/src/cert.cpp.obj: CXX_COMPILER__evanproxy_co
   OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
 
+build CMakeFiles/evanproxy_core.dir/src/banner.cpp.obj: CXX_COMPILER__evanproxy_core_unscanned_Release C$:/Users/MyBook$ Hype$ AMD/OneDrive/Documents/Growtopia/proxy$ growtopia/src/banner.cpp || cmake_object_order_depends_target_evanproxy_core
+  CONFIG = Release
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0A00
+  DEP_FILE = CMakeFiles\evanproxy_core.dir\src\banner.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -std=c++20
+  INCLUDES = -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/src" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/everest/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m/p256-m"
+  OBJECT_DIR = CMakeFiles\evanproxy_core.dir
+  OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
+  TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
+
 build CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj: CXX_COMPILER__evanproxy_core_unscanned_Release C$:/Users/MyBook$ Hype$ AMD/OneDrive/Documents/Growtopia/proxy$ growtopia/src/protocol.cpp || cmake_object_order_depends_target_evanproxy_core
   CONFIG = Release
   DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0A00
@@ -159,6 +169,36 @@ build CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj: CXX_COMPILER__evanpr
   OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
 
+build CMakeFiles/evanproxy_core.dir/src/proxy_controller.cpp.obj: CXX_COMPILER__evanproxy_core_unscanned_Release C$:/Users/MyBook$ Hype$ AMD/OneDrive/Documents/Growtopia/proxy$ growtopia/src/proxy_controller.cpp || cmake_object_order_depends_target_evanproxy_core
+  CONFIG = Release
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0A00
+  DEP_FILE = CMakeFiles\evanproxy_core.dir\src\proxy_controller.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -std=c++20
+  INCLUDES = -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/src" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/everest/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m/p256-m"
+  OBJECT_DIR = CMakeFiles\evanproxy_core.dir
+  OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
+  TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
+
+build CMakeFiles/evanproxy_core.dir/src/overlay_hud.cpp.obj: CXX_COMPILER__evanproxy_core_unscanned_Release C$:/Users/MyBook$ Hype$ AMD/OneDrive/Documents/Growtopia/proxy$ growtopia/src/overlay_hud.cpp || cmake_object_order_depends_target_evanproxy_core
+  CONFIG = Release
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0A00
+  DEP_FILE = CMakeFiles\evanproxy_core.dir\src\overlay_hud.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -std=c++20
+  INCLUDES = -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/src" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/everest/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m/p256-m"
+  OBJECT_DIR = CMakeFiles\evanproxy_core.dir
+  OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
+  TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
+
+build CMakeFiles/evanproxy_core.dir/src/desktop_gui.cpp.obj: CXX_COMPILER__evanproxy_core_unscanned_Release C$:/Users/MyBook$ Hype$ AMD/OneDrive/Documents/Growtopia/proxy$ growtopia/src/desktop_gui.cpp || cmake_object_order_depends_target_evanproxy_core
+  CONFIG = Release
+  DEFINES = -DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_WIN32_WINNT=0x0A00
+  DEP_FILE = CMakeFiles\evanproxy_core.dir\src\desktop_gui.cpp.obj.d
+  FLAGS = -O3 -DNDEBUG -std=c++20
+  INCLUDES = -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/src" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/enet_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/everest/include" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m" -I"C:/Users/MyBook Hype AMD/OneDrive/Documents/Growtopia/proxy growtopia/build-cpp/_deps/mbedtls_src-src/3rdparty/p256-m/p256-m"
+  OBJECT_DIR = CMakeFiles\evanproxy_core.dir
+  OBJECT_FILE_DIR = CMakeFiles\evanproxy_core.dir\src
+  TARGET_SUPPORT_DIR = CMakeFiles\evanproxy_core.dir
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target evanproxy_core
@@ -167,7 +207,7 @@ build CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj: CXX_COMPILER__evanpr
 #############################################
 # Link the static library libevanproxy_core.a
 
-build libevanproxy_core.a: CXX_STATIC_LIBRARY_LINKER__evanproxy_core_Release CMakeFiles/evanproxy_core.dir/src/config.cpp.obj CMakeFiles/evanproxy_core.dir/src/hosts.cpp.obj CMakeFiles/evanproxy_core.dir/src/dns.cpp.obj CMakeFiles/evanproxy_core.dir/src/cert.cpp.obj CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj CMakeFiles/evanproxy_core.dir/src/session.cpp.obj CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj || _deps/enet_src-build/libenet.a _deps/mbedtls_src-build/3rdparty/everest/libeverest.a _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a _deps/mbedtls_src-build/library/libmbedcrypto.a _deps/mbedtls_src-build/library/libmbedtls.a _deps/mbedtls_src-build/library/libmbedx509.a
+build libevanproxy_core.a: CXX_STATIC_LIBRARY_LINKER__evanproxy_core_Release CMakeFiles/evanproxy_core.dir/src/config.cpp.obj CMakeFiles/evanproxy_core.dir/src/hosts.cpp.obj CMakeFiles/evanproxy_core.dir/src/dns.cpp.obj CMakeFiles/evanproxy_core.dir/src/cert.cpp.obj CMakeFiles/evanproxy_core.dir/src/banner.cpp.obj CMakeFiles/evanproxy_core.dir/src/protocol.cpp.obj CMakeFiles/evanproxy_core.dir/src/packet_logger.cpp.obj CMakeFiles/evanproxy_core.dir/src/items_db.cpp.obj CMakeFiles/evanproxy_core.dir/src/session.cpp.obj CMakeFiles/evanproxy_core.dir/src/ui_menu.cpp.obj CMakeFiles/evanproxy_core.dir/src/http_bridge.cpp.obj CMakeFiles/evanproxy_core.dir/src/enet_proxy.cpp.obj CMakeFiles/evanproxy_core.dir/src/proxy_controller.cpp.obj CMakeFiles/evanproxy_core.dir/src/overlay_hud.cpp.obj CMakeFiles/evanproxy_core.dir/src/desktop_gui.cpp.obj || _deps/enet_src-build/libenet.a _deps/mbedtls_src-build/3rdparty/everest/libeverest.a _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a _deps/mbedtls_src-build/library/libmbedcrypto.a _deps/mbedtls_src-build/library/libmbedtls.a _deps/mbedtls_src-build/library/libmbedx509.a
   CONFIG = Release
   LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG
   OBJECT_DIR = CMakeFiles\evanproxy_core.dir
@@ -208,7 +248,7 @@ build EvanProxy.exe: CXX_EXECUTABLE_LINKER__EvanProxy_Release CMakeFiles/EvanPro
   CONFIG = Release
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic
-  LINK_LIBRARIES = libevanproxy_core.a  _deps/enet_src-build/libenet.a  _deps/mbedtls_src-build/library/libmbedtls.a  _deps/mbedtls_src-build/library/libmbedx509.a  _deps/mbedtls_src-build/library/libmbedcrypto.a  _deps/mbedtls_src-build/3rdparty/everest/libeverest.a  _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a  -lws2_32  -lwinmm  -ldwmapi  -lbcrypt  -lcrypt32  -lshell32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = libevanproxy_core.a  _deps/enet_src-build/libenet.a  _deps/mbedtls_src-build/library/libmbedtls.a  _deps/mbedtls_src-build/library/libmbedx509.a  _deps/mbedtls_src-build/library/libmbedcrypto.a  _deps/mbedtls_src-build/3rdparty/everest/libeverest.a  _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a  -lws2_32  -lwinmm  -ldwmapi  -lbcrypt  -lcrypt32  -lshell32  -lgdiplus  -lgdi32  -luser32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\EvanProxy.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -248,7 +288,7 @@ build evanproxy_tests.exe: CXX_EXECUTABLE_LINKER__evanproxy_tests_Release CMakeF
   CONFIG = Release
   FLAGS = -O3 -DNDEBUG
   LINK_FLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic -lwinpthread -Wl,-Bdynamic
-  LINK_LIBRARIES = libevanproxy_core.a  _deps/enet_src-build/libenet.a  _deps/mbedtls_src-build/library/libmbedtls.a  _deps/mbedtls_src-build/library/libmbedx509.a  _deps/mbedtls_src-build/library/libmbedcrypto.a  _deps/mbedtls_src-build/3rdparty/everest/libeverest.a  _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a  -lws2_32  -lwinmm  -ldwmapi  -lbcrypt  -lcrypt32  -lshell32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_LIBRARIES = libevanproxy_core.a  _deps/enet_src-build/libenet.a  _deps/mbedtls_src-build/library/libmbedtls.a  _deps/mbedtls_src-build/library/libmbedx509.a  _deps/mbedtls_src-build/library/libmbedcrypto.a  _deps/mbedtls_src-build/3rdparty/everest/libeverest.a  _deps/mbedtls_src-build/3rdparty/p256-m/libp256m.a  -lws2_32  -lwinmm  -ldwmapi  -lbcrypt  -lcrypt32  -lshell32  -lgdiplus  -lgdi32  -luser32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\evanproxy_tests.dir
   POST_BUILD = cd .
   PRE_LINK = cd .

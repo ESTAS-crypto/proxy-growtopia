@@ -133,6 +133,7 @@ bool ItemDatabase::load_from_file(const std::filesystem::path& path) {
 bool ItemDatabase::parse_bytes(const uint8_t* data, size_t len) {
     items_.clear();
     items_by_id_.clear();
+    items_by_name_lower_.clear();
     if (!data || len < 6) {
         return false;
     }
@@ -143,6 +144,7 @@ bool ItemDatabase::parse_bytes(const uint8_t* data, size_t len) {
     }
     items_.reserve(count);
     items_by_id_.reserve(count);
+    items_by_name_lower_.reserve(count);
 
     size_t pos = 6;
     for (uint32_t id = 0; id < count && pos + 12 <= len; ++id) {
@@ -159,6 +161,9 @@ bool ItemDatabase::parse_bytes(const uint8_t* data, size_t len) {
                 if (try_parse_record_at(data, len, off, id, entry, next_pos)) {
                     const size_t idx = items_.size();
                     items_by_id_[id] = idx;
+                    if (!entry.name_lower.empty()) {
+                        items_by_name_lower_[entry.name_lower] = idx;
+                    }
                     items_.push_back(std::move(entry));
                     pos = next_pos;
                     break;
@@ -174,6 +179,20 @@ const ItemEntry* ItemDatabase::find_by_id(uint32_t id) const {
     auto it = items_by_id_.find(id);
     if (it == items_by_id_.end()) return nullptr;
     return &items_[it->second];
+}
+
+const ItemEntry* ItemDatabase::find_by_name(const std::string& name) const {
+    if (name.empty()) return nullptr;
+    const std::string low = to_lower_ascii(name);
+    if (auto it = items_by_name_lower_.find(low); it != items_by_name_lower_.end()) {
+        return &items_[it->second];
+    }
+    if (low.size() > 1 && low.back() == 's') {
+        if (auto it = items_by_name_lower_.find(low.substr(0, low.size() - 1)); it != items_by_name_lower_.end()) {
+            return &items_[it->second];
+        }
+    }
+    return nullptr;
 }
 
 std::string ItemDatabase::name_or_fallback(uint32_t id) const {

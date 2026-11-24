@@ -1,3 +1,4 @@
+#include "banner.hpp"
 #include "cert.hpp"
 #include "config.hpp"
 #include "dns.hpp"
@@ -5,8 +6,11 @@
 #include "hosts.hpp"
 #include "http_bridge.hpp"
 #include "items_db.hpp"
+#include "packet_logger.hpp"
 #include "protocol.hpp"
+#include "proxy_controller.hpp"
 #include "session.hpp"
+#include "ui_bridge.hpp"
 #include "ui_menu.hpp"
 
 #include <winsock2.h>
@@ -2151,6 +2155,809 @@ void test_custom_hotkeys_smart_cd_and_fastbuy() {
     }
 }
 
+void test_standalone_hotkeys_winfo_ping_fastbuy_and_banner() {
+    // 1. Standalone modifier keys (CTRL, ALT, SHIFT) & single-key parsing/formatting
+    {
+        for (const char* name : {"CTRL", "LCTRL", "RCTRL", "ALT", "SHIFT", "TAB", "SPACE"}) {
+            auto spec = evan::parse_hotkey(name);
+            require(spec.has_value(), std::string("parse_hotkey failed for ") + name);
+            require(!spec->ctrl && !spec->alt && !spec->shift,
+                    std::string("Standalone hotkey should not set extra modifier bits: ") + name);
+            require(evan::format_hotkey(*spec) == name,
+                    std::string("format_hotkey mismatch for ") + name);
+        }
+        auto ctrl_spec = evan::parse_hotkey("ctrl+ctrl");
+        require(ctrl_spec && ctrl_spec->vk == VK_CONTROL && !ctrl_spec->ctrl &&
+                evan::is_modifier_vk(ctrl_spec->vk),
+                "CTRL+CTRL should canonicalize to standalone CTRL");
+        auto tab_spec = evan::parse_hotkey("tab");
+        require(tab_spec && !evan::is_modifier_vk(tab_spec->vk), "TAB should not be a modifier VK");
+    }
+
+    // 2. /winfo full player tracking across ConsoleMessage + pagination
+    {
+        evan::Session s;
+        evan::SharedState sh;
+        std::vector<uint8_t> map_extra(6 + 2 + 7, 0);
+        map_extra[6] = 7;
+        map_extra[7] = 0;
+        std::memcpy(map_extra.data() + 8, "BUYTEST", 7);
+        s.on_enter_world_map(map_extra.data(), map_extra.size());
+        require(s.current_world == "BUYTEST" && s.in_world, "on_enter_world_map world name mismatch");
+
+        bool is_local = false;
+        s.on_server_spawn("spawn|avatar\nnetID|1\nuserID|42\nname|`2clo0x``\ncountry|id\ntype|local\n", is_local);
+        require(is_local, "local spawn not recognized");
+
+        for (int i = 2; i <= 36; ++i) {
+            bool rem_local = true;
+            s.on_server_spawn("spawn|avatar\nnetID|" + std::to_string(i) +
+                              "\nuserID|" + std::to_string(1000 + i) +
+                              "\nname|`wPlayer" + std::to_string(i) + "``\nposXY|320|640\n",
+                              rem_local);
+            require(!rem_local, "remote spawn marked local");
+        }
+        require(s.players.size() == 35, "Expected 35 remote players before console message");
+
+        // World entered console message arrives AFTER OnSpawn on real servers and must NOT clear players
+        s.on_server_console_message("World `wBUYTEST `0entered. There are `w35`` other people here.");
+        require(s.players.size() == 35 && s.current_world == "BUYTEST",
+                "/winfo lost players when World entered console message arrived");
+
+        const std::string wi = evan::ui::build_worldinfo_dialog(s, sh);
+        require(wi.find("Jumlah Pemain: `w36") != std::string::npos &&
+                wi.find("Lihat Daftar Pemain di World (36)") != std::string::npos,
+                "build_worldinfo_dialog player count mismatch");
+
+        const std::string p0 = evan::ui::build_players_dialog(s, 0);
+        const std::string p1 = evan::ui::build_players_dialog(s, 1);
+        require(p0.find("Hal 1/2") != std::string::npos && p0.find("players_page_1") != std::string::npos,
+                "Players dialog page 1 missing next button");
+        require(p1.find("Hal 2/2") != std::string::npos && p1.find("players_page_0") != std::string::npos &&
+                p1.find("Player36") != std::string::npos,
+                "Players dialog page 2 missing Player36 or prev button");
+
+        evan::ui::UiEffects fx;
+        require(evan::ui::handle_dialog_return(
+                    evan::proto::TextParse("action|dialog_return\ndialog_name|evanproxy_players\nbuttonClicked|players_page_1\n"),
+                    s, sh, fx),
+                "players_page_1 navigation failed");
+        require(s.players_page == 1 && !fx.to_client.empty(), "players_page_1 did not advance page");
+    }
+
+    // 3. 1-Click FastBuy defaults, Custom Banner RTTEX assets, Update Log UI, & no inner '|'
+    {
+        evan::Session s;
+        evan::SharedState sh;
+        evan::ui::UiEffects fx;
+
+        require(evan::ui::handle_dialog_return(
+                    evan::proto::TextParse("action|dialog_return\ndialog_name|evanproxy_home\nchk_home_autobgl|0\nchk_home_fastbuy|1\n"),
+                    s, sh, fx),
+                "home fastbuy checkbox submit failed");
+        require(s.fast_buy == 2, "chk_home_fastbuy should enable Auto 1-Klik (mode 2)");
+
+        fx = {};
+        require(evan::ui::handle_chat_command("/fb", s, sh, fx) && s.fast_buy == 0,
+                "/fb should toggle Auto 1-Klik off");
+        require(evan::ui::handle_chat_command("/fb", s, sh, fx) && s.fast_buy == 2,
+                "/fb should toggle directly to Auto 1-Klik (2)");
+        require(evan::ui::handle_chat_command("/banner off", s, sh, fx) && !s.custom_banner,
+                "/banner off failed");
+        require(evan::ui::handle_chat_command("/banner on", s, sh, fx) && s.custom_banner,
+                "/banner on failed");
+
+        const std::string home = evan::ui::build_home_dialog(s, sh);
+        const std::string chlog = evan::ui::build_changelog_dialog(s);
+        require(home.find("interface/large/evanproxy_banner.rttex") != std::string::npos &&
+                home.find("nav_go_changelog") != std::string::npos,
+                "Home dialog missing custom banner button");
+        require(chlog.find("interface/large/evanproxy_banner.rttex") != std::string::npos &&
+                chlog.find("interface/large/evanproxy_card1.rttex") != std::string::npos &&
+                chlog.find("interface/large/evanproxy_card2.rttex") != std::string::npos &&
+                chlog.find("interface/large/evanproxy_card3.rttex") != std::string::npos,
+                "Changelog dialog missing banner or card RTTEX references");
+
+        for (const std::string& dlg : {
+                 home, chlog,
+                 evan::ui::build_fps_dialog(s),
+                 evan::ui::build_worldinfo_dialog(s, sh),
+                 evan::ui::build_players_dialog(s, 0),
+                 evan::ui::build_tools_dialog(s)}) {
+            std::istringstream iss(dlg);
+            std::string line;
+            while (std::getline(iss, line)) {
+                size_t pipe_count = static_cast<size_t>(std::count(line.begin(), line.end(), '|'));
+                if (line.rfind("add_smalltext|", 0) == 0 || line.rfind("add_textbox|", 0) == 0) {
+                    require(pipe_count == 3, "Inner pipe found in text dialog line: " + line);
+                } else if (line.rfind("add_checkbox|", 0) == 0) {
+                    require(pipe_count == 4, "Inner pipe found in checkbox dialog line: " + line);
+                }
+            }
+        }
+
+        // Check RTTEX banner files on disk start with valid RTPACK magic
+        for (const char* fname : {"evanproxy_banner.rttex", "evanproxy_card1.rttex",
+                                  "evanproxy_card2.rttex", "evanproxy_card3.rttex"}) {
+            const std::filesystem::path asset = std::filesystem::current_path() / "assets" / fname;
+            require(std::filesystem::is_regular_file(asset), "Missing banner RTTEX asset: " + asset.string());
+            std::ifstream in(asset, std::ios::binary);
+            char magic[6] = {};
+            in.read(magic, 6);
+            require(std::memcmp(magic, "RTPACK", 6) == 0, std::string("Invalid RTPACK magic in ") + fname);
+        }
+    }
+
+    // 4. Async PacketLogger non-blocking write & clean flush on destruction
+    {
+        const std::filesystem::path log_dir = std::filesystem::temp_directory_path() / "evanproxy_async_log_test";
+        std::error_code ec;
+        std::filesystem::remove_all(log_dir, ec);
+        std::filesystem::path recorded;
+        {
+            evan::PacketLogger logger(log_dir, true);
+            require(logger.is_file_open(), "Async PacketLogger failed to open log file");
+            recorded = logger.log_file_path();
+            logger.log_event("[Test] Async start");
+            logger.log_action("Wrench check", false);
+            auto sample = evan::proto::encode_text_packet(
+                evan::proto::MessageType::GenericText, "action|input\n|text|/winfo");
+            logger.log_packet(1, "C->S", 0, 1, sample.data(), sample.size(), false, false, false, false, true);
+        }
+        std::ifstream lin(recorded);
+        std::string content((std::istreambuf_iterator<char>(lin)), std::istreambuf_iterator<char>());
+        std::filesystem::remove_all(log_dir, ec);
+        require(content.find("Async start") != std::string::npos &&
+                content.find("Wrench check") != std::string::npos &&
+                content.find("/winfo") != std::string::npos,
+                "Async PacketLogger lost log lines on shutdown flush");
+    }
+
+    // 5. Live ENet test: N/1 WL FastBuy Auto 1-Click, World Enter Player Retention, Real-Time Ping
+    {
+        require(enet_initialize() == 0, "enet_initialize failed");
+        ENetAddress srv_addr{};
+        enet_address_set_host(&srv_addr, ENET_ADDRESS_TYPE_IPV4, "127.0.0.1");
+        srv_addr.port = 0;
+        ENetHost* mock_srv = enet_host_create(ENET_ADDRESS_TYPE_IPV4, &srv_addr, 2, 2, 0, 0);
+        ENetHost* client = enet_host_create(ENET_ADDRESS_TYPE_IPV4, nullptr, 2, 2, 0, 0);
+        require(mock_srv && client, "Failed creating ENet hosts for v2.2 test");
+        require(enet_host_compress_with_range_coder(mock_srv) == 0 &&
+                enet_host_compress_with_range_coder(client) == 0, "range coder failed");
+        mock_srv->checksum = enet_crc32;
+        mock_srv->usingNewPacketForServer = 1;
+        client->checksum = enet_crc32;
+        client->usingNewPacket = 1;
+
+        const uint16_t srv_port = get_bound_udp_port(mock_srv);
+        require(srv_port != 0, "mock_srv bound port 0");
+        mock_srv->address.port = srv_port;
+
+        evan::ProxyConfig pcfg;
+        pcfg.local_ip = "127.0.0.1";
+        pcfg.enet_port = 17196;
+        pcfg.using_new_packet = true;
+        pcfg.log_text_packets = false;
+        pcfg.log_variants = false;
+        pcfg.log_to_file = false;
+        pcfg.fast_buy = 2;
+        pcfg.fast_buy_qty = 1;
+        pcfg.vending_info = true;
+        pcfg.custom_banner = true;
+
+        evan::SharedState pshared;
+        pshared.set_pending_upstream("127.0.0.1", srv_port);
+
+        evan::EnetProxy pproxy(pcfg, pshared);
+        std::string p_err;
+        bool p_ok = true;
+        std::thread p_thread([&]() { p_ok = pproxy.run(p_err); });
+        struct PGuard {
+            evan::SharedState& s;
+            std::thread& t;
+            ~PGuard() {
+                s.stop_requested.store(true);
+                if (t.joinable()) t.join();
+            }
+        } pguard{pshared, p_thread};
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(120));
+        ENetAddress px_addr{};
+        enet_address_set_host(&px_addr, ENET_ADDRESS_TYPE_IPV4, "127.0.0.1");
+        px_addr.port = pcfg.enet_port;
+        ENetPeer* cli_peer = enet_host_connect(client, &px_addr, 2, 0);
+        require(cli_peer != nullptr, "cli connect failed");
+
+        ENetPeer* srv_peer = nullptr;
+        int cli_vend_dialog_leaks = 0;
+        bool cli_got_4_players_in_winfo = false;
+        bool cli_got_200pack_vend_notice = false;
+        bool cli_got_ping_msg = false;
+        bool srv_got_buy1 = false;
+        bool srv_got_verify1 = false;
+        bool srv_got_buy200 = false;
+        bool srv_got_verify200 = false;
+
+        auto pump = [&](int ms) {
+            auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(ms);
+            while (std::chrono::steady_clock::now() < deadline) {
+                ENetEvent ev{};
+                while (enet_host_service(client, &ev, 1) > 0) {
+                    if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
+                        auto mt = evan::proto::read_message_type(ev.packet->data, ev.packet->dataLength);
+                        if (mt && *mt == evan::proto::MessageType::GamePacket &&
+                            ev.packet->dataLength >= 4 + sizeof(evan::proto::GameUpdatePacket)) {
+                            evan::proto::GameUpdatePacket gp{};
+                            std::memcpy(&gp, ev.packet->data + 4, sizeof(gp));
+                            if (gp.type == static_cast<uint8_t>(evan::proto::GamePacketType::CallFunction) &&
+                                gp.extra_data_size > 0 &&
+                                4 + sizeof(gp) + gp.extra_data_size <= ev.packet->dataLength) {
+                                auto vl = evan::proto::VariantList::parse(
+                                    ev.packet->data + 4 + sizeof(gp), gp.extra_data_size);
+                                if (vl && vl->function_name() == "OnDialogRequest" && vl->items.size() >= 2) {
+                                    const std::string mk = vl->items[1].as_string();
+                                    if (mk.find("end_dialog|vending|") != std::string::npos) {
+                                        ++cli_vend_dialog_leaks;
+                                    }
+                                    if (mk.find("evanproxy_worldinfo") != std::string::npos &&
+                                        mk.find("Lihat Daftar Pemain di World (4)") != std::string::npos) {
+                                        cli_got_4_players_in_winfo = true;
+                                    }
+                                } else if (vl && vl->function_name() == "OnConsoleMessage" && vl->items.size() >= 2) {
+                                    const std::string cm = vl->items[1].as_string();
+                                    if (cm.find("[Vending Privat]") != std::string::npos &&
+                                        cm.find("200x") != std::string::npos &&
+                                        cm.find("800") != std::string::npos &&
+                                        cm.find("9 WL") != std::string::npos) {
+                                        cli_got_200pack_vend_notice = true;
+                                    }
+                                    if (cm.find("ENet RTT Real-Time") != std::string::npos &&
+                                        cm.find("Jitter") != std::string::npos) {
+                                        cli_got_ping_msg = true;
+                                    }
+                                }
+                            }
+                        }
+                        enet_packet_destroy(ev.packet);
+                    }
+                }
+                while (enet_host_service(mock_srv, &ev, 1) > 0) {
+                    if (ev.type == ENET_EVENT_TYPE_CONNECT) {
+                        srv_peer = ev.peer;
+                    } else if (ev.type == ENET_EVENT_TYPE_RECEIVE) {
+                        std::string txt = evan::proto::decode_text_payload(ev.packet->data, ev.packet->dataLength);
+                        if (txt.find("dialog_name|vending") != std::string::npos) {
+                            if (txt.find("buycount|1") != std::string::npos &&
+                                txt.find("verify|1") == std::string::npos) {
+                                srv_got_buy1 = true;
+                            } else if (txt.find("buycount|1") != std::string::npos &&
+                                       txt.find("verify|1") != std::string::npos) {
+                                srv_got_verify1 = true;
+                            } else if (txt.find("buycount|200") != std::string::npos &&
+                                       txt.find("verify|1") == std::string::npos) {
+                                srv_got_buy200 = true;
+                            } else if (txt.find("buycount|200") != std::string::npos &&
+                                       txt.find("verify|1") != std::string::npos) {
+                                srv_got_verify200 = true;
+                            }
+                        }
+                        enet_packet_destroy(ev.packet);
+                    }
+                }
+            }
+        };
+
+        for (int i = 0; i < 40 && (!srv_peer || cli_peer->state != ENET_PEER_STATE_CONNECTED); ++i) pump(40);
+        require(srv_peer && cli_peer->state == ENET_PEER_STATE_CONNECTED, "v2.2 ENet handshake failed");
+
+        // SendMapData -> spawns -> World entered console message -> verify /winfo preserves all 4 players
+        std::vector<uint8_t> map_extra(16, 0);
+        map_extra[6] = 8;
+        std::memcpy(map_extra.data() + 8, "GROWTEST", 8);
+        evan::proto::GameUpdatePacket map_gp{};
+        map_gp.type = static_cast<uint8_t>(evan::proto::GamePacketType::SendMapData);
+        map_gp.flags = evan::proto::PACKET_FLAG_EXTENDED;
+        map_gp.extra_data_size = static_cast<uint32_t>(map_extra.size());
+        std::vector<uint8_t> map_pkt(4 + sizeof(map_gp) + map_extra.size(), 0);
+        const uint32_t mt = static_cast<uint32_t>(evan::proto::MessageType::GamePacket);
+        std::memcpy(map_pkt.data(), &mt, 4);
+        std::memcpy(map_pkt.data() + 4, &map_gp, sizeof(map_gp));
+        std::memcpy(map_pkt.data() + 4 + sizeof(map_gp), map_extra.data(), map_extra.size());
+        enet_peer_send(srv_peer, 0, enet_packet_create(map_pkt.data(), map_pkt.size(), ENET_PACKET_FLAG_RELIABLE));
+
+        auto send_spawn = [&](int nid, const char* name, bool local) {
+            std::string body = "spawn|avatar\nnetID|" + std::to_string(nid) +
+                "\nuserID|" + std::to_string(100 + nid) + "\nname|" + name + "\ncountry|id\n";
+            if (local) body += "type|local\n";
+            auto pkt = evan::proto::build_call_function_packet(-1, 0, evan::proto::VariantList{
+                {evan::proto::Variant::make_string("OnSpawn"), evan::proto::Variant::make_string(body)}
+            });
+            enet_peer_send(srv_peer, 0, enet_packet_create(pkt.data(), pkt.size(), ENET_PACKET_FLAG_RELIABLE));
+        };
+        send_spawn(1, "`2clo0x``", true);
+        send_spawn(2, "`wGuestA``", false);
+        send_spawn(3, "`wGuestB``", false);
+        send_spawn(4, "`wGuestC``", false);
+        auto enter_cm = evan::proto::build_on_console_message(
+            "World `wGROWTEST `0entered. There are `w3`` other people here.");
+        enet_peer_send(srv_peer, 0, enet_packet_create(enter_cm.data(), enter_cm.size(), ENET_PACKET_FLAG_RELIABLE));
+        pump(100);
+
+        auto winfo_cmd = evan::proto::encode_text_packet(
+            evan::proto::MessageType::GenericText, "action|input\n|text|/winfo");
+        enet_peer_send(cli_peer, 0, enet_packet_create(winfo_cmd.data(), winfo_cmd.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !cli_got_4_players_in_winfo; ++i) pump(25);
+        require(cli_got_4_players_in_winfo, "/winfo did not report all 4 players in live ENet test");
+
+        // Trigger /ping real-time RTT readout
+        auto ping_cmd = evan::proto::encode_text_packet(
+            evan::proto::MessageType::GenericText, "action|input\n|text|/ping");
+        enet_peer_send(cli_peer, 0, enet_packet_create(ping_cmd.data(), ping_cmd.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !cli_got_ping_msg; ++i) pump(25);
+        require(cli_got_ping_msg, "/ping did not emit real-time RTT + Jitter message");
+
+        // Vend 1: 5 WL each, qty=1 -> auto 1-click buycount|1 & verify|1
+        auto vend_wl_each = evan::proto::build_on_dialog_request(
+            "set_default_color|`o\nadd_label_with_icon|big|`wDigiVend Machine``|left|9268|\n"
+            "embed_data|tilex|5\nembed_data|tiley|6\n"
+            "add_label_with_icon|sml|The machine contains a total of 519 `2Arroz Con Pollo``.|left|4604|\n"
+            "add_textbox|You have 125 World Locks.|left|\n"
+            "add_text_input|buycount|How many?|0|3|\n"
+            "embed_data|expectprice|5\nembed_data|expectitem|4604\nend_dialog|vending|Close|Buy|\n");
+        enet_peer_send(srv_peer, 0, enet_packet_create(vend_wl_each.data(), vend_wl_each.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !srv_got_buy1; ++i) pump(25);
+        require(srv_got_buy1, "1-Click Auto FastBuy (qty=1) did not send buycount|1");
+
+        auto vend_wl_each_verify = evan::proto::build_on_dialog_request(
+            "set_default_color|`o\nembed_data|tilex|5\nembed_data|tiley|6\n"
+            "embed_data|verify|1\nembed_data|buycount|1\n"
+            "embed_data|expectprice|5\nembed_data|expectitem|4604\nend_dialog|vending|Cancel|OK|\n");
+        enet_peer_send(srv_peer, 0, enet_packet_create(vend_wl_each_verify.data(), vend_wl_each_verify.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !srv_got_verify1; ++i) pump(25);
+        require(srv_got_verify1, "1-Click Auto FastBuy (qty=1) did not auto-confirm verify|1");
+
+        // Vend 2: 200 per 1 WL (expectprice|-200), qty=1 -> auto buys 200 (1 WL pack!) + private stock/WL notice
+        auto vend_per_wl = evan::proto::build_on_dialog_request(
+            "set_default_color|`o\nadd_label_with_icon|big|`wVending Machine``|left|2978|\n"
+            "embed_data|tilex|8\nembed_data|tiley|9\n"
+            "add_label_with_icon|sml|The machine contains a total of 1,000 `2Dirt``.|left|2|\n"
+            "add_textbox|You have 10 World Locks.|left|\n"
+            "add_text_input|buycount|How many?|0|3|\n"
+            "embed_data|expectprice|-200\nembed_data|expectitem|2\nend_dialog|vending|Close|Buy|\n");
+        enet_peer_send(srv_peer, 0, enet_packet_create(vend_per_wl.data(), vend_per_wl.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !srv_got_buy200; ++i) pump(25);
+        require(srv_got_buy200, "1-Click Auto FastBuy (200/WL with qty=1) did not buy 200");
+
+        auto vend_per_wl_verify = evan::proto::build_on_dialog_request(
+            "set_default_color|`o\nembed_data|tilex|8\nembed_data|tiley|9\n"
+            "embed_data|verify|1\nembed_data|buycount|200\n"
+            "embed_data|expectprice|-200\nembed_data|expectitem|2\nend_dialog|vending|Cancel|OK|\n");
+        enet_peer_send(srv_peer, 0, enet_packet_create(vend_per_wl_verify.data(), vend_per_wl_verify.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !srv_got_verify200; ++i) pump(25);
+        require(srv_got_verify200, "1-Click Auto FastBuy (200/WL) did not auto-confirm verify|1");
+
+        auto vend_ok = evan::proto::build_on_console_message(
+            "`2clo0x bought 200 Dirt for 1 World Lock.");
+        enet_peer_send(srv_peer, 0, enet_packet_create(vend_ok.data(), vend_ok.size(), ENET_PACKET_FLAG_RELIABLE));
+        for (int i = 0; i < 25 && !cli_got_200pack_vend_notice; ++i) pump(25);
+        require(cli_got_200pack_vend_notice, "Private [Vending Privat] notice missing 800 remaining stock or 9 WL");
+        require(cli_vend_dialog_leaks == 0, "1-Click Auto FastBuy leaked vending dialogs to client");
+
+        pshared.stop_requested.store(true);
+        p_thread.join();
+        require(p_ok, "v2.2 EnetProxy error: " + p_err);
+        enet_host_destroy(client);
+        enet_host_destroy(mock_srv);
+        enet_deinitialize();
+    }
+}
+
+void test_proxy_controller_and_port_conflict() {
+    require(evan::format_cd_breakdown(0) == "enter an amount", "format_cd_breakdown(0) mismatch");
+    require(evan::format_cd_breakdown(50) == "50 WL", "format_cd_breakdown(50) mismatch");
+    require(evan::format_cd_breakdown(102) == "1 DL + 2 WL", "format_cd_breakdown(102) mismatch");
+    require(evan::format_cd_breakdown(200) == "2 DL", "format_cd_breakdown(200) mismatch");
+    require(evan::format_cd_breakdown(10205) == "1 BGL + 2 DL + 5 WL", "format_cd_breakdown(10205) mismatch");
+
+    const auto tmp_dir = std::filesystem::temp_directory_path() / "evanproxy_ctrl_test";
+    std::error_code ec;
+    std::filesystem::remove_all(tmp_dir, ec);
+    std::filesystem::create_directories(tmp_dir, ec);
+
+    evan::ProxyConfig cfg;
+    cfg.local_ip = "127.0.0.1";
+    cfg.http_port = 18493;
+    cfg.enet_port = 17193;
+    cfg.manage_hosts = false;
+    const auto cfg_path = tmp_dir / "config.ini";
+    require(evan::save_config(cfg_path, cfg), "save_config failed");
+
+    // 1. Occupy port 18493 to simulate Laragon/Apache/IIS port conflict
+    SOCKET blocker = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    require(blocker != INVALID_SOCKET, "blocker socket failed");
+    sockaddr_in b_addr{};
+    b_addr.sin_family = AF_INET;
+    b_addr.sin_port = htons(18493);
+    inet_pton(AF_INET, "0.0.0.0", &b_addr.sin_addr);
+    require(bind(blocker, reinterpret_cast<sockaddr*>(&b_addr), sizeof(b_addr)) == 0,
+            "blocker bind 18493 failed");
+    require(listen(blocker, 2) == 0, "blocker listen failed");
+
+    evan::ProxyController::Options opts;
+    opts.exe_dir = tmp_dir;
+    opts.config_path = cfg_path;
+    opts.cert_dir = tmp_dir / "certs";
+    opts.log_dir = tmp_dir / "logs";
+    opts.worlds_path = tmp_dir / "worlds.ini";
+    opts.skip_os_hosts_and_ca = true;
+
+    evan::ProxyController ctrl(opts);
+    std::string err;
+    bool port_conflict = false;
+    bool needs_admin = false;
+    bool ok = ctrl.start(err, port_conflict, needs_admin);
+    require(!ok && port_conflict && ctrl.has_port_conflict() && !needs_admin,
+            "ProxyController should report port conflict on busy HTTPS port");
+
+    const auto lines_err = ctrl.get_console_lines();
+    bool saw_port_err = false;
+    for (const auto& ln : lines_err) {
+        if (ln.tag == evan::LogTag::Error && ln.text.find("already in use") != std::string::npos) {
+            saw_port_err = true;
+            break;
+        }
+    }
+    require(saw_port_err, "Console log missing port conflict ERROR message");
+
+    closesocket(blocker);
+
+    // 2. Port freed -> start succeeds
+    ok = ctrl.start(err, port_conflict, needs_admin);
+    require(ok && !port_conflict && ctrl.is_running(), "ProxyController failed to start after port freed: " + err);
+
+    // 3. Dispatch live UI commands while running & verify live snapshot + config persistence
+    auto send_cmd = [&](evan::UiCommand c) { ctrl.dispatch_ui_command(c); };
+    {
+        evan::UiCommand c;
+        c.kind = evan::UiCommand::Kind::SetToggle;
+        c.key = "autobgl";
+        c.bool_arg = true;
+        send_cmd(c);
+
+        c.key = "fps";
+        c.bool_arg = true;
+        send_cmd(c);
+
+        c.key = "hud";
+        c.bool_arg = true;
+        send_cmd(c);
+
+        c.kind = evan::UiCommand::Kind::SetFastBuyMode;
+        c.int_arg = 2;
+        send_cmd(c);
+
+        c.kind = evan::UiCommand::Kind::SetFastBuyQty;
+        c.int_arg = 15;
+        send_cmd(c);
+
+        c.kind = evan::UiCommand::Kind::SetZoomPercent;
+        c.int_arg = 150;
+        send_cmd(c);
+
+        c.kind = evan::UiCommand::Kind::SetHotkeySlot;
+        c.int_arg = 0;
+        c.key = "CTRL";
+        c.value = "/warp clunxz";
+        send_cmd(c);
+
+        c.kind = evan::UiCommand::Kind::RunChatCommand;
+        c.key.clear();
+        c.value = "/cd 102";
+        send_cmd(c);
+
+        c.value = "/timer 60";
+        send_cmd(c);
+    }
+
+    bool synced = false;
+    evan::UiSnapshot live;
+    for (int i = 0; i < 40; ++i) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+        live = ctrl.get_live_snapshot();
+        if (live.auto_bgl && live.fps_boost && live.fast_buy == 2 && live.fast_buy_qty == 15 &&
+            live.zoom_percent == 150 && !live.hotkeys.empty() && live.hotkeys[0].key == "CTRL" &&
+            live.hotkeys[0].command == "/warp clunxz" && live.hud.calc_visible && live.hud.timer_active) {
+            synced = true;
+            break;
+        }
+    }
+    require(synced, "Live UI commands did not propagate into ENet snapshot in time");
+    require(live.hud.calc_value == "1 DL + 2 WL", "HUD calc toast value mismatch: " + live.hud.calc_value);
+
+    const auto persisted = evan::load_or_create_config(cfg_path);
+    require(persisted.auto_bgl && persisted.fast_buy == 2 && persisted.fast_buy_qty == 15 &&
+            persisted.zoom_percent == 150 && persisted.hotkeys[0].key == "CTRL",
+            "Live UI changes did not persist to config.ini");
+
+    // 4. Stop, toggle offline, and cleanly restart once more
+    ctrl.stop();
+    require(!ctrl.is_running(), "ProxyController still running after stop()");
+
+    {
+        evan::UiCommand c;
+        c.kind = evan::UiCommand::Kind::SetToggle;
+        c.key = "fastdrop";
+        c.bool_arg = true;
+        ctrl.dispatch_ui_command(c);
+    }
+    require(ctrl.get_live_snapshot().fast_drop, "Offline UI toggle did not update stopped snapshot");
+    require(evan::load_or_create_config(cfg_path).fast_drop, "Offline UI toggle did not persist to config.ini");
+
+    ok = ctrl.start(err, port_conflict, needs_admin);
+    require(ok && ctrl.is_running(), "ProxyController restart failed: " + err);
+    ctrl.stop();
+    require(!ctrl.is_running(), "ProxyController second stop failed");
+
+    std::filesystem::remove_all(tmp_dir, ec);
+}
+
+void test_board_ui_commands_and_hud_toasts() {
+    auto extract_dialog_markup = [](const std::vector<uint8_t>& pkt) -> std::string {
+        auto vl = evan::proto::VariantList::parse(
+            pkt.data() + 4 + sizeof(evan::proto::GameUpdatePacket),
+            pkt.size() - 4 - sizeof(evan::proto::GameUpdatePacket));
+        return (vl && vl->items.size() >= 2) ? vl->items[1].as_string() : std::string{};
+    };
+
+    evan::Session sess;
+    sess.local_net_id = 1;
+    sess.wrench_mode = evan::WrenchMode::Info;
+
+    evan::PlayerInfo p;
+    p.net_id = 9;
+    p.user_id = 777;
+    p.name = "TargetGuy";
+    p.tile_x = 10;
+    p.tile_y = 20;
+
+    const std::string wrench_dlg = evan::ui::build_player_inspect_dialog(sess, p);
+    require(wrench_dlg.find("Wrench: TargetGuy") != std::string::npos, "Board 4 Wrench header missing");
+    require(wrench_dlg.find("wrench_act_pull_9") != std::string::npos &&
+            wrench_dlg.find("wrench_act_kick_9") != std::string::npos &&
+            wrench_dlg.find("wrench_act_ban_9") != std::string::npos &&
+            wrench_dlg.find("wrench_turn_off") != std::string::npos,
+            "Wrench action buttons missing");
+
+    evan::SharedState shared;
+    evan::ui::UiEffects eff;
+    evan::proto::TextParse tp_off("action|dialog_return\ndialog_name|evanproxy_inspect\nbuttonClicked|wrench_turn_off");
+    require(evan::ui::handle_dialog_return(tp_off, sess, shared, eff), "wrench_turn_off not handled");
+    require(sess.wrench_mode == evan::WrenchMode::Off, "wrench_turn_off did not disable wrench_mode");
+
+    // /hud and /weather on/off
+    evan::ui::UiEffects cmd_eff;
+    require(sess.hud_overlay, "hud_overlay should default true");
+    require(evan::ui::handle_chat_command("/hud off", sess, shared, cmd_eff), "/hud off not handled");
+    require(!sess.hud_overlay && cmd_eff.save_config, "/hud off did not update session/save");
+    require(evan::ui::handle_chat_command("/weather on", sess, shared, cmd_eff), "/weather on not handled");
+    require(sess.weather_override && !cmd_eff.to_client.empty(), "/weather on did not emit weather packet");
+
+    // apply_ui_command helpers
+    {
+        evan::UiCommand cmd;
+        cmd.kind = evan::UiCommand::Kind::ClearHotkeySlot;
+        cmd.int_arg = 0;
+        evan::ui::UiEffects ueff;
+        require(evan::ui::apply_ui_command(cmd, sess, shared, ueff), "ClearHotkeySlot failed");
+        require(sess.hotkeys[0].key.empty() && sess.hotkeys[0].command.empty(), "Hotkey slot 0 not cleared");
+
+        cmd.kind = evan::UiCommand::Kind::ResetHotkeys;
+        require(evan::ui::apply_ui_command(cmd, sess, shared, ueff), "ResetHotkeys failed");
+        require(sess.hotkeys[0].key == "F1" && sess.hotkeys[0].command == "/proxy", "ResetHotkeys mismatch");
+    }
+
+    // SharedState HUD toasts
+    shared.notify_hotkey_toast("F1", "/warp clunxz");
+    shared.notify_vend_toast(12, 88, "Dirt");
+    shared.notify_calc_toast("CALC · /cd 102", "1 DL + 2 WL");
+    shared.update_timer_hud(true, 300, "300 detik");
+    const auto snap = shared.get_snapshot();
+    require(snap.hud.hotkey_visible && snap.hud.hotkey_key == "F1" && snap.hud.hotkey_cmd == "/warp clunxz",
+            "SharedState hotkey toast mismatch");
+    require(snap.hud.vend_visible && snap.hud.vend_rem_stock == 12 && snap.hud.vend_rem_wl == 88,
+            "SharedState vend toast mismatch");
+    require(snap.hud.calc_visible && snap.hud.calc_value == "1 DL + 2 WL",
+            "SharedState calc toast mismatch");
+    require(snap.hud.timer_active && snap.hud.timer_remaining_sec == 300,
+            "SharedState timer HUD mismatch");
+    (void)extract_dialog_markup;
+}
+
+void test_onsetbux_int64_and_pickup_inventory_sync() {
+    // 1. Exact 51-byte Growtopia 5.62 OnSetBux VariantList payload (Type 0x0A Int64 = 7112)
+    const std::vector<uint8_t> raw_onsetbux = {
+        0x05,
+        0x00, 0x02, 0x08, 0x00, 0x00, 0x00, 0x4F, 0x6E, 0x53, 0x65, 0x74, 0x42, 0x75, 0x78,
+        0x01, 0x0A, 0xC8, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x02, 0x09, 0x01, 0x00, 0x00, 0x00,
+        0x03, 0x09, 0x01, 0x00, 0x00, 0x00,
+        0x04, 0x04, 0x00, 0x16, 0xD8, 0x46, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+    };
+    auto vl = evan::proto::VariantList::parse(raw_onsetbux.data(), raw_onsetbux.size());
+    require(vl.has_value(), "Failed to parse live OnSetBux Int64 VariantList");
+    require(vl->function_name() == "OnSetBux", "Unexpected OnSetBux function name");
+    require(vl->items.size() == 5, "Expected 5 variants in OnSetBux");
+    require(vl->items[1].type == evan::proto::Variant::Type::Int64, "Expected Variant::Type::Int64 for gems");
+    require(vl->items[1].as_int() == 7112, "Expected OnSetBux gems == 7112");
+    require(vl->serialize() == raw_onsetbux, "OnSetBux serialize() round-trip mismatch");
+
+    // 2. Pickup lock inventory sync after /cd 115 drop
+    evan::Session sess;
+    sess.inventory[1796] = 1;
+    sess.inventory[242] = 15;
+
+    evan::proto::GameUpdatePacket gp_dl{};
+    gp_dl.type = static_cast<uint8_t>(evan::proto::GamePacketType::ModifyItemInventory);
+    gp_dl.value = 1796;
+    gp_dl.jump_count = 1;
+    sess.on_server_modify_inventory(gp_dl);
+
+    evan::proto::GameUpdatePacket gp_wl{};
+    gp_wl.type = static_cast<uint8_t>(evan::proto::GamePacketType::ModifyItemInventory);
+    gp_wl.value = 242;
+    gp_wl.jump_count = 15;
+    sess.on_server_modify_inventory(gp_wl);
+    require(sess.dl_count() == 0 && sess.wl_count() == 0, "Expected 0 DL / 0 WL right after drop");
+
+    sess.on_server_console_message("Collected `w1 Diamond Lock``.``");
+    sess.on_server_console_message("Collected `w15 World Lock``.``");
+    require(sess.dl_count() == 1 && sess.wl_count() == 15,
+            "Pickup console message did not restore 1 DL / 15 WL");
+
+    {
+        std::vector<evan::PlannedDrop> plan;
+        std::string err;
+        require(evan::plan_lock_drops(10, sess.wl_count(), sess.dl_count(), sess.bgl_count(), plan, err),
+                "plan_lock_drops(10) failed: " + err);
+        require(plan.size() == 1 && !plan[0].activate &&
+                plan[0].item_id == 242 && plan[0].count == 10,
+                "plan_lock_drops(10) should drop 10 WL directly without shattering DL");
+    }
+    {
+        std::vector<evan::PlannedDrop> plan;
+        std::string err;
+        require(evan::plan_lock_drops(115, sess.wl_count(), sess.dl_count(), sess.bgl_count(), plan, err),
+                "plan_lock_drops(115) failed after pickup: " + err);
+        require(plan.size() == 2 &&
+                plan[0].item_id == 1796 && plan[0].count == 1 &&
+                plan[1].item_id == 242 && plan[1].count == 15,
+                "plan_lock_drops(115) should plan 1 DL + 15 WL");
+    }
+
+    sess.on_server_console_message("Collected `w1 Blue Gem Lock``.``");
+    require(sess.bgl_count() == 1, "Expected 1 BGL after picking up Blue Gem Lock");
+}
+
+void test_gazette_replacement_and_gems_tracker() {
+    auto extract_dialog_markup = [](const std::vector<uint8_t>& pkt) -> std::string {
+        auto vl = evan::proto::VariantList::parse(
+            pkt.data() + 4 + sizeof(evan::proto::GameUpdatePacket),
+            pkt.size() - 4 - sizeof(evan::proto::GameUpdatePacket));
+        return (vl && vl->items.size() >= 2) ? vl->items[1].as_string() : std::string{};
+    };
+
+    evan::Session sess;
+    sess.local_net_id = 2;
+    sess.in_world = true;
+    sess.current_world = "EVILAX";
+    sess.gems = 7112;
+    sess.last_news_markup = "set_default_color|`o\nadd_label_with_icon|big|`wThe Growtopia Gazette``|left|5016|\nend_dialog|gazette||OK|\n";
+
+    // 1. Full EvanProxy Gazette & Home icon grid + quick toggle strip
+    const std::string gaz = evan::ui::build_changelog_dialog(sess);
+    require(gaz.find("interface/large/evanproxy_banner.rttex") != std::string::npos, "Gazette missing custom banner");
+    require(gaz.find("interface/large/evanproxy_card1.rttex") != std::string::npos &&
+            gaz.find("interface/large/evanproxy_card2.rttex") != std::string::npos &&
+            gaz.find("interface/large/evanproxy_card3.rttex") != std::string::npos,
+            "Gazette missing 3 custom feature cards");
+    require(gaz.find("[UPDATE]") != std::string::npos &&
+            gaz.find("[IMPROVE]") != std::string::npos &&
+            gaz.find("[NEW]") != std::string::npos &&
+            gaz.find("[FIXED]") != std::string::npos,
+            "Gazette missing changelog sections");
+    require(gaz.find("end_dialog|evanproxy_changelog|") != std::string::npos, "Gazette dialog name mismatch");
+
+    evan::SharedState shared;
+    {
+        evan::ui::UiEffects eff;
+        require(evan::ui::handle_chat_command("/news", sess, shared, eff), "/news not handled");
+        require(eff.to_client.size() == 1 &&
+                extract_dialog_markup(eff.to_client[0]).find("end_dialog|evanproxy_changelog|") != std::string::npos,
+                "/news did not open EvanProxy Gazette");
+    }
+    {
+        evan::ui::UiEffects eff;
+        require(evan::ui::handle_chat_command("/rawnews", sess, shared, eff), "/rawnews not handled");
+        require(eff.to_client.size() == 1 &&
+                extract_dialog_markup(eff.to_client[0]).find("The Growtopia Gazette") != std::string::npos,
+                "/rawnews did not open original server Gazette");
+    }
+    {
+        evan::ui::UiEffects eff;
+        require(evan::ui::handle_chat_command("/proxy", sess, shared, eff), "/proxy not handled");
+        const std::string home = extract_dialog_markup(eff.to_client[0]);
+        require(home.find("nav_go_gems") != std::string::npos &&
+                home.find("home_tog_fastbuy") != std::string::npos &&
+                home.find("home_tog_gems") != std::string::npos &&
+                home.find("chk_home_gems") != std::string::npos,
+                "/proxy home dialog missing new icon buttons / gems toggles");
+    }
+
+    // 2. Gem & Floor Drop Packet Tracking (matching packets_20261124_195821.log)
+    auto make_drop_pkt = [](int32_t net_id, int32_t target, int32_t value, float fvar, float x, float y) {
+        evan::proto::GameUpdatePacket gp{};
+        gp.type = static_cast<uint8_t>(evan::proto::GamePacketType::ItemChangeObject);
+        gp.net_id = net_id;
+        gp.target_net_id = target;
+        gp.value = value;
+        gp.float_var = fvar;
+        gp.vec_x = x;
+        gp.vec_y = y;
+        return gp;
+    };
+
+    // World already has 13 pre-existing items, so seq 0 gets uid=14, seq 1 gets uid=15
+    sess.on_server_item_change_object(make_drop_pkt(-1, -1, 112, 10.0f, 1996.0f, 1226.0f));
+    sess.on_server_item_change_object(make_drop_pkt(-1, -1, 112, 1.0f, 1986.0f, 1231.0f));
+    require(sess.world_floor_gems_total() == 11 && sess.world_floor_gems_clusters() == 2,
+            "Floor gems total/cluster count mismatch before pickup");
+
+    evan::proto::GameUpdatePacket req_gem{};
+    req_gem.type = static_cast<uint8_t>(evan::proto::GamePacketType::ItemActivateObjectRequest);
+    req_gem.value = 14;
+    req_gem.vec_x = 1995.0f;
+    req_gem.vec_y = 1225.0f;
+    sess.on_client_pickup_request(req_gem);
+    require(sess.drop_uid_calibrated && sess.drop_base_uid == 14, "Drop UID calibration failed");
+
+    const int64_t g1 = sess.on_server_item_change_object(make_drop_pkt(2, -1, 14, 0.0f, 0.0f, 0.0f));
+    const int64_t g2 = sess.on_server_item_change_object(make_drop_pkt(2, -1, 15, 0.0f, 0.0f, 0.0f));
+    require(g1 == 10 && g2 == 1, "Gem pickup return values mismatch");
+    require(sess.gems == 7123 && sess.gems_collected_world == 11 && sess.gems_collected_session == 11,
+            "Gem counters did not update properly after pickup");
+    require(sess.world_floor_gems_total() == 0, "Collected gems still counted on floor");
+
+    // 3. Simultaneous DL (1796) + WL (242) pickup with only ONE console message
+    sess.inventory[1796] = 0;
+    sess.inventory[242] = 0;
+    sess.on_server_item_change_object(make_drop_pkt(-1, -1, 1796, 1.0f, 1920.0f, 1216.0f)); // uid=16
+    sess.on_server_item_change_object(make_drop_pkt(-1, -1, 242, 1.0f, 1922.0f, 1216.0f));  // uid=17
+    sess.on_server_item_change_object(make_drop_pkt(2, -1, 16, 0.0f, 0.0f, 0.0f));
+    sess.on_server_item_change_object(make_drop_pkt(2, -1, 17, 0.0f, 0.0f, 0.0f));
+    sess.on_server_console_message("Collected `w1 World Lock``.``"); // must NOT double-add WL!
+    require(sess.dl_count() == 1 && sess.wl_count() == 1,
+            "Simultaneous DL+WL pickup miscounted (dl=" + std::to_string(sess.dl_count()) +
+            ", wl=" + std::to_string(sess.wl_count()) + ")");
+
+    // 4. /gems command & dialog
+    {
+        evan::ui::UiEffects eff;
+        require(evan::ui::handle_chat_command("/gems", sess, shared, eff), "/gems command not handled");
+        const std::string gdlg = extract_dialog_markup(eff.to_client[0]);
+        require(gdlg.find("end_dialog|evanproxy_gems|") != std::string::npos &&
+                gdlg.find("7,123 Gems") != std::string::npos,
+                "/gems dialog missing expected balance");
+    }
+    {
+        evan::ui::UiEffects eff;
+        require(evan::ui::handle_chat_command("/gems off", sess, shared, eff) && !sess.gems_tracker, "/gems off failed");
+        require(evan::ui::handle_chat_command("/gems on", sess, shared, eff) && sess.gems_tracker, "/gems on failed");
+        require(evan::ui::handle_chat_command("/gems reset", sess, shared, eff) &&
+                sess.gems_collected_world == 0 && sess.gems_collected_session == 0,
+                "/gems reset failed");
+    }
+}
+
 } // namespace
 
 int main() {
@@ -2176,7 +2983,12 @@ int main() {
         {"test_titles_fps_and_portal_warp", test_titles_fps_and_portal_warp},
         {"test_visual_clothes_items_and_branding", test_visual_clothes_items_and_branding},
         {"test_autobgl_new_titles_hotkeys_and_locks", test_autobgl_new_titles_hotkeys_and_locks},
-        {"test_custom_hotkeys_smart_cd_and_fastbuy", test_custom_hotkeys_smart_cd_and_fastbuy}
+        {"test_custom_hotkeys_smart_cd_and_fastbuy", test_custom_hotkeys_smart_cd_and_fastbuy},
+        {"test_standalone_hotkeys_winfo_ping_fastbuy_and_banner", test_standalone_hotkeys_winfo_ping_fastbuy_and_banner},
+        {"test_proxy_controller_and_port_conflict", test_proxy_controller_and_port_conflict},
+        {"test_board_ui_commands_and_hud_toasts", test_board_ui_commands_and_hud_toasts},
+        {"test_onsetbux_int64_and_pickup_inventory_sync", test_onsetbux_int64_and_pickup_inventory_sync},
+        {"test_gazette_replacement_and_gems_tracker", test_gazette_replacement_and_gems_tracker}
     };
 
     int passed = 0;
